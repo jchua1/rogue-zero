@@ -6,7 +6,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	Input.applyEventHandlers(canvasElement);
 	Input.addMouseTracker(canvasElement);
 
-	socket.emit('connect', {
+	console.log('loaded');
+
+	socket.emit('client_handshake', {
 		name: 'test'
+	});
+
+	socket.on('server_handshake', function (data) {
+		console.log(data);
 	});
 });
