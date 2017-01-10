@@ -5,9 +5,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 def run():
-  app.SECRET_KEY = 'secret'
-  app.DEBUG = True
-  socketio.run(app)
+  socketio.run(app, debug = True)
 
 @app.route('/game')
 def game():
