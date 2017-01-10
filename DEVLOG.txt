@@ -1,3 +1,7 @@
+2016-01-10 - kli
+	Began level and enemy generation
+	Did some more work with sockets
+
 2016-01-09 - kli
 	Began work on JS client, starting with framework from previous projects
 	Began work on socket.io interactions between JS client and Flask server
