@@ -1,0 +1,3 @@
+2016-01-09 - kli
+	Began work on JS client, starting with framework from previous projects
+	Began work on socket.io interactions between JS client and Flask server

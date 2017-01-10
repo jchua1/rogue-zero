@@ -25,7 +25,7 @@ Game.prototype.receiveGameState = function (state) {
 };
 
 Game.prototype.update = function () {
-
+	
 };
 
 Game.prototype.draw = function () {
