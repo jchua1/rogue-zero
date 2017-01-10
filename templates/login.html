@@ -6,21 +6,32 @@
 
   <body>
     <div class ="jumbotron text-center">
-      <h2>RougeZero</h2>
+      <h2>RogueZero</h2>
     </div>
     
     <div class="container-fluid"> 
       <div class="col-md-6">
+	<form class="form" action="" method="post">
 	<div class="form-group">
-	  <input type="text" name="user" class="form-control" placeholder="Username" method="post" action="">
+	  <input type="text" name="user" class="form-control" placeholder="Username">
 	</div>
 	
 	<br>
 	
 	<div class="form-group">
-	  <input type="text" name="pass" class="form-control" placeholder="Password" method="post" action="">
+	  <input type="password" name="pass" class="form-control" placeholder="Password">
 	</div>
-	
+
+      </div class="form-group">
+      <input type="submit" name="login" class="btn btn-primary btn-block" value="login">
+    </div>
+    
+     </div class="form-group">
+      <input type="submit" name="register" class="btn btn-primary btn-block" value="register">
+    </div>
+
+</form>
+
       </div>
     </div>
     
