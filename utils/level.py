@@ -16,12 +16,7 @@ class Level:
 
   def asDict(self):
     level = {}
-    level['player'] = {
-      'x': 50,
-      'y': 50,
-      'width': 10,
-      'height': 10
-    }
+    level['player'] = Player().__dict__
 
     level['room'] = {
       'enemies': []
@@ -50,7 +45,7 @@ class Enemy(Entity):
 
 class Player(Entity):
   def __init__(self):
-    super(Player, self).__init__(10, 10, 10, 10, 10)
+    super(Player, self).__init__(10, 10, 10, 10, 0.25)
     
 
     

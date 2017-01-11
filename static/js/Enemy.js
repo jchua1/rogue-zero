@@ -14,3 +14,7 @@ Enemy.createFromValues = function (x, y, health, attack, speed) {
 	return new Enemy(x, y, health, attack, speed);
 };
 
+Enemy.prototype.update = function (horizontal, vertical, delta) {
+	this.x += horizontal * delta;
+	this.y += vertical * delta;
+}

@@ -14,4 +14,8 @@ Player.createFromValues = function (x, y, health, attack, speed) {
 	return new Player(x, y, health, attack, speed);
 };
 
+Player.prototype.update = function (horizontal, vertical, delta) {
+	this.x += horizontal * delta;
+	this.y += vertical * delta;
+}
 

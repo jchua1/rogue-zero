@@ -1,5 +1,6 @@
 2016-01-11 - kli
 	More work on sockets and client side rendering.
+	Movement works!
 
 2016-01-10 - kli
 	Began level and enemy generation
