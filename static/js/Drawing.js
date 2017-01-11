@@ -7,19 +7,38 @@ Drawing.create = function (context) {
 	return drawing;
 }
 
-Drawing.prototype.render = function (obj) {
-	if (obj instanceof Player) {
-
-	}
-};
-
-Drawing.prototype.renderPlayer = function (player) {
+Drawing.prototype.renderObject = function (obj, type) {
 	this.context.save();
-	var x = player.coords[0];
-	var y = player.coords[1];
-	var width = player.size[0];
-	var height = player.size[1];
-	this.context.fillStyle = 'green';
+	var x = obj.x;
+	var y = obj.y;
+	var width = 0;
+	var height = 0;
+	
+	if (type == 'player') {
+		this.context.fillStyle = 'green';
+		width = Constants.PLAYER_WIDTH;
+		height = Constants.PLAYER_HEIGHT;
+	} else if (type == 'enemy') {
+		this.context.fillStyle = 'red';
+		width = Constants.ENEMY_WIDTH;
+		height = Constants.ENEMY_HEIGHT;
+	} else {
+		this.context.fillStyle = 'gray';
+		width = Constants.OBJECT_WIDTH;
+		height = Constants.OBJECT_HEIGHT;
+	}
+
 	this.context.fillRect(x - width / 2, y - height / 2, width, height);
 	this.context.restore();
+};
+
+Drawing.prototype.renderBackground = function () {
+	this.context.save();
+	this.context.fillStyle = 'white';
+	this.context.fillRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+	this.context.restore();
+};
+
+Drawing.prototype.clear = function () {
+	this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 };

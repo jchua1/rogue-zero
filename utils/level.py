@@ -1,6 +1,7 @@
 import random
 
-ROOM_SIZE = 64
+ROOM_SIZE = 640
+
 
 class Level:
   def __init__(self, seed):
@@ -14,22 +15,42 @@ class Level:
       self.enemies.append(Enemy())
 
   def asDict(self):
-    ret = {}
-    ret['enemies'] = []
+    level = {}
+    level['player'] = {
+      'x': 50,
+      'y': 50,
+      'width': 10,
+      'height': 10
+    }
+
+    level['room'] = {
+      'enemies': []
+    }
 
     for enemy in self.enemies:
-      ret['enemies'].append(enemy.__dict__)
+      level['room']['enemies'].append(enemy.__dict__)
       
-    return ret
+    return level
 
-class Enemy:
+class Entity(object):
+  def __init__(self, x, y, health, attack, speed):
+    self.x = x
+    self.y = y
+    self.health = health
+    self.attack = attack
+    self.speed = speed
+
+class Enemy(Entity):
   def __init__(self):
-    self.x = random.randint(0, ROOM_SIZE)
-    self.y = random.randint(0, ROOM_SIZE)
-    self.health = random.randint(10, 50)
-    self.attack = random.randint(0, 10)
-    self.speed = random.randint(0, 20)
+    super(Enemy, self).__init__(random.randint(0, ROOM_SIZE),
+                                random.randint(0, ROOM_SIZE),
+                                random.randint(10, 50),
+                                random.randint(0, 10),
+                                random.randint(0, 20))
 
-  
+class Player(Entity):
+  def __init__(self):
+    super(Player, self).__init__(10, 10, 10, 10, 10)
+    
 
     

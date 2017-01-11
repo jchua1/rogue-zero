@@ -12,25 +12,26 @@ def run():
 def game():
   return render_template('game.html')
 
-@socketio.on('client_handshake')
-def connect(data):
+@socketio.on('new_player')
+def new_player(data):
   name = data['name']
   print 'new player %s connected' % name
-  emit('server_handshake', {
-    'message': 'hello %s' % name
-  })
+  emit('new_level', getLevel())
 
 @socketio.on('get_level')
-def sendLevel(data):
-  print 'get got'
+def sendLevel(data = {}):
   seed = None
   
   if 'seed' in data:
     seed = data['seed']
 
+  print 'generating level with seed %s' % seed
+  emit('new_level', getLevel(seed))
+
+def getLevel(seed = None):
   newLevel = level.Level(seed).asDict()
   print newLevel
-  emit('new_level', newLevel)    
-
+  return newLevel
+  
 if __name__ == '__main__':
   run()

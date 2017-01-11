@@ -11,11 +11,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
 	console.log('loaded');
 
-	socket.emit('client_handshake', {
+	socket.emit('new_player', {
 		name: 'test'
-	});
-
-	socket.on('server_handshake', function (data) {
-		console.log(data);
+	}, function (data) {
+		game.run();
 	});
 });

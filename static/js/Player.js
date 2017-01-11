@@ -6,4 +6,12 @@ function Player(x, y, health, attack, speed) {
 	this.speed = speed;
 }
 
+Player.createFromObject = function (obj) {
+	return new Player(obj.x, obj.y, obj.health, obj.attack, obj.speed);
+};
+
+Player.createFromValues = function (x, y, health, attack, speed) {
+	return new Player(x, y, health, attack, speed);
+};
+
 
