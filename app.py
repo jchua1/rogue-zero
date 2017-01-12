@@ -37,37 +37,41 @@ def getLevel(seed = None):
 #login
 @app.route('/')
 def root():
-  if( 'username' in session.keys() ):
-    return redirect(url_for( 'game' ))
-  else:
-    return redirect(url_for( 'login' ))
+  if 'username' in session.keys():
+    return redirect(url_for('game'))
+  
+  return redirect(url_for('login'))
 
 @app.route('/login/')
 def login():
   if 'username' in session:
     return redirect(url_for('game'))
-    return render_template('login.html')
+    
+  return render_template('login.html')
 
 @app.route('/authenticate/', methods=['POST'])
 def authenticate():
   pw = request.form['pass']
   un = request.form['user']
   text = users.login(un,pw)#error message
+  
   if text == '':#if no error message, succesful go back home
     session['username'] = un
     return redirect(url_for('game'))
-    return render_template('login.html', message = text)
+    
+  return render_template('login.html', message = text)
 
 @app.route('/register/', methods=['POST'])
 def register():
   pw = request.form['pass']
   un = request.form['user']
   pw2 = request.form['passconf']
+  
   if pw2 == pw:
     regRet = users.register(un,pw)#returns an error/success message
     return render_template('login.html', message = regRet)
-  else:
-    return render_template('login.html', message = 'Passwords don\'t match')
+
+  return render_template('login.html', message = 'Passwords don\'t match')
     
 @app.route('/logout/')
 def logout():
