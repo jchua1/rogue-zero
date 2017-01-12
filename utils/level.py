@@ -1,6 +1,6 @@
 import random
 
-ROOM_SIZE = 640
+ROOM_SIZE = 800
 
 
 class Level:
@@ -20,6 +20,10 @@ class Level:
 
     level['room'] = {
       'enemies': []
+      'terrain': []
+      'items': []
+      'exits': []
+      'save points': []
     }
 
     for enemy in self.enemies:
