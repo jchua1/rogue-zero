@@ -2,12 +2,11 @@ import random
 
 ROOM_SIZE = 800
 
-
 class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer()
+    self.generatePlayer(10, 10, 10, 0.25, 1, 0.5)
 
   def generateEnemies(self):
     self.enemies = []
@@ -15,25 +14,22 @@ class Level:
     for i in range(random.randint(0, 10)):
       self.enemies.append(Enemy())
 
-  def generatePlayer(self):
-    self.player = Player()
+  def generatePlayer(self, x, y, health, speed, projectileSpeed, projectileDelay):
+    self.player = Player(x, y, health, speed, projectileSpeed, projectileDelay)
 
   def asDict(self):
-    level = {
+    return {
       'player': self.player.asDict(),
       'room': {
         'enemies': [enemy.asDict() for enemy in self.enemies]
       }
     }
-      
-    return level
-
+    
 class Entity(object):
-  def __init__(self, x, y, health, attack, speed):
+  def __init__(self, x, y, health, speed):
     self.x = x
     self.y = y
     self.health = health
-    self.attack = attack
     self.speed = speed
 
   def asDict(self):
@@ -44,14 +40,13 @@ class Enemy(Entity):
     super(Enemy, self).__init__(random.randint(0, ROOM_SIZE),
                                 random.randint(0, ROOM_SIZE),
                                 random.randint(10, 50),
-                                random.randint(0, 10),
                                 random.randint(0, 20))
 
 class Player(Entity):
-  def __init__(self):
-    super(Player, self).__init__(10, 10, 10, 10, 0.25)
-    self.projectileSpeed = 1
-    self.shotDelay = 0.5
+  def __init__(self, x, y, health, speed, projectileSpeed, projectileDelay):
+    super(Player, self).__init__(x, y, health, speed)
+    self.projectileSpeed = projectileSpeed
+    self.projectileDelay = projectileDelay
     
 
     

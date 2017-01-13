@@ -56,8 +56,11 @@ Game.prototype.update = function () {
 
   this.player.update(delta);
 
+  this.player.x = bound(this.player.x, 0, Constants.CANVAS_WIDTH);
+  this.player.y = bound(this.player.y, 0, Constants.CANVAS_HEIGHT);
+
   if (shot) {
-    if (now - this.player.lastShotTime > this.player.shotDelay * 1000) {
+    if (now - this.player.lastShotTime > this.player.projectileDelay * 1000) {
       var projectile = new Projectile(this.player.x, this.player.y,
                                       this.player.projectileSpeed * Math.cos(heading),
                                       this.player.projectileSpeed * Math.sin(heading),
@@ -74,6 +77,16 @@ Game.prototype.update = function () {
 
   for (var i = 0; i < this.projectiles.length; i++) {
     this.projectiles[i].update(delta);
+
+    var newX = bound(this.projectiles[i].x, 0, Constants.CANVAS_WIDTH);
+    var newY = bound(this.projectiles[i].y, 0, Constants.CANVAS_HEIGHT);
+
+    if (this.projectiles[i].x != newX || this.projectiles[i].y != newY) {
+      this.projectiles.splice(i, 1);
+    } else {
+      this.projectiles[i].x = newX;
+      this.projectiles[i].y = newY;
+    }
   }
 	
 	this.lastFrameTime = now;
