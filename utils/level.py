@@ -20,10 +20,6 @@ class Level:
 
     level['room'] = {
       'enemies': []
-      'terrain': []
-      'items': []
-      'exits': []
-      'save points': []
     }
 
     for enemy in self.enemies:
