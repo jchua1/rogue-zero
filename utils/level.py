@@ -1,6 +1,6 @@
 import random
 
-ROOM_SIZE = 640
+ROOM_SIZE = 800
 
 
 class Level:
