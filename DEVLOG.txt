@@ -1,3 +1,11 @@
+2016-01-13 - kli
+	Finalized refactoring.
+	Added projectiles and shooting.
+
+2016-01-12 - kli
+	Began refactoring Players and Enemies as "subclasses" of Entity.
+	Added rotation based on mouse placement.
+
 2016-01-11 - kli
 	More work on sockets and client side rendering.
 	Movement works!
