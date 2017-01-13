@@ -1,6 +1,7 @@
 2016-01-13 - kli
 	Finalized refactoring.
 	Added projectiles and shooting.
+	Added boundary checking for the edges of the canvas.
 
 2016-01-12 - kli
 	Began refactoring Players and Enemies as "subclasses" of Entity.
