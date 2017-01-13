@@ -1,21 +1,16 @@
-function Player(x, y, health, attack, speed) {
-	this.x = x;
-	this.y = y;
-	this.health = health;
-	this.attack = attack;
-	this.speed = speed;
+function Player() {
+  this.x = 0;
+  this.y = 0;
+  this.vx = 0;
+  this.vy = 0;
+  this.ax = 0;
+  this.ay = 0;
+  this.health = 0;
+  this.attack = 0;
+  this.speed = 0;
+  this.projectileSpeed = 0;
+  this.shotDelay = 0;
+  this.lastShotTime = 0;
 }
 
-Player.createFromObject = function (obj) {
-	return new Player(obj.x, obj.y, obj.health, obj.attack, obj.speed);
-};
-
-Player.createFromValues = function (x, y, health, attack, speed) {
-	return new Player(x, y, health, attack, speed);
-};
-
-Player.prototype.update = function (horizontal, vertical, delta) {
-	this.x += horizontal * delta;
-	this.y += vertical * delta;
-}
-
+Player.inheritsFrom(Entity);

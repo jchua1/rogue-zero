@@ -7,34 +7,47 @@ Drawing.create = function (context) {
 	return drawing;
 }
 
-Drawing.prototype.renderObject = function (obj, type) {
+Drawing.prototype.renderPlayer = function (player) {
+  var width = Constants.PLAYER_WIDTH;
+  var height = Constants.PLAYER_HEIGHT;
+  
 	this.context.save();
-	var x = obj.x;
-	var y = obj.y;
-	var width = 0;
-	var height = 0;
-	
-	if (type == 'player') {
-		this.context.fillStyle = 'green';
-		width = Constants.PLAYER_WIDTH;
-		height = Constants.PLAYER_HEIGHT;
-	} else if (type == 'enemy') {
-		this.context.fillStyle = 'red';
-		width = Constants.ENEMY_WIDTH;
-		height = Constants.ENEMY_HEIGHT;
-	} else {
-		this.context.fillStyle = 'gray';
-		width = Constants.OBJECT_WIDTH;
-		height = Constants.OBJECT_HEIGHT;
-	}
+  this.context.fillStyle = Constants.PLAYER_COLOR;
+  this.context.translate(player.x, player.y);
+  this.context.rotate(player.heading);
+  this.context.translate(-width / 2, -height / 2);
+  this.context.fillRect(0, 0, width, height);
+	this.context.restore();
+};
 
-	this.context.fillRect(x - width / 2, y - height / 2, width, height);
+Drawing.prototype.renderEnemy = function (enemy) {
+  var width = Constants.ENEMY_WIDTH;
+  var height = Constants.ENEMY_HEIGHT;
+
+	this.context.save();
+  this.context.fillStyle = Constants.ENEMY_COLOR;
+  this.context.translate(enemy.x, enemy.y);
+  this.context.rotate(enemy.heading);
+  this.context.translate(-width / 2, -height / 2);
+  this.context.fillRect(0, 0, width, height)
+	this.context.restore();  
+};
+
+Drawing.prototype.renderProjectile = function (projectile) {
+  var size = Constants.PROJECTILE_SIZE;
+  
+	this.context.save();
+  this.context.fillStyle = Constants.PROJECTILE_COLOR;
+  this.context.translate(projectile.x, projectile.y);
+  this.context.beginPath();
+  this.context.arc(0, 0, size, 0, 2 * Math.PI, false);
+  this.context.fill();
 	this.context.restore();
 };
 
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
-	this.context.fillStyle = 'white';
+	this.context.fillStyle = Constants.BACKGROUND_COLOR;
 	this.context.fillRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 	this.context.restore();
 };

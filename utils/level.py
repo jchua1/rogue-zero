@@ -7,6 +7,7 @@ class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
+    self.generatePlayer()
 
   def generateEnemies(self):
     self.enemies = []
@@ -14,16 +15,16 @@ class Level:
     for i in range(random.randint(0, 10)):
       self.enemies.append(Enemy())
 
+  def generatePlayer(self):
+    self.player = Player()
+
   def asDict(self):
-    level = {}
-    level['player'] = Player().__dict__
-
-    level['room'] = {
-      'enemies': []
+    level = {
+      'player': self.player.asDict(),
+      'room': {
+        'enemies': [enemy.asDict() for enemy in self.enemies]
+      }
     }
-
-    for enemy in self.enemies:
-      level['room']['enemies'].append(enemy.__dict__)
       
     return level
 
@@ -34,6 +35,9 @@ class Entity(object):
     self.health = health
     self.attack = attack
     self.speed = speed
+
+  def asDict(self):
+    return self.__dict__
 
 class Enemy(Entity):
   def __init__(self):
@@ -46,6 +50,8 @@ class Enemy(Entity):
 class Player(Entity):
   def __init__(self):
     super(Player, self).__init__(10, 10, 10, 10, 0.25)
+    self.projectileSpeed = 1
+    self.shotDelay = 0.5
     
 
     

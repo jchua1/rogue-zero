@@ -1,20 +1,13 @@
-function Enemy(x, y, health, attack, speed) {
-	this.x = x;
-	this.y = y;
-	this.health = health;
-	this.attack = attack;
-	this.speed = speed;
+function Enemy() {
+	this.x = 0;
+	this.y = 0;
+  this.vx = 0;
+  this.vy = 0;
+  this.ax = 0;
+  this.ay = 0;
+	this.health = 0;
+	this.attack = 0;
+	this.speed = 0;
 }
 
-Enemy.createFromObject = function (obj) {
-	return new Enemy(obj.x, obj.y, obj.health, obj.attack, obj.speed);
-};
-
-Enemy.createFromValues = function (x, y, health, attack, speed) {
-	return new Enemy(x, y, health, attack, speed);
-};
-
-Enemy.prototype.update = function (horizontal, vertical, delta) {
-	this.x += horizontal * delta;
-	this.y += vertical * delta;
-}
+Enemy.inheritsFrom(Entity);
