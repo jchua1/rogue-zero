@@ -4,6 +4,7 @@ function Game(socket, drawing) {
   this.player = {};
   this.room = {};
   this.projectiles = [];
+  this.melees = [];
   this.hasData = false;
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
@@ -30,14 +31,10 @@ Game.prototype.init = function () {
 Game.prototype.receiveLevel = function (level) {
   update(level, this);
 
-  if (!this.hasData) {
-    this.player = cast(this.player, Player);
-
-    for (var i = 0; i < this.room.enemies.length; i++) {
-      this.room.enemies[i] = cast(this.room.enemies[i], Enemy);
-    }
-    
-    this.hasData = true;
+  this.player = Player.fromObject(this.player);
+  
+  for (var i = 0; i < this.room.enemies.length; i++) {
+    this.room.enemies[i] = Enemy.fromObject(this.room.enemies[i]);
   }
 };
 
@@ -46,47 +43,67 @@ Game.prototype.update = function () {
 	var vertical = ((Input.UP ? 1 : 0) + (Input.DOWN ? -1 : 0));
 	var heading = Math.PI + Math.atan2(Input.MOUSE[1] - this.player.y,
 													           Input.MOUSE[0] - this.player.x);
-	var shot = Input.LEFT_CLICK;
+
+	var shoot = Input.LEFT_CLICK;
+  var melee = Input.MISC_KEYS[70]; // F
+
 	var now = (new Date()).getTime();
 	var delta = this.lastFrameTime - now;
 
   this.player.vx = horizontal * this.player.speed;
   this.player.vy = vertical * this.player.speed;
-  this.player.heading = heading;
+  this.player.theta = heading;
 
   this.player.update(delta);
 
-  this.player.x = bound(this.player.x, 0, Constants.CANVAS_WIDTH);
-  this.player.y = bound(this.player.y, 0, Constants.CANVAS_HEIGHT);
-
-  if (shot) {
-    if (now - this.player.lastShotTime > this.player.projectileDelay * 1000) {
-      var projectile = new Projectile(this.player.x, this.player.y,
-                                      this.player.projectileSpeed * Math.cos(heading),
-                                      this.player.projectileSpeed * Math.sin(heading),
-                                      0, 0);
-      this.projectiles.push(projectile);
-      this.player.lastShotTime = now;
+  if (melee) {
+    if (now - this.player.lastMeleeTime > this.player.meleeDelay * 1000) {
+      var melee = Melee.fromObject({
+        startTheta: this.player.theta,
+        omega: this.player.meleeSpeed,
+        arc: this.player.meleeArc,
+        range: this.player.meleeRange,
+        width: this.player.meleeWidth,
+        owner: this.player
+      });
+        
+      this.melees.push(melee);
+      this.player.lastMeleeTime = now;
     }
   }
 
-	// for (var i = 0; i < this.room.enemies.length; i++) {
-		// this.room.enemies[i].x += horizontal * delta;
-		// this.room.enemies[i].y += vertical * delta;
-	// }
+  if (shoot) {
+    if (now - this.player.lastShootTime > this.player.shootDelay * 1000) {
+      var projectile = Projectile.fromObject({
+        x: this.player.x,
+        y: this.player.y,
+        vx: this.player.shootSpeed * Math.cos(heading),
+        vy: this.player.shootSpeed * Math.sin(heading),
+        startX: this.player.x,
+        startY: this.player.y,
+        range: this.player.shootRange,
+        size: this.player.shootSize
+      });
+
+      this.projectiles.push(projectile);
+      this.player.lastShootTime = now;
+    }
+  }
+
+  for (var i = 0; i < this.melees.length; i++) {
+    this.melees[i].update(delta);
+
+    if (this.melees[i].shouldExist) {
+      this.melees.splice(i, 1);
+    }
+  }
 
   for (var i = 0; i < this.projectiles.length; i++) {
     this.projectiles[i].update(delta);
-
-    var newX = bound(this.projectiles[i].x, 0, Constants.CANVAS_WIDTH);
-    var newY = bound(this.projectiles[i].y, 0, Constants.CANVAS_HEIGHT);
-
-    if (this.projectiles[i].x != newX || this.projectiles[i].y != newY) {
+    
+    if (!this.projectiles[i].shouldExist) {
       this.projectiles.splice(i, 1);
-    } else {
-      this.projectiles[i].x = newX;
-      this.projectiles[i].y = newY;
-    }
+    } 
   }
 	
 	this.lastFrameTime = now;
@@ -99,6 +116,10 @@ Game.prototype.draw = function () {
 
   for (var i = 0; i < this.room.enemies.length; i++) {
     this.drawing.renderEnemy(this.room.enemies[i]);
+  }
+
+  for (var i = 0; i < this.melees.length; i++) {
+    this.drawing.renderMelee(this.melees[i]);
   }
 
   for (var i = 0; i < this.projectiles.length; i++) {

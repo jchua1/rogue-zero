@@ -11,3 +11,7 @@ function Enemy() {
 }
 
 Enemy.inheritsFrom(Entity);
+
+Enemy.fromObject = function (obj) {
+  return cast(cast(obj, Entity), Enemy);
+};

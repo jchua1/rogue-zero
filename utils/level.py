@@ -1,12 +1,16 @@
 import random
+import math
 
 ROOM_SIZE = 800
+GRID_SIZE = 50
 
 class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, 10, 0.25, 1, 0.5)
+    self.generatePlayer(10, 10, 10, 0.25,
+                        800, 5, 1, 0.5,
+                        15, 2.5, math.pi / 2, 1, 2)
 
   def generateEnemies(self):
     self.enemies = []
@@ -14,8 +18,12 @@ class Level:
     for i in range(random.randint(0, 10)):
       self.enemies.append(Enemy())
 
-  def generatePlayer(self, x, y, health, speed, projectileSpeed, projectileDelay):
-    self.player = Player(x, y, health, speed, projectileSpeed, projectileDelay)
+  def generatePlayer(self, x, y, health, speed,
+                     shootRange, shootSize, shootSpeed, shootDelay,
+                     meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
+    self.player = Player(x, y, health, speed,
+                         shootRange, shootSize, shootSpeed, shootDelay,
+                         meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
   def asDict(self):
     return {
@@ -43,10 +51,19 @@ class Enemy(Entity):
                                 random.randint(0, 20))
 
 class Player(Entity):
-  def __init__(self, x, y, health, speed, projectileSpeed, projectileDelay):
+  def __init__(self, x, y, health, speed,
+               shootRange, shootSize, shootSpeed, shootDelay,
+               meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
     super(Player, self).__init__(x, y, health, speed)
-    self.projectileSpeed = projectileSpeed
-    self.projectileDelay = projectileDelay
+    self.shootRange = shootRange
+    self.shootSize = shootSize
+    self.shootSpeed = shootSpeed
+    self.shootDelay = shootDelay
+    self.meleeRange = meleeRange
+    self.meleeWidth = meleeWidth
+    self.meleeArc = meleeArc
+    self.meleeSpeed = meleeSpeed
+    self.meleeDelay = meleeDelay
     
 
     

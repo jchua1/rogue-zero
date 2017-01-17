@@ -49,6 +49,18 @@ function update(source, destination) {
   }
 }
 
+function updateExisting(source, destination) {
+  for (var key in destination) {
+    if (destination.hasOwnProperty(key) && source.hasOwnProperty(key)) {
+      if (typeof destination[key] == 'object' && typeof source[key] == 'object') {
+        updateExisting(source[key], destination[key]);
+      } else {
+        destination[key] = source[key];
+      }
+    }
+  }
+}          
+
 function cast(object, type) {
   var ret = new type();
   update(object, ret);
