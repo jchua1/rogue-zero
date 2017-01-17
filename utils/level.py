@@ -7,7 +7,8 @@ class Level:
     random.seed(seed)
     self.generateEnemies()
     self.generatePlayer(10, 10, 10, 0.25, 1, 0.5)
-
+    self.generateRoom()
+    
   def generateEnemies(self):
     self.enemies = []
 
@@ -17,6 +18,12 @@ class Level:
   def generatePlayer(self, x, y, health, speed, projectileSpeed, projectileDelay):
     self.player = Player(x, y, health, speed, projectileSpeed, projectileDelay)
 
+  def generateRoom(self):
+    self.terrain = []
+    for i in range(0,50):
+      terrain[i] = 
+        
+    
   def asDict(self):
     return {
       'player': self.player.asDict(),
@@ -24,6 +31,25 @@ class Level:
         'enemies': [enemy.asDict() for enemy in self.enemies]
       }
     }
+
+class Tile:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+    self.item = generateItem()
+    self.terrain = generateTerrain()
+
+  def generateTerrain(self):
+    types = ['ground', 'spikes', 'pit', 'rock']
+    return random.choice(types)
+  
+  def generateItem(self):
+    names = ['sword', 'gun', 'lasersabre', 'bow','save']
+    if random.randint(1,100) < 2: 
+      return random.choice(names)
+    else:
+      return 'empty'
+
     
 class Entity(object):
   def __init__(self, x, y, health, speed):
@@ -49,4 +75,4 @@ class Player(Entity):
     self.projectileDelay = projectileDelay
     
 
-    
+
