@@ -21,7 +21,8 @@ class Level:
   def generateRoom(self):
     self.terrain = []
     for i in range(0,50):
-      terrain[i] = 
+        for j in range(0,50): 
+            self.terrain[i] = Tile(j*16,i*16)
         
     
   def asDict(self):
@@ -29,6 +30,7 @@ class Level:
       'player': self.player.asDict(),
       'room': {
         'enemies': [enemy.asDict() for enemy in self.enemies]
+        'elements': self.terrain
       }
     }
 
