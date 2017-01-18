@@ -10,14 +10,9 @@ function Melee(theta, omega, arc, range, width, owner) {
 
 Melee.inheritsFrom(Entity);
 
-Melee.fromObject = function (obj) {
-  console.log(obj);
-  return cast(cast(obj, Entity), Melee);
-};
-
 Melee.prototype.update = function (delta) {
-  bind(this, this.parent.update)(delta);
-  
+  this.parent.update.call(this, delta);
+    
   this.x = this.owner.x;
   this.y = this.owner.y;
 

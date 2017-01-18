@@ -30,11 +30,10 @@ Game.prototype.init = function () {
 
 Game.prototype.receiveLevel = function (level) {
   update(level, this);
+  this.player = cast(this.player, Player);
 
-  this.player = Player.fromObject(this.player);
-  
   for (var i = 0; i < this.room.enemies.length; i++) {
-    this.room.enemies[i] = Enemy.fromObject(this.room.enemies[i]);
+    this.room.enemies[i] = cast(this.room.enemies[i], Enemy);
   }
 };
 
@@ -58,14 +57,16 @@ Game.prototype.update = function () {
 
   if (melee) {
     if (now - this.player.lastMeleeTime > this.player.meleeDelay * 1000) {
-      var melee = Melee.fromObject({
+      var melee = new Melee();
+
+      update({
         startTheta: this.player.theta,
         omega: this.player.meleeSpeed,
         arc: this.player.meleeArc,
         range: this.player.meleeRange,
         width: this.player.meleeWidth,
         owner: this.player
-      });
+      }, melee);
         
       this.melees.push(melee);
       this.player.lastMeleeTime = now;
@@ -74,7 +75,9 @@ Game.prototype.update = function () {
 
   if (shoot) {
     if (now - this.player.lastShootTime > this.player.shootDelay * 1000) {
-      var projectile = Projectile.fromObject({
+      var projectile = new Projectile();
+
+      update({
         x: this.player.x,
         y: this.player.y,
         vx: this.player.shootSpeed * Math.cos(heading),
@@ -83,7 +86,7 @@ Game.prototype.update = function () {
         startY: this.player.y,
         range: this.player.shootRange,
         size: this.player.shootSize
-      });
+      }, projectile);
 
       this.projectiles.push(projectile);
       this.player.lastShootTime = now;

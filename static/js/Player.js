@@ -23,12 +23,8 @@ function Player() {
 
 Player.inheritsFrom(Entity);
 
-Player.fromObject = function (obj) {
-  return cast(cast(obj, Entity), Player);
-};
-
 Player.prototype.update = function (delta) {
-  bind(this, this.parent.update)(delta);
+  this.parent.update.call(this, delta);
 
   this.x = bound(this.x, 0, Constants.CANVAS_WIDTH);
   this.y = bound(this.y, 0, Constants.CANVAS_HEIGHT);
