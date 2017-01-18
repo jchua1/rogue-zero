@@ -1,22 +1,20 @@
-function Melee(theta, omega, arc, range, width, owner) {
-  this.startTheta = theta;
-  this.omega = omega;
-  this.arc = arc;
-  this.range = range;
-  this.width = width;
-  this.owner = owner;
-  this.shouldExist = true;
+function Melee() {
+  this.startTheta = 0;
+  this.arc = 0;
+  this.range = 0;
+  this.width = 0;
+  this.owner = 0;
 }
 
 Melee.inheritsFrom(Entity);
 
 Melee.prototype.update = function (delta) {
   this.parent.update.call(this, delta);
-    
+
   this.x = this.owner.x;
   this.y = this.owner.y;
 
-  if (this.theta - this.startTheta >= this.arc) {
+  if (mod(this.theta - this.startTheta, 2 * Math.PI) >= this.arc) {
     this.shouldExist = false;
   }
 };

@@ -11,17 +11,11 @@ function Entity() {
 }
 
 Entity.prototype.update = function (delta) {
-  // console.log('entity update');
-  // console.log(this);
-  if (this.ax && this.ay) {
-    this.vx += this.ax * delta;
-    this.vy += this.ay * delta;
-  }
+  this.vx += this.ax * delta;
+  this.vy += this.ay * delta;
   
   this.x += this.vx * delta;
   this.y += this.vy * delta;
 
-  if (this.omega) {
-    this.theta += this.omega * delta;
-  }
+  this.theta = mod(this.theta + this.omega * delta, 2 * Math.PI);
 };

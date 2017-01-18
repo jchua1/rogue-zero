@@ -35,8 +35,17 @@ Drawing.prototype.renderEnemy = function (enemy) {
 
 Drawing.prototype.renderMelee = function (melee) {
   this.context.save();
-  this.context.fillStyle = 'orange';
+  this.context.fillStyle = 'lightblue';
   this.context.translate(melee.x, melee.y);
+  this.context.beginPath();
+  this.context.arc(0, 0, melee.range,
+                   melee.theta + Math.PI * 7 / 8,
+                   melee.theta + Math.PI, false);
+  this.context.lineTo(0, 0);
+  this.context.closePath(0, 0);
+  this.context.fill();
+
+  this.context.fillStyle = 'white';
   this.context.rotate(melee.theta);
   this.context.translate(-melee.range, -melee.width / 2);
   this.context.fillRect(0, 0, melee.range, melee.width);

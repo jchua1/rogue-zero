@@ -37,7 +37,7 @@ function update(source, destination) {
   for (var key in source) {
     if (source.hasOwnProperty(key)) {
       if (destination.hasOwnProperty(key)) {
-        if (typeof source[key] == 'object') {
+        if (typeof source[key] == 'object' && typeof destination[key] == 'object') {
           update(source[key], destination[key]);
         } else {
           destination[key] = source[key];
@@ -75,4 +75,14 @@ function bound(value, min, max) {
   } else {
     return value;
   }
+}
+
+function mod(value, base) {
+  var ret = value % base;
+
+  if (ret < 0) {
+    ret += base;
+  }
+
+  return ret;
 }
