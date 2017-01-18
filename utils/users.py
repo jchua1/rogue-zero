@@ -35,7 +35,7 @@ def register(user, password):
     try: #does table already exist?
         c.execute("SELECT * FROM users")
     except: #if not, this is the first user!
-        c.execute("CREATE TABLE users (username TEXT, password TEXT)")
+        c.execute("CREATE TABLE users (user_id INTEGER, username TEXT, password TEXT, current_room INTEGER, items TEXT, char_state TEXT)")
     db.commit()
     db.close()
     return regMain(user, password)#register helper
