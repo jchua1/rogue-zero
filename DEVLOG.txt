@@ -1,3 +1,7 @@
+2016-01-18 - kli
+	Finally figured out JS prototypal inheritance.
+	Added melee attack animation -- needs work.
+
 2016-01-13 - kli
 	Finalized refactoring.
 	Added projectiles and shooting.
