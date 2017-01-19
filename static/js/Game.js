@@ -127,6 +127,10 @@ Game.prototype.draw = function () {
 
   this.drawing.renderBackground();
 
+  for (var i = 0; i < this.room.terrain.length; i++) {
+    this.drawing.renderTile(this.room.terrain[i]);
+  }
+
   for (var i = 0; i < this.room.enemies.length; i++) {
     this.drawing.renderEnemy(this.room.enemies[i]);
   }

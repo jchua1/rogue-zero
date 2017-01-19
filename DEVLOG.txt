@@ -1,3 +1,7 @@
+2016-01-19 - kli
+	Enhanced melee animation.
+	Made players and enemies circles for easier collisions.
+
 2016-01-18 - jchua
 	Added terrain dictionary to asDict() method of Level class.
 	Implemented user ID generation in registration.
