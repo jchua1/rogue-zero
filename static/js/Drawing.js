@@ -8,47 +8,45 @@ Drawing.create = function (context) {
 }
 
 Drawing.prototype.renderPlayer = function (player) {
-  var width = Constants.PLAYER_WIDTH;
-  var height = Constants.PLAYER_HEIGHT;
-  
 	this.context.save();
   this.context.fillStyle = Constants.PLAYER_COLOR;
   this.context.translate(player.x, player.y);
   this.context.rotate(player.theta);
-  this.context.translate(-width / 2, -height / 2);
-  this.context.fillRect(0, 0, width, height);
+  this.context.beginPath();
+  this.context.arc(0, 0, Constants.PLAYER_SIZE, 0, 2 * Math.PI);
+  this.context.fill();
 	this.context.restore();
 };
 
 Drawing.prototype.renderEnemy = function (enemy) {
-  var width = Constants.ENEMY_WIDTH;
-  var height = Constants.ENEMY_HEIGHT;
-
 	this.context.save();
   this.context.fillStyle = Constants.ENEMY_COLOR;
   this.context.translate(enemy.x, enemy.y);
-  this.context.rotate(enemy.theta);
-  this.context.translate(-width / 2, -height / 2);
-  this.context.fillRect(0, 0, width, height)
-	this.context.restore();  
+  this.context.beginPath();
+  this.context.arc(0, 0, Constants.ENEMY_SIZE, 0, 2 * Math.PI);
+	this.context.fill();
+  this.context.restore();  
 };
 
 Drawing.prototype.renderMelee = function (melee) {
   this.context.save();
-  this.context.fillStyle = 'lightblue';
   this.context.translate(melee.x, melee.y);
+  this.context.rotate(Math.PI / 2 + melee.theta);
+
   this.context.beginPath();
   this.context.arc(0, 0, melee.range,
-                   melee.theta + Math.PI * 7 / 8,
-                   melee.theta + Math.PI, false);
-  this.context.lineTo(0, 0);
-  this.context.closePath(0, 0);
+                   Math.PI / 2, 0, true);
+
+  this.context.scale(1, 0.3);
+
+  this.context.arc(0, 0, melee.range,
+                   0, Math.PI / 2, 0, false);
+  
+  this.context.closePath();
+
+  this.context.fillStyle = Constants.MELEE_COLOR;
   this.context.fill();
 
-  this.context.fillStyle = 'white';
-  this.context.rotate(melee.theta);
-  this.context.translate(-melee.range, -melee.width / 2);
-  this.context.fillRect(0, 0, melee.range, melee.width);
   this.context.restore();
 };
 
@@ -68,6 +66,10 @@ Drawing.prototype.renderBackground = function () {
 	this.context.fillRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 	this.context.restore();
 };
+
+Drawing.prototype.renderTile = function (tile) {
+
+}
 
 Drawing.prototype.clear = function () {
 	this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
