@@ -6,21 +6,72 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
     <script src="../static/bootstrap/js/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+      
+    </style>
   </head>
   
   <body>
     <div class="col-md-7">
-      <div class="oldUpgrade">
-	{{oldSkill}}
-      </div>
-      <div class="newUpgrade">
-	{{newSkill}}
-      </div> 
       
+      <div class="skills" id="health">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+
+      <div class="skills" id="speed">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+      
+      <div class="skills" id="attackSpeed">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+      
+      <div class="skills" id="shootDmg">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+      
+      <div class="skills" id="meleeDmg">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+      
+      <div class="skills" id="meleeSize">
+	<span class="oldUpgrade">
+	  {{oldSkill}}
+	</span>
+	<span class="newUpgrade">
+	  {{newSkill}}
+	</span>
+      </div>
+
     </div>
 
     <div class="col-md-5">
-      <h1>Charachter Color</h1>
+      <h1>Character Color</h1>
       <input type="color" name="charColor" onchange="clickColor(0,-1,-1,5)" value="#ff0000" style="width:25%; height:100px;">
       <br>
       <h2>Skill Points:</h2>

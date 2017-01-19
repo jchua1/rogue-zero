@@ -5,6 +5,26 @@
 	margin: 0
 }
 
+.skills{
+    margin-top:10px;
+    margin-bottom:10px;
+    height:50px;
+    width:500px;
+}
+
+.oldUpgrade{
+    border-style:solid;
+    height:50px;
+    width:100px;
+    margin-right:50px;
+}
+
+.newUpgrade{
+    border-style:solid;
+    height:50px;
+    width:100px;
+}
+
 canvas {
 	margin: 100px;
 }
