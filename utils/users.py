@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from hashlib import sha1
 from sqlite3 import connect
 from os import urandom
@@ -14,7 +12,7 @@ def login(user, password):
     try:
         sel = c.execute(query,(user,))
     except:
-        c.execute("CREATE TABLE users (username TEXT, password TEXT")
+        c.execute("CREATE TABLE users (user_id INTEGER, username TEXT, password TEXT, current_room INTEGER, items TEXT, char_state TEXT)")
         sel = c.execute(query,(user,));
     
     #records with this username
@@ -45,9 +43,15 @@ def regMain(user, password):#register helper
     c = db.cursor()
     reg = regReqs(user, password)
     if reg == "": #if error message is blank then theres no problem, update database
-        query = ("INSERT INTO users VALUES (?, ?)")
+        s = c.execute("SELECT MAX(user_id) FROM users")
+        i = s.fetchone()[0]
+        if i == None:
+            i = 0
+        else:
+            i += 1
+        query = ("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password).hexdigest()
-        c.execute(query, (user, password))
+        c.execute(query, (i, user, password, 1, "test", "test"))
         db.commit()
         db.close()
         return "Account created!"
