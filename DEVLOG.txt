@@ -1,24 +1,44 @@
+2016-01-18 - dchiu
+	decided how to format skill level and progression
+	started making some of the buttons.
+
 2016-01-18 - kli
 	Finally figured out JS prototypal inheritance.
 	Added melee attack animation -- needs work.
+
+2016-01-17 - dchiu
+	decided to make charachter customization html overlay instead of all javascript.
+	added color chooser to the customization page.
 
 2016-01-13 - kli
 	Finalized refactoring.
 	Added projectiles and shooting.
 	Added boundary checking for the edges of the canvas.
 
+2016-01-12 - dchiu
+	Reworked the login by adding bootstrap and javascript. no longer looks like garbage
+	added javascript to login so register and login are different fields.
+
 2016-01-12 - kli
 	Began refactoring Players and Enemies as "subclasses" of Entity.
 	Added rotation based on mouse placement.
+
 
 2016-01-11 - kli
 	More work on sockets and client side rendering.
 	Movement works!
 
+2016-01-10 - dchiu
+	finished prelimary login page. team mates noted that login and register shouldn't be same field
+
 2016-01-10 - kli
 	Began level and enemy generation
 	Did some more work with sockets
 
+2016-01-09 - dchiu
+	began working on login page for website. began prelimary template.
+
 2016-01-09 - kli
 	Began work on JS client, starting with framework from previous projects
 	Began work on socket.io interactions between JS client and Flask server
+	
