@@ -1,3 +1,6 @@
+2016-01-20 - kli
+	Added health bars and invincibility on hit.
+
 2016-01-19 - kli
 	Enhanced melee animation.
 	Made players and enemies circles for easier collisions.
