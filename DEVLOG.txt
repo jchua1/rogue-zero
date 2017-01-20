@@ -1,6 +1,8 @@
 2016-01-19 - kli
 	Enhanced melee animation.
 	Made players and enemies circles for easier collisions.
+	Added interactions between players, enemies, projectiles, and melees.
+	Added the SocketIO library locally to streamline testing.
 
 2016-01-18 - jchua
 	Added terrain dictionary to asDict() method of Level class.
