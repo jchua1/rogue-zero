@@ -9,25 +9,27 @@ Drawing.create = function (context) {
 
 Drawing.prototype.renderPlayer = function (player) {
 	this.context.save();
-  this.context.globalAlpha = player.health / player.maxHealth;
   this.context.translate(player.x, player.y);
   this.context.rotate(player.theta);
   this.context.beginPath();
   this.context.arc(0, 0, player.size, 0, 2 * Math.PI);
-  this.context.fillStyle = Constants.PLAYER_COLOR;
+  this.context.globalAlpha = player.alpha;
+  this.context.fillStyle = player.color;
   this.context.fill();
 	this.context.restore();
+  this.renderHealth(player);
 };
 
 Drawing.prototype.renderEnemy = function (enemy) {
 	this.context.save();
-  this.context.fillStyle = Constants.ENEMY_COLOR;
-  this.context.globalAlpha = enemy.health / enemy.maxHealth;
+  this.context.fillStyle = enemy.color;
   this.context.translate(enemy.x, enemy.y);
   this.context.beginPath();
   this.context.arc(0, 0, enemy.size, 0, 2 * Math.PI);
 	this.context.fill();
-  this.context.restore();  
+  this.context.restore();
+
+  this.renderHealth(enemy);
 };
 
 Drawing.prototype.renderMelee = function (melee) {
@@ -64,10 +66,10 @@ Drawing.prototype.renderProjectile = function (projectile) {
 
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
+  this.context.rect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 	this.context.fillStyle = Constants.BACKGROUND_COLOR;
   this.context.fill();
   this.context.beginPath();
-  this.context.rect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
   this.context.fillStyle = Constants.BACKGROUND_BORDER;
   this.context.stroke();
 	this.context.restore();
@@ -75,6 +77,21 @@ Drawing.prototype.renderBackground = function () {
 
 Drawing.prototype.renderTile = function (tile) {
 
+};
+
+Drawing.prototype.renderHealth = function (entity) {
+  this.context.save();
+  this.context.translate(entity.x, entity.y);
+  this.context.translate(-entity.maxHealth / 2, -entity.size - Constants.HEALTH_HEIGHT * 2);
+  this.context.beginPath();
+  this.context.rect(0, 0, entity.health, Constants.HEALTH_HEIGHT);
+  this.context.fillStyle = entity.origColor;
+  this.context.fill();
+  this.context.beginPath();
+  this.context.rect(0, 0, entity.maxHealth, Constants.HEALTH_HEIGHT);
+  this.context.fillStyle = 'black';
+  this.context.stroke();
+  this.context.restore();
 };
 
 Drawing.prototype.clear = function () {

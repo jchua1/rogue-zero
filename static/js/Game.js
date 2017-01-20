@@ -6,6 +6,7 @@ function Game(socket, drawing) {
   this.projectiles = [];
   this.melees = [];
   this.hasData = false;
+  this.isRunning = false;
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
 }
@@ -164,8 +165,12 @@ Game.prototype.update = function () {
       return;
     }
   });
-	
+
 	this.lastFrameTime = now;
+
+  if (!player.shouldExist) {
+    this.isRunning = false;
+  }
 };
 
 Game.prototype.draw = function () {
@@ -212,7 +217,16 @@ Game.prototype.stopAnimation = function () {
 };
 
 Game.prototype.run = function () {
-  this.update();
-  this.draw();
-  this.animate();
+  if (this.isRunning) {
+    this.update();
+    this.draw();
+    this.animate();
+  } else {
+    this.stopAnimation();
+  }
+};
+
+Game.prototype.start = function () {
+  this.isRunning = true;
+  this.run();
 };

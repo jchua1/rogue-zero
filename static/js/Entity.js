@@ -8,6 +8,7 @@ function Entity() {
   this.theta = 0;
   this.omega = 0;
   this.color = null;
+  this.opacity = 1;
   this.shouldExist = true;
 }
 

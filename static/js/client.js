@@ -14,6 +14,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	socket.emit('new_player', {
 		name: 'test'
 	}, function (data) {
-		game.run();
+		game.start();
 	});
 });

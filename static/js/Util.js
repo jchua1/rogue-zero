@@ -92,7 +92,7 @@ function distance(x1, y1, x2, y2) {
 }
 
 function collideCircleCircle(x1, y1, r1, x2, y2, r2) {
-  return distance(x1, y1, x2, y2) <= Math.max(r1, r2);
+  return distance(x1, y1, x2, y2) <= r1 + r2;
 }
 
 function collideSectorCircle(x1, y1, r1, theta, width, x2, y2, r2) {

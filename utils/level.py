@@ -8,7 +8,7 @@ class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, 100, 10, 250, 16,
+    self.generatePlayer(10, 10, 100, 100, 250, 16,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateTerrain()

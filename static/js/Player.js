@@ -35,6 +35,10 @@ Player.prototype.update = function (delta) {
 
   if (this.invincible > 0) {
     this.invincible--;
+
+    if (this.invincible == 0) {
+      this.color = this.origColor;
+    }
   }
 };
 
@@ -42,6 +46,7 @@ Player.prototype.takeDamage = function (damage) {
   if (this.invincible == 0) {
     this.health = bound(this.health - damage, 0, this.maxHealth);
     this.invincible = 30;
+    this.opacity = 0.5;
   }
 };
 

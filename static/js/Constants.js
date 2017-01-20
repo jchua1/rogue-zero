@@ -9,9 +9,12 @@ Constants.BACKGROUND_BORDER = 'black';
 Constants.BACKGROUND_COLOR = 'white';
 
 Constants.PLAYER_COLOR = 'green';
+Constants.PLAYER_INVINCIBLE = '#ffe991';
 
 Constants.ENEMY_COLOR = 'red';
 
 Constants.PROJECTILE_COLOR = 'black';
 
 Constants.MELEE_COLOR = '#e6f7ff';
+
+Constants.HEALTH_HEIGHT = 8;
