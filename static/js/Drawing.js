@@ -76,7 +76,19 @@ Drawing.prototype.renderBackground = function () {
 };
 
 Drawing.prototype.renderTile = function (tile) {
+  this.context.save();
+  this.context.translate(tile.x, tile.y);
+  this.context.beginPath();
+  this.context.rect(0, 0, 16, 16);
 
+  if (tile.item == 'rock') {
+    this.context.fillStyle = 'grey';
+  } else {
+    this.context.fillStyle = Constants.GROUND_COLOR;
+  }
+
+  this.context.fill();
+  this.context.restore();
 };
 
 Drawing.prototype.renderHealth = function (entity) {

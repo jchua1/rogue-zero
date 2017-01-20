@@ -87,8 +87,12 @@ function mod(value, base) {
   return ret;
 }
 
+function magnitude(x, y) {
+  return Math.sqrt(x ** 2 + y ** 2);
+}
+
 function distance(x1, y1, x2, y2) {
-  return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+  return magnitude(x1 - x2, y1 - y2);
 }
 
 function collideCircleCircle(x1, y1, r1, x2, y2, r2) {

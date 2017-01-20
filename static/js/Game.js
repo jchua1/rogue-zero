@@ -47,6 +47,14 @@ Game.prototype.update = function () {
 	var horizontal = ((Input.LEFT ? -1 : 0) + (Input.RIGHT ? 1 : 0));
 	var vertical = ((Input.UP ? -1 : 0) + (Input.DOWN ? 1 : 0));
 
+  if (horizontal != 0 || vertical != 0) {
+    var inputMagnitude = magnitude(horizontal, vertical);
+    horizontal /= inputMagnitude;
+    vertical /= inputMagnitude;
+  }
+  
+  var walk = (Input.MISC_KEYS[16] ? 0.2 : 1);
+
   if (Input.MOUSE.length == 2) {
 	  var heading = Math.PI + Math.atan2(Input.MOUSE[1] - player.y,
 													             Input.MOUSE[0] - player.x);
@@ -59,8 +67,8 @@ Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
 	var delta = now - this.lastFrameTime;
 
-  player.vx = horizontal * player.speed;
-  player.vy = vertical * player.speed;
+  player.vx = horizontal * player.speed * walk;
+  player.vy = vertical * player.speed * walk;
 
   player.update(delta);
 

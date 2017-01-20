@@ -8,7 +8,7 @@ Constants.CANVAS_HEIGHT = 800;
 Constants.BACKGROUND_BORDER = 'black';
 Constants.BACKGROUND_COLOR = 'white';
 
-Constants.PLAYER_COLOR = 'green';
+Constants.PLAYER_COLOR = '#00AA00';
 Constants.PLAYER_INVINCIBLE = '#ffe991';
 
 Constants.ENEMY_COLOR = 'red';
@@ -18,3 +18,7 @@ Constants.PROJECTILE_COLOR = 'black';
 Constants.MELEE_COLOR = '#e6f7ff';
 
 Constants.HEALTH_HEIGHT = 8;
+
+Constants.TILE_SIZE = 16;
+
+Constants.GROUND_COLOR = '#d9c8bf';
