@@ -1,5 +1,7 @@
 2016-01-20 - kli
 	Added health bars and invincibility on hit.
+	Added basic terrain rendering.
+	Added shift-walk behavior.
 
 2016-01-19 - kli
 	Enhanced melee animation.
