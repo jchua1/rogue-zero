@@ -15,55 +15,55 @@
 	
 	<tr class="skills" id="health">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 
-<tr class="skills" id="speed">
+	<tr class="skills" id="speed">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 	
-<tr class="skills" id="attackSpeed">
+	<tr class="skills" id="attackSpeed">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 
-<tr class="skills" id="shootDamage">
+	<tr class="skills" id="shootDamage">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 
 	<tr class="skills" id="meleeDmg">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 
 	<tr class="skills" id="meleeSize">
 	  <td class="oldUpgrade">
-	      {{oldSkill}}
+	    {{oldSkill}}
 	  </td>
 	  <td class="newUpgrade">
-	      {{newSkill}}
+	    {{newSkill}}
 	  </td>
 	</tr>
 	
