@@ -30,24 +30,26 @@ Game.prototype.init = function () {
 
 Game.prototype.receiveLevel = function (level) {
   update(level, this);
-  console.log(this.player);
   this.player = cast(this.player, Player);
 
-  console.log(this.player);
-  
   for (var i = 0; i < this.room.enemies.length; i++) {
     this.room.enemies[i] = cast(this.room.enemies[i], Enemy);
   }
 };
 
 Game.prototype.update = function () {
+  var player = this.player;
+  var enemies = this.room.enemies;
+  var projectiles = this.projectiles;
+  var melees = this.melees;
+  
 	var horizontal = ((Input.LEFT ? -1 : 0) + (Input.RIGHT ? 1 : 0));
 	var vertical = ((Input.UP ? -1 : 0) + (Input.DOWN ? 1 : 0));
 
   if (Input.MOUSE.length == 2) {
-	  var heading = Math.PI + Math.atan2(Input.MOUSE[1] - this.player.y,
-													             Input.MOUSE[0] - this.player.x);
-    this.player.theta = heading;
+	  var heading = Math.PI + Math.atan2(Input.MOUSE[1] - player.y,
+													             Input.MOUSE[0] - player.x);
+    player.theta = heading;
   }
 
 	var shoot = Input.LEFT_CLICK;
@@ -56,94 +58,145 @@ Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
 	var delta = now - this.lastFrameTime;
 
-  this.player.vx = horizontal * this.player.speed;
-  this.player.vy = vertical * this.player.speed;
+  player.vx = horizontal * player.speed;
+  player.vy = vertical * player.speed;
 
-  this.player.update(delta);
+  player.update(delta);
 
   if (melee) {
-    if (now - this.player.lastMeleeTime > this.player.meleeDelay) {
+    if (now - player.lastMeleeTime > player.meleeDelay) {
       var melee = new Melee();
 
       update({
-        startTheta: this.player.theta - this.player.meleeArc / 2,
-        theta: this.player.theta - this.player.meleeArc / 2,
-        omega: this.player.meleeSpeed,
-        arc: this.player.meleeArc,
-        range: this.player.meleeRange,
-        width: this.player.meleeWidth,
-        owner: this.player
+        startTheta: player.theta - player.meleeArc / 2,
+        theta: player.theta - player.meleeArc / 2,
+        omega: player.meleeSpeed,
+        arc: player.meleeArc,
+        range: player.meleeRange,
+        width: player.meleeWidth,
+        damage: player.meleeDamage,
+        owner: player
       }, melee);
 
-      console.log(melee.startTheta + ' ' + melee.theta);
-
-      this.melees.push(melee);
-      this.player.lastMeleeTime = now;
+      melees.push(melee);
+      player.lastMeleeTime = now;
     }
   }
 
   if (shoot) {
-    if (now - this.player.lastShootTime > this.player.shootDelay) {
+    if (now - player.lastShootTime > player.shootDelay) {
       var projectile = new Projectile();
 
       update({
-        x: this.player.x,
-        y: this.player.y,
-        vx: this.player.shootSpeed * -Math.cos(heading),
-        vy: this.player.shootSpeed * -Math.sin(heading),
-        startX: this.player.x,
-        startY: this.player.y,
-        range: this.player.shootRange,
-        size: this.player.shootSize
+        x: player.x,
+        y: player.y,
+        vx: player.shootSpeed * -Math.cos(heading),
+        vy: player.shootSpeed * -Math.sin(heading),
+        range: player.shootRange,
+        size: player.shootSize,
+        startX: player.x,
+        startY: player.y,
+        damage: player.shootDamage
       }, projectile);
 
-      this.projectiles.push(projectile);
-      this.player.lastShootTime = now;
+      projectiles.push(projectile);
+      player.lastShootTime = now;
     }
   }
 
-  for (var i = 0; i < this.melees.length; i++) {
-    console.log(this.melees[i].theta + ' ' + this.melees[i].startTheta);
-    this.melees[i].update(delta);
+  melees.forEach(function (melee, i, melees) {
+    melee.update(delta);
 
-    if (!this.melees[i].shouldExist) {
-      this.melees.splice(i, 1);
+    enemies.forEach(function (enemy, j, enemies) {
+      if (collideSectorCircle(melee.x,
+                              melee.y,
+                              melee.range,
+                              melee.theta,
+                              melee.width,
+                              enemy.x,
+                              enemy.y,
+                              enemy.size)) {
+        enemy.takeDamage(melee.damage);
+      }
+    });  
+
+    if (!melee.shouldExist) {
+      melees.splice(i, 1);
+      return;
     }
-  }
+  });
 
-  for (var i = 0; i < this.projectiles.length; i++) {
-    this.projectiles[i].update(delta);
-    
-    if (!this.projectiles[i].shouldExist) {
-      this.projectiles.splice(i, 1);
-    } 
-  }
+  projectiles.forEach(function (projectile, i, projectiles) {
+    projectile.update(delta);
+
+    enemies.forEach(function (enemy, j, enemies) {
+      if (collideCircleCircle(projectile.x,
+                              projectile.y,
+                              projectile.size,
+                              enemy.x,
+                              enemy.y,
+                              enemy.size)) {
+        enemy.takeDamage(projectile.damage);
+        projectile.shouldExist = false;
+      }
+    });
+
+    if (!projectile.shouldExist) {
+      projectiles.splice(i, 1);
+      return;
+    }
+  });
+
+  enemies.forEach(function (enemy, i, enemies) {
+    enemy.update(delta);
+
+    if (collideCircleCircle(enemy.x,
+                            enemy.y,
+                            enemy.size,
+                            player.x,
+                            player.y,
+                            player.size)) {
+      player.takeDamage(enemy.attack);
+    }
+
+    if (!enemy.shouldExist) {
+      enemies.splice(i, 1);
+      return;
+    }
+  });
 	
 	this.lastFrameTime = now;
 };
 
 Game.prototype.draw = function () {
-  this.drawing.clear();
+  var drawing = this.drawing;
+  var player = this.player;
+  var terrain = this.room.terrain;
+  var enemies = this.room.enemies;
+  var melees = this.melees;
+  var projectiles = this.projectiles;
 
-  this.drawing.renderBackground();
+  drawing.clear();
 
-  for (var i = 0; i < this.room.terrain.length; i++) {
-    this.drawing.renderTile(this.room.terrain[i]);
-  }
+  drawing.renderBackground();
 
-  for (var i = 0; i < this.room.enemies.length; i++) {
-    this.drawing.renderEnemy(this.room.enemies[i]);
-  }
+  terrain.forEach(function (tile, i, terrain) {
+    drawing.renderTile(tile);
+  });
 
-  for (var i = 0; i < this.melees.length; i++) {
-    this.drawing.renderMelee(this.melees[i]);
-  }
+  enemies.forEach(function (enemy, i, enemies) {
+    drawing.renderEnemy(enemy);
+  });
 
-  for (var i = 0; i < this.projectiles.length; i++) {
-    this.drawing.renderProjectile(this.projectiles[i]);
-  }
+  melees.forEach(function (melee, i, melees) {
+    drawing.renderMelee(melee);
+  });
 
-  this.drawing.renderPlayer(this.player);
+  projectiles.forEach(function (projectile, i, projectiles) {
+    drawing.renderProjectile(projectile);
+  });
+
+  drawing.renderPlayer(player);
 };
 
 Game.prototype.animate = function () {

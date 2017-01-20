@@ -9,11 +9,12 @@ Drawing.create = function (context) {
 
 Drawing.prototype.renderPlayer = function (player) {
 	this.context.save();
-  this.context.fillStyle = Constants.PLAYER_COLOR;
+  this.context.globalAlpha = player.health / player.maxHealth;
   this.context.translate(player.x, player.y);
   this.context.rotate(player.theta);
   this.context.beginPath();
-  this.context.arc(0, 0, Constants.PLAYER_SIZE, 0, 2 * Math.PI);
+  this.context.arc(0, 0, player.size, 0, 2 * Math.PI);
+  this.context.fillStyle = Constants.PLAYER_COLOR;
   this.context.fill();
 	this.context.restore();
 };
@@ -21,9 +22,10 @@ Drawing.prototype.renderPlayer = function (player) {
 Drawing.prototype.renderEnemy = function (enemy) {
 	this.context.save();
   this.context.fillStyle = Constants.ENEMY_COLOR;
+  this.context.globalAlpha = enemy.health / enemy.maxHealth;
   this.context.translate(enemy.x, enemy.y);
   this.context.beginPath();
-  this.context.arc(0, 0, Constants.ENEMY_SIZE, 0, 2 * Math.PI);
+  this.context.arc(0, 0, enemy.size, 0, 2 * Math.PI);
 	this.context.fill();
   this.context.restore();  
 };
@@ -63,13 +65,17 @@ Drawing.prototype.renderProjectile = function (projectile) {
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
 	this.context.fillStyle = Constants.BACKGROUND_COLOR;
-	this.context.fillRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+  this.context.fill();
+  this.context.beginPath();
+  this.context.rect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+  this.context.fillStyle = Constants.BACKGROUND_BORDER;
+  this.context.stroke();
 	this.context.restore();
 };
 
 Drawing.prototype.renderTile = function (tile) {
 
-}
+};
 
 Drawing.prototype.clear = function () {
 	this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);

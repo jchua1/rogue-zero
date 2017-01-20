@@ -7,6 +7,7 @@ function Entity() {
   this.ay = 0;
   this.theta = 0;
   this.omega = 0;
+  this.color = null;
   this.shouldExist = true;
 }
 

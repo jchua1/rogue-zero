@@ -8,9 +8,9 @@ class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, 10, 250,
-                        800, 5, 1000, 0.5,
-                        75, 3, math.pi / 2, 10, 1)
+    self.generatePlayer(10, 10, 100, 10, 250, 16,
+                        5, 800, 5, 1000, 0.5,
+                        20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateTerrain()
     
   def generateEnemies(self):
@@ -19,12 +19,12 @@ class Level:
     for i in range(random.randint(0, 10)):
       self.enemies.append(Enemy())
 
-  def generatePlayer(self, x, y, health, speed,
-                     shootRange, shootSize, shootSpeed, shootDelay,
-                     meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
-    self.player = Player(x, y, health, speed,
-                         shootRange, shootSize, shootSpeed, shootDelay,
-                         meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
+  def generatePlayer(self, x, y, health, maxHealth, speed, size,
+                     shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
+                     meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
+    self.player = Player(x, y, health, maxHealth, speed, size,
+                         shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
+                         meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
   def generateTerrain(self):
     self.terrain = []
@@ -64,31 +64,41 @@ class Tile:
     return self.__dict__
     
 class Entity(object):
-  def __init__(self, x, y, health, speed):
+  def __init__(self, x, y, health, maxHealth, speed, size):
     self.x = x
     self.y = y
     self.health = health
+    self.maxHealth = maxHealth
     self.speed = speed
+    self.size = size
 
   def asDict(self):
     return self.__dict__
 
 class Enemy(Entity):
   def __init__(self):
+    health = random.randint(10, 50)
+    attack = random.randint(4, 32)
+    
     super(Enemy, self).__init__(random.randint(0, ROOM_SIZE),
                                 random.randint(0, ROOM_SIZE),
-                                random.randint(10, 50),
-                                random.randint(0, 20))
+                                health,
+                                health,
+                                random.randint(0, 50),
+                                attack)
+    self.attack = attack
 
 class Player(Entity):
-  def __init__(self, x, y, health, speed,
-               shootRange, shootSize, shootSpeed, shootDelay,
-               meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
-    super(Player, self).__init__(x, y, health, speed)
+  def __init__(self, x, y, health, maxHealth, speed, size,
+               shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
+               meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
+    super(Player, self).__init__(x, y, health, maxHealth, speed, size)
+    self.shootDamage = shootDamage
     self.shootRange = shootRange
     self.shootSize = shootSize
     self.shootSpeed = shootSpeed
     self.shootDelay = shootDelay
+    self.meleeDamage = meleeDamage
     self.meleeRange = meleeRange
     self.meleeWidth = meleeWidth
     self.meleeArc = meleeArc

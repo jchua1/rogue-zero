@@ -3,7 +3,10 @@ function Melee() {
   this.arc = 0;
   this.range = 0;
   this.width = 0;
+  this.damage = 0;
   this.owner = 0;
+  this.origColor = Constants.MELEE_COLOR;
+  this.color = this.origColor;
 }
 
 Melee.inheritsFrom(Entity);
