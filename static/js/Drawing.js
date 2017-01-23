@@ -66,7 +66,7 @@ Drawing.prototype.renderProjectile = function (projectile) {
 
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
-  this.context.rect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+  this.context.rect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
 	this.context.fillStyle = Constants.BACKGROUND_COLOR;
   this.context.fill();
   this.context.beginPath();
@@ -82,7 +82,7 @@ Drawing.prototype.renderTile = function (tile) {
   this.context.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
   if (tile.terrain == 'rock') {
-    this.context.fillStyle = 'grey';
+    this.context.fillStyle = Constants.ROCK_COLOR;
     this.context.fill();
   } else if (tile.terrain == 'pit') {
     this.context.fillStyle = Constants.GROUND_COLOR;
@@ -90,10 +90,10 @@ Drawing.prototype.renderTile = function (tile) {
     this.context.translate(Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2);
     this.context.beginPath();
     this.context.arc(0, 0, Constants.TILE_SIZE / 3, 0, 2 * Math.PI);
-    this.context.fillStyle = 'black';
+    this.context.fillStyle = Constants.PIT_COLOR;
     this.context.fill();
   } else if (tile.terrain == 'quicksand') {
-    this.context.fillStyle = 'red';
+    this.context.fillStyle = Constants.QUICKSAND_COLOR;
     this.context.fill();
   } else {
     this.context.fillStyle = Constants.GROUND_COLOR;
@@ -119,5 +119,5 @@ Drawing.prototype.renderHealth = function (entity) {
 };
 
 Drawing.prototype.clear = function () {
-	this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+	this.context.clearRect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
 };

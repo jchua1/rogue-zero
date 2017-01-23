@@ -31,16 +31,20 @@ class Level:
 
     TILE_SIZE = ROOM_SIZE / GRID_SIZE
     
-    for i in range(0, 50):
-      for j in range(0, 50): 
-        self.tiles.append(Tile(TILE_SIZE * i, TILE_SIZE * j))        
+    for i in range(0, GRID_SIZE):
+      row = []
+      
+      for j in range(0, GRID_SIZE): 
+        row.append(Tile(TILE_SIZE * i, TILE_SIZE * j))
+
+      self.tiles.append(row)
     
   def asDict(self):
     return {
       'player': self.player.asDict(),
       'room': {
         'enemies': [enemy.asDict() for enemy in self.enemies],
-        'tiles': [tile.asDict() for tile in self.tiles]
+        'tiles': [[tile.asDict() for tile in row] for row in self.tiles]
       }
     }
 
