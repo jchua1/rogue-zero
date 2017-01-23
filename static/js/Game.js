@@ -184,7 +184,7 @@ Game.prototype.update = function () {
 Game.prototype.draw = function () {
   var drawing = this.drawing;
   var player = this.player;
-  var terrain = this.room.terrain;
+  var tiles = this.room.tiles;
   var enemies = this.room.enemies;
   var melees = this.melees;
   var projectiles = this.projectiles;
@@ -193,7 +193,7 @@ Game.prototype.draw = function () {
 
   drawing.renderBackground();
 
-  terrain.forEach(function (tile, i, terrain) {
+  tiles.forEach(function (tile, i, tiles) {
     drawing.renderTile(tile);
   });
 

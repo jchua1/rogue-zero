@@ -79,15 +79,27 @@ Drawing.prototype.renderTile = function (tile) {
   this.context.save();
   this.context.translate(tile.x, tile.y);
   this.context.beginPath();
-  this.context.rect(0, 0, 16, 16);
+  this.context.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
-  if (tile.item == 'rock') {
+  if (tile.terrain == 'rock') {
     this.context.fillStyle = 'grey';
+    this.context.fill();
+  } else if (tile.terrain == 'pit') {
+    this.context.fillStyle = Constants.GROUND_COLOR;
+    this.context.fill();
+    this.context.translate(Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2);
+    this.context.beginPath();
+    this.context.arc(0, 0, Constants.TILE_SIZE / 3, 0, 2 * Math.PI);
+    this.context.fillStyle = 'black';
+    this.context.fill();
+  } else if (tile.terrain == 'spikes') {
+    this.context.fillStyle = 'red';
+    this.context.fill();
   } else {
     this.context.fillStyle = Constants.GROUND_COLOR;
+    this.context.fill();
   }
 
-  this.context.fill();
   this.context.restore();
 };
 
