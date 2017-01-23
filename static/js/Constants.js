@@ -22,3 +22,6 @@ Constants.HEALTH_HEIGHT = 8;
 Constants.TILE_SIZE = 32;
 
 Constants.GROUND_COLOR = '#d9c8bf';
+Constants.ROCK_COLOR = 'grey';
+Constants.PIT_COLOR = 'black';
+Constants.QUICKSAND_COLOR = '#ffbf80';
