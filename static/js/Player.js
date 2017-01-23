@@ -17,6 +17,7 @@ function Player() {
   this.lastMeleeTime = 0;
   this.origColor = Constants.PLAYER_COLOR;
   this.color = this.origColor;
+  this.currentTile = {};
   this.invincible = 0;
 }
 

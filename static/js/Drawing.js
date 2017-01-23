@@ -66,7 +66,7 @@ Drawing.prototype.renderProjectile = function (projectile) {
 
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
-  this.context.rect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+  this.context.rect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
 	this.context.fillStyle = Constants.BACKGROUND_COLOR;
   this.context.fill();
   this.context.beginPath();
@@ -119,5 +119,5 @@ Drawing.prototype.renderHealth = function (entity) {
 };
 
 Drawing.prototype.clear = function () {
-	this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+	this.context.clearRect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
 };
