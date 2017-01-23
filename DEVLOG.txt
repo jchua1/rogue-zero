@@ -3,6 +3,9 @@
 	need to add javascript for queuing upgrades
 	need to dicuss progression of upgrades (algorithm for scaling upgrades and cost)
 
+2017-01-20 - jchua
+	Updating current room id for users works.
+
 2017-01-20 - kli
 	Added health bars and invincibility on hit.
 	Added basic terrain rendering.
