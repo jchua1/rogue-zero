@@ -12,8 +12,8 @@ function Game(socket, drawing) {
 }
 
 Game.create = function (socket, canvasElement) {
-  canvasElement.width = Constants.CANVAS_WIDTH;
-  canvasElement.height = Constants.CANVAS_HEIGHT;
+  canvasElement.width = Constants.CANVAS_SIZE;
+  canvasElement.height = Constants.CANVAS_SIZE;
   var canvasContext = canvasElement.getContext('2d');
   var drawing = Drawing.create(canvasContext);
   var game = new Game(socket, drawing);
@@ -69,7 +69,11 @@ Game.prototype.update = function () {
 
   player.vx = horizontal * player.speed * walk;
   player.vy = vertical * player.speed * walk;
-
+  
+  var coords = getTile(player.x, player.y);
+  
+  player.currentTile = this.room.tiles[coords[0]][coords[1]]
+  
   player.update(delta);
 
   if (melee) {
@@ -184,7 +188,7 @@ Game.prototype.update = function () {
 Game.prototype.draw = function () {
   var drawing = this.drawing;
   var player = this.player;
-  var terrain = this.room.terrain;
+  var tiles = this.room.tiles;
   var enemies = this.room.enemies;
   var melees = this.melees;
   var projectiles = this.projectiles;
@@ -193,8 +197,10 @@ Game.prototype.draw = function () {
 
   drawing.renderBackground();
 
-  terrain.forEach(function (tile, i, terrain) {
-    drawing.renderTile(tile);
+  tiles.forEach(function (row, i, tiles) {
+    row.forEach(function (tile, j, row) {
+      drawing.renderTile(tile);
+    });
   });
 
   enemies.forEach(function (enemy, i, enemies) {

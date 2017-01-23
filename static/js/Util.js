@@ -103,3 +103,7 @@ function collideSectorCircle(x1, y1, r1, theta, width, x2, y2, r2) {
   return collideCircleCircle(x1, y1, r1, x2, y2, r2) &&
     mod(Math.atan2(y1 - y2, x1 - x2) - theta, 2 * Math.PI) <= width;
 }
+
+function getTile(x, y) {
+  return [Math.floor(x / Constants.TILE_SIZE), Math.floor(y / Constants.TILE_SIZE)];
+}
