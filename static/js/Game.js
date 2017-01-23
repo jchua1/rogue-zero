@@ -67,11 +67,12 @@ Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
 	var delta = now - this.lastFrameTime;
 
-  player.vx = horizontal * player.speed * walk;
-  player.vy = vertical * player.speed * walk;
+  player.vx = horizontal * player.speed * walk * player.speedModifier;
+  player.vy = vertical * player.speed * walk * player.speedModifier;
   
   var coords = getTile(player.x, player.y);
   
+  player.lastTile = player.currentTile;
   player.currentTile = this.room.tiles[coords[0]][coords[1]]
   
   player.update(delta);

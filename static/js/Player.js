@@ -2,6 +2,7 @@ function Player() {
   this.health = 0;
   this.maxHealth = 0;
   this.speed = 0;
+  this.speedModifier = 1;
   this.size = 0;
   this.shootDamage = 0;
   this.shootRange = 0;
@@ -17,6 +18,7 @@ function Player() {
   this.lastMeleeTime = 0;
   this.origColor = Constants.PLAYER_COLOR;
   this.color = this.origColor;
+  this.lastTile = {};
   this.currentTile = {};
   this.invincible = 0;
 }
@@ -40,6 +42,15 @@ Player.prototype.update = function (delta) {
     if (this.invincible == 0) {
       this.color = this.origColor;
     }
+  }
+
+  if (this.currentTile.terrain == 'pit') {
+    this.shouldExist = false;
+    return;
+  } else if (this.currentTile.terrain == 'quicksand') {
+    this.speedModifier = 0.2;
+  } else {
+    this.speedModifier = 1;
   }
 };
 
