@@ -92,7 +92,7 @@ Drawing.prototype.renderTile = function (tile) {
     this.context.arc(0, 0, Constants.TILE_SIZE / 3, 0, 2 * Math.PI);
     this.context.fillStyle = 'black';
     this.context.fill();
-  } else if (tile.terrain == 'spikes') {
+  } else if (tile.terrain == 'quicksand') {
     this.context.fillStyle = 'red';
     this.context.fill();
   } else {

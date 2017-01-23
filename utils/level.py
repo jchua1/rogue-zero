@@ -2,7 +2,7 @@ import random
 import math
 
 ROOM_SIZE = 800
-GRID_SIZE = 50
+GRID_SIZE = 25
 
 class Level:
   def __init__(self, seed):
@@ -28,10 +28,12 @@ class Level:
 
   def generateTiles(self):
     self.tiles = []
+
+    TILE_SIZE = ROOM_SIZE / GRID_SIZE
     
     for i in range(0, 50):
       for j in range(0, 50): 
-        self.tiles.append(Tile(16 * i, 16 * j))        
+        self.tiles.append(Tile(TILE_SIZE * i, TILE_SIZE * j))        
     
   def asDict(self):
     return {
@@ -50,7 +52,7 @@ class Tile:
     self.generateTerrain()
 
   def generateTerrain(self):
-    types = ['ground', 'spikes', 'pit', 'rock']
+    types = ['ground', 'quicksand', 'pit', 'rock']
     self.terrain = random.choice(types)
   
   def generateItem(self):

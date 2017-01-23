@@ -19,6 +19,6 @@ Constants.MELEE_COLOR = '#e6f7ff';
 
 Constants.HEALTH_HEIGHT = 8;
 
-Constants.TILE_SIZE = 16;
+Constants.TILE_SIZE = 32;
 
 Constants.GROUND_COLOR = '#d9c8bf';
