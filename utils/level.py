@@ -52,8 +52,15 @@ class Tile:
     self.generateTerrain()
 
   def generateTerrain(self):
-    types = ['ground', 'quicksand', 'pit', 'rock']
-    self.terrain = random.choice(types)
+    rand = random.randint(0,100)
+    if rand < 3:
+        self.terrain = 'quicksand'
+    elif rand < 5:
+        self.terrain = 'pit'
+    elif rand < 10:
+        self.terrain = 'rock'
+    else:
+        self.terrain = 'ground'
   
   def generateItem(self):
     names = ['sword', 'gun', 'lasersabre', 'bow', 'save']
