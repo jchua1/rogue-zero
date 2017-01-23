@@ -1,60 +1,65 @@
-2016-01-20 - kli
+2017-01-22 - dchiu
+	added css and templating for profile/upgrade
+	need to add javascript for queuing upgrades
+	need to dicuss progression of upgrades (algorithm for scaling upgrades and cost)
+
+2017-01-20 - kli
 	Added health bars and invincibility on hit.
 	Added basic terrain rendering.
 	Added shift-walk behavior.
 
-2016-01-19 - kli
+2017-01-19 - kli
 	Enhanced melee animation.
 	Made players and enemies circles for easier collisions.
 	Added interactions between players, enemies, projectiles, and melees.
 	Added the SocketIO library locally to streamline testing.
 
-2016-01-18 - jchua
+2017-01-18 - jchua
 	Added terrain dictionary to asDict() method of Level class.
 	Implemented user ID generation in registration.
 	Changed table column names to reflect those of the database schema in the design document.
 	
-2016-01-18 - dchiu
+2017-01-18 - dchiu
 	decided how to format skill level and progression
 	started making some of the buttons.
 
-2016-01-18 - kli
+2017-01-18 - kli
 	Finally figured out JS prototypal inheritance.
 	Added melee attack animation -- needs work.
 
-2016-01-17 - dchiu
+2017-01-17 - dchiu
 	decided to make charachter customization html overlay instead of all javascript.
 	added color chooser to the customization page.
 
-2016-01-13 - kli
+2017-01-13 - kli
 	Finalized refactoring.
 	Added projectiles and shooting.
 	Added boundary checking for the edges of the canvas.
 
-2016-01-12 - dchiu
+2017-01-12 - dchiu
 	Reworked the login by adding bootstrap and javascript. no longer looks like garbage
 	added javascript to login so register and login are different fields.
 
-2016-01-12 - kli
+2017-01-12 - kli
 	Began refactoring Players and Enemies as "subclasses" of Entity.
 	Added rotation based on mouse placement.
 
 
-2016-01-11 - kli
+2017-01-11 - kli
 	More work on sockets and client side rendering.
 	Movement works!
 
-2016-01-10 - dchiu
+2017-01-10 - dchiu
 	finished prelimary login page. team mates noted that login and register shouldn't be same field
 
-2016-01-10 - kli
+2017-01-10 - kli
 	Began level and enemy generation
 	Did some more work with sockets
 
-2016-01-09 - dchiu
+2017-01-09 - dchiu
 	began working on login page for website. began prelimary template.
 
-2016-01-09 - kli
+2017-01-09 - kli
 	Began work on JS client, starting with framework from previous projects
 	Began work on socket.io interactions between JS client and Flask server
 	
