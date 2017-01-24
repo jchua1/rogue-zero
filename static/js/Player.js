@@ -33,8 +33,8 @@ Player.prototype.update = function (delta) {
   
   this.parent.update.call(this, delta);
 
-  this.x = bound(this.x, this.size, Constants.CANVAS_WIDTH - this.size);
-  this.y = bound(this.y, this.size, Constants.CANVAS_HEIGHT - this.size);
+  this.x = bound(this.x, this.size, Constants.CANVAS_SIZE - this.size);
+  this.y = bound(this.y, this.size, Constants.CANVAS_SIZE - this.size);
 
   if (this.invincible > 0) {
     this.invincible--;
@@ -62,3 +62,11 @@ Player.prototype.takeDamage = function (damage) {
   }
 };
 
+Player.prototype.getShape = function () {
+  return {
+    type: 'circle',
+    x: this.x,
+    y: this.y,
+    r: this.size
+  };
+};

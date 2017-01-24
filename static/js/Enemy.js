@@ -22,3 +22,12 @@ Enemy.prototype.update = function (delta) {
 Enemy.prototype.takeDamage = function (damage) {
   this.health = bound(this.health - damage, 0, this.maxHealth);
 };
+
+Enemy.prototype.getShape = function () {
+  return {
+    type: 'circle',
+    x: this.x,
+    y: this.y,
+    r: this.size
+  };
+};

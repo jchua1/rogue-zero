@@ -80,25 +80,30 @@ Drawing.prototype.renderTile = function (tile) {
   this.context.translate(tile.x, tile.y);
   this.context.beginPath();
   this.context.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+  this.context.fillStyle = Constants.GROUND_COLOR;
+  this.context.fill();
 
-  if (tile.terrain == 'rock') {
-    this.context.fillStyle = Constants.ROCK_COLOR;
-    this.context.fill();
-  } else if (tile.terrain == 'pit') {
-    this.context.fillStyle = Constants.GROUND_COLOR;
-    this.context.fill();
-    this.context.translate(Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2);
+  if (tile.terrain != 'ground') {
     this.context.beginPath();
-    this.context.arc(0, 0, Constants.TILE_SIZE / 3, 0, 2 * Math.PI);
-    this.context.fillStyle = Constants.PIT_COLOR;
+    this.context.translate(Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2);
+    this.context.arc(0, 0, tile.terrainSize, 0, 2 * Math.PI);
+
+    switch (tile.terrain) {
+    case 'rock':
+      this.context.fillStyle = Constants.ROCK_COLOR;
+      break;
+
+    case 'pit':
+      this.context.fillStyle = Constants.PIT_COLOR;
+      break;
+
+    case 'quicksand':
+      this.context.fillStyle = Constants.QUICKSAND_COLOR;
+      break;
+    }
+    
     this.context.fill();
-  } else if (tile.terrain == 'quicksand') {
-    this.context.fillStyle = Constants.QUICKSAND_COLOR;
-    this.context.fill();
-  } else {
-    this.context.fillStyle = Constants.GROUND_COLOR;
-    this.context.fill();
-  }
+  } 
 
   this.context.restore();
 };

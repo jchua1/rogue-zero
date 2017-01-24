@@ -19,3 +19,12 @@ Projectile.prototype.update = function (delta) {
     this.shouldExist = false;
   }
 };
+
+Projectile.prototype.getShape = function () {
+  return {
+    type: 'circle',
+    x: this.x,
+    y: this.y,
+    r: this.size
+  };
+};

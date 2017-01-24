@@ -22,4 +22,13 @@ Melee.prototype.update = function (delta) {
   }
 };
 
-  
+Melee.prototype.getShape = function () {
+  return {
+    type: 'sector',
+    x: this.x,
+    y: this.y,
+    r: this.range,
+    width: this.width,
+    theta: this.theta
+  };
+};

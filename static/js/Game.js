@@ -33,9 +33,15 @@ Game.prototype.receiveLevel = function (level) {
   update(level, this);
   this.player = cast(this.player, Player);
 
-  for (var i = 0; i < this.room.enemies.length; i++) {
-    this.room.enemies[i] = cast(this.room.enemies[i], Enemy);
-  }
+  this.room.enemies.forEach(function (enemy, i, enemies) {
+    enemies[i] = cast(enemy, Enemy);
+  });
+
+  this.room.tiles.forEach(function (row, i, tiles) {
+    row.forEach(function (tile, j, row) {
+      tiles[i][j] = cast(tile, Tile);
+    });
+  });
 };
 
 Game.prototype.update = function () {
@@ -43,6 +49,7 @@ Game.prototype.update = function () {
   var enemies = this.room.enemies;
   var projectiles = this.projectiles;
   var melees = this.melees;
+  var tiles = this.room.tiles;
   
 	var horizontal = ((Input.LEFT ? -1 : 0) + (Input.RIGHT ? 1 : 0));
 	var vertical = ((Input.UP ? -1 : 0) + (Input.DOWN ? 1 : 0));
@@ -66,16 +73,66 @@ Game.prototype.update = function () {
 
 	var now = (new Date()).getTime() / 1000;
 	var delta = now - this.lastFrameTime;
+  var coords = getTile(player.x, player.y);
 
   player.vx = horizontal * player.speed * walk * player.speedModifier;
   player.vy = vertical * player.speed * walk * player.speedModifier;
   
-  var coords = getTile(player.x, player.y);
-  
-  player.lastTile = player.currentTile;
-  player.currentTile = this.room.tiles[coords[0]][coords[1]]
-  
   player.update(delta);
+
+  player.lastTile = player.currentTile;
+  player.currentTile = tiles[coords[0]][coords[1]]
+
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      var x = coords[0] + i - 1;
+      var y = coords[1] + j - 1;
+
+      if (x >= 0 && x < Constants.GRID_SIZE &&
+          y >= 0 && y < Constants.GRID_SIZE) {
+        var tile = tiles[coords[0] + i - 1][coords[1] + j - 1];
+
+        if (collide(player, tile)) {
+          switch (tile.terrain) {
+          case 'pit':
+            player.shouldExist = false;
+            break;
+
+          case 'quicksand':
+            player.speedModifier = 0.2;
+            break;
+
+          case 'rock':
+            var shape = tile.getShape();
+            var center = getCenterOfTangentCircle(shape,
+                                                  [player.x - shape.x,
+                                                   player.y - shape.y],
+                                                  player.size);
+            player.x = center[0];
+            player.y = center[1];
+
+            // if (i == 0) {
+              // horizontal = Math.max(horizontal, 0);
+            // } else if (i == 2) {
+              // horizontal = Math.min(horizontal, 0);
+            // }
+
+            // if (j == 0) {
+              // vertical = Math.max(vertical, 0);
+            // } else if (j == 2) {
+              // vertical = Math.min(vertical, 0);
+            // }
+
+            break;
+
+          default:
+            player.speedModifier = 1;
+            break;
+          }
+        }
+      }
+    }
+  }
 
   if (melee) {
     if (now - player.lastMeleeTime > player.meleeDelay) {
@@ -122,16 +179,10 @@ Game.prototype.update = function () {
     melee.update(delta);
 
     enemies.forEach(function (enemy, j, enemies) {
-      if (collideSectorCircle(melee.x,
-                              melee.y,
-                              melee.range,
-                              melee.theta,
-                              melee.width,
-                              enemy.x,
-                              enemy.y,
-                              enemy.size)) {
-        enemy.takeDamage(melee.damage);
-      }
+      if (distance(melee.x, melee.y, enemy.x, enemy.y) <= melee.range + enemy.size)
+        if (collide(melee, enemy)) {
+          enemy.takeDamage(melee.damage);
+        }
     });  
 
     if (!melee.shouldExist) {
@@ -144,12 +195,7 @@ Game.prototype.update = function () {
     projectile.update(delta);
 
     enemies.forEach(function (enemy, j, enemies) {
-      if (collideCircleCircle(projectile.x,
-                              projectile.y,
-                              projectile.size,
-                              enemy.x,
-                              enemy.y,
-                              enemy.size)) {
+      if (collide(projectile, enemy)) {
         enemy.takeDamage(projectile.damage);
         projectile.shouldExist = false;
       }
@@ -164,12 +210,7 @@ Game.prototype.update = function () {
   enemies.forEach(function (enemy, i, enemies) {
     enemy.update(delta);
 
-    if (collideCircleCircle(enemy.x,
-                            enemy.y,
-                            enemy.size,
-                            player.x,
-                            player.y,
-                            player.size)) {
+    if (collide(enemy, player)) {
       player.takeDamage(enemy.attack);
     }
 

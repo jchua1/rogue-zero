@@ -3,6 +3,7 @@ import math
 
 ROOM_SIZE = 800
 GRID_SIZE = 25
+TILE_SIZE = ROOM_SIZE / GRID_SIZE
 
 class Level:
   def __init__(self, seed):
@@ -38,7 +39,7 @@ class Level:
         row.append(Tile(TILE_SIZE * i, TILE_SIZE * j))
 
       self.tiles.append(row)
-    
+      
   def asDict(self):
     return {
       'player': self.player.asDict(),
@@ -56,16 +57,21 @@ class Tile:
     self.generateTerrain()
 
   def generateTerrain(self):
-    rand = random.randint(0,100)
+    rand = random.randint(0, 100)
+    
     if rand < 3:
-        self.terrain = 'quicksand'
+      self.terrainSize = random.randint(TILE_SIZE / 5, TILE_SIZE / 2)
+      self.terrain = 'quicksand'
     elif rand < 5:
-        self.terrain = 'pit'
+      self.terrainSize = random.randint(TILE_SIZE * 2 / 5, TILE_SIZE / 2)
+      self.terrain = 'pit'
     elif rand < 10:
-        self.terrain = 'rock'
+      self.terrainSize = random.randint(TILE_SIZE / 5, TILE_SIZE / 2)
+      self.terrain = 'rock'
     else:
-        self.terrain = 'ground'
-  
+      self.terrainSize = 0
+      self.terrain = 'ground'
+      
   def generateItem(self):
     names = ['sword', 'gun', 'lasersabre', 'bow', 'save']
     if random.randint(1, 100) < 2: 
