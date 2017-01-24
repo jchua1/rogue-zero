@@ -1,3 +1,9 @@
+2017-01-24 - kli
+	Added more advanced terrain rendering.
+	Made everything circles for easier unit collision.
+	Did some refactoring -- made getShape/collision methods modular.
+	Proposal: Don't use tiles?
+
 2017-01-22 - dchiu
 	added css and templating for profile/upgrade
 	need to add javascript for queuing upgrades
