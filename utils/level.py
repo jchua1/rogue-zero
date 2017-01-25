@@ -102,6 +102,9 @@ class Player(Entity):
     self.meleeArc = meleeArc
     self.meleeSpeed = meleeSpeed
     self.meleeDelay = meleeDelay
+
+  def asDict(self):
+    return self.__dict__
     
 
 
