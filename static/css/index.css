@@ -5,6 +5,10 @@
 	margin: 0
 }
 
+#title{
+	font-family: 'Kumar One', cursive;
+}
+
 #profile{
 	padding-right:100px;
 	padding-left:100px;

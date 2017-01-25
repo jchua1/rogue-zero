@@ -1,5 +1,3 @@
-##no actual values yet. all place holders
-
 def health(level):
 	return 100+ level * 10;
 	

@@ -4,8 +4,8 @@ var attackSpeed = document.getElementById("c");
 var shootDamage = document.getElementById("d");
 var meleeDamage = document.getElementById("e");
 var meleeSize = document.getElementById("f");
-var exp = Number(document.getElementById("exp").innerHTML);
 
+var exp = Number(document.getElementById("exp").innerHTML);
 var healthCost= Number(document.getElementById("acost").innerHTML);
 var speedCost= Number(document.getElementById("bcost").innerHTML);
 var attackSpeedCost= Number(document.getElementById("ccost").innerHTML);
@@ -13,16 +13,24 @@ var shootDamageCost= Number(document.getElementById("dcost").innerHTML);
 var meleeDamageCost= Number(document.getElementById("ecost").innerHTML);
 var meleeSizeCost= Number(document.getElementById("fcost").innerHTML);
 
-console.log(exp);
 
+
+
+
+///////////stuff that should be passed to python//////////////
 var healthCount = "global";
 var speedCount = "global";
 var attackSpeedCount = "global";
 var shootDamageCount = "global";
 var meleeDamageCount= "global";
 var meleeSizeCount = "global";
+var totalCost= "global"
+////////////////////////////////////////////////////////////
 
 
+
+
+/////////////////////event listeners//////////////////////////////////////
 health.addEventListener("mouseover", function(e){
 	if( exp > healthCost){
 		health.style.border="thick solid green"
@@ -37,6 +45,7 @@ health.addEventListener("mouseout", function(e){
 health.addEventListener("click", function(e){
 	if( exp > healthCost){
 		healthCount += 1;
+		totalCost += healthCost;
 	}
 });
 
@@ -54,6 +63,7 @@ speed.addEventListener("mouseout", function(e){
 speed.addEventListener("click", function(e){
 	if( exp > speedCost){
 		speedCount += 1;
+		totalCost += speedCost;
 	}
 });
 
@@ -71,6 +81,7 @@ attackSpeed.addEventListener("mouseout", function(e){
 attackSpeed.addEventListener("click", function(e){
 	if( exp > attackSpeedCost){
 		attackSpeed += 1;
+		totalCost += attackSpeedCost;
 	}
 });
 
@@ -88,6 +99,7 @@ shootDamage.addEventListener("mouseout", function(e){
 shootDamage.addEventListener("click", function(e){
 	if( exp > shootDamageCost){
 		shootDamage += 1;
+		totalCost += shootDamageCost;
 	}
 });
 
@@ -105,6 +117,7 @@ meleeDamage.addEventListener("mouseout", function(e){
 meleeDamage.addEventListener("click", function(e){
 	if( exp > meleeDamageCost){
 		meleeDamage += 1;
+		totalCost += meleeDamageCost;
 	}
 });
 
@@ -122,6 +135,8 @@ meleeSize.addEventListener("mouseout", function(e){
 meleeSize.addEventListener("click", function(e){
 	if( exp > meleeDamageCost){
 		meleeDamage += 1;
+		totalCost += meleeSizeCost;
+	}
 	}
 });
 
