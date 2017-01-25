@@ -1,22 +1,22 @@
 ##no actual values yet. all place holders
 
 def health(level):
-	100+ level * 10;
+	return 100+ level * 10;
 	
 def speed(level):
-	250 + level * 5;
+	return 250 + level * 5;
 	
 def shootDamage(level):
-	5 + level * 1;
+	return 5 + level * 1;
 
 def shootSpeed(level):
-	1000 + level * 100;
+	return 1000 + level * 100;
 
 def meleeDamage(level):
-	20 + level * 3;
+	return 20 + level * 3;
 	
 def meleeRange(level):
-	75 + level * 2; 
+	return 75 + level * 2; 
 
-def cost (level):
-	500 * math.pow(2, level);
+def cost(level):
+	return 500 * math.pow(2, level);
