@@ -4,7 +4,7 @@ from sqlite3 import connect
 f = "data/data.db"
 
 def login(user, password):
-    db = connect("data/data.db")
+    db = connect(f)
     c = db.cursor()
     query = "SELECT password FROM users WHERE username=?"
     sel = ""
