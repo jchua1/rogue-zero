@@ -50,8 +50,6 @@ Game.prototype.receiveLevel = function (level) {
 };
 
 Game.prototype.sendLevel = function () {
-  console.log(this.player);
-  console.log(this.room);
   this.socket.emit('save_level', {
     player: this.player,
     room: this.room
