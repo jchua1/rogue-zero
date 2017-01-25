@@ -1,6 +1,6 @@
 from flask import Flask, session, request, url_for, redirect, render_template
 from flask_socketio import SocketIO, send, emit
-from utils import level, users
+from utils import level, users, upgrades
 
 app = Flask(__name__)
 socketio = SocketIO(app)

@@ -17,10 +17,17 @@ class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, upgrade.health(healthLevel), upgrade.speed(speedLevel), 250, 16,
-                        upgrade.shootDamage(shootDmgLevel), 800, 5, 1000, uppgrade.shootSpeed(shootSpeedLevel),
-                        upgrade.meleeDamage(meleeDmgLevel), upgrade.meleeRange(meleeRangeLevel), math.pi / 16, math.pi / 2, 10, 1)
-    self.generatePlayer(10, 10, 100, 100, 250, 16, 1,
+    # self.generatePlayer(10, 10,
+                        # upgrades.health(healthLevel),
+                        # upgrades.speed(speedLevel),
+                        # 250, 16, 500,
+                        # upgrades.shootDamage(shootDmgLevel),
+                        # 800, 5, 1000,
+                        # upgrades.shootSpeed(shootSpeedLevel),
+                        # upgrades.meleeDamage(meleeDmgLevel),
+                        # upgrades.meleeRange(meleeRangeLevel),
+                        # math.pi / 16, math.pi / 2, 10, 1)
+    self.generatePlayer(10, 10, 100, 100, 250, 16, 0.5,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateObstacles()
@@ -58,7 +65,6 @@ class Level:
 
         for rock in self.rocks:
           if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + 32) ** 2: 
-            print 'Collided with rock'
             test = False
             break
 

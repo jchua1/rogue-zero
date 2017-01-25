@@ -184,8 +184,10 @@ Game.prototype.update = function () {
         }
       });
     });
+
+    console.log(now + ' ' + player.lastSwitchTime + ' ' + player.lastShootTime);
     
-    if (now - player.lastSwitchTime >= player.switchDelay) {
+    if (now - player.lastSwitchTime > player.switchDelay) {
       if (switchWeapon) {
         if (this.player.currentWeapon == 'gun') {
           this.player.currentWeapon = 'sword';
