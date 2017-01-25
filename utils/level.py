@@ -12,13 +12,13 @@ class Level:
     self.generatePlayer(10, 10, 100, 100, 250, 16,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
-    self.generateTerrain()
+    self.generateObstacles()
 
     
   def generateEnemies(self):
     self.enemies = []
 
-    for i in range(random.randint(1, 10)):
+    for i in range(random.randrange(10)):
       self.enemies.append(Enemy())
 
   def generatePlayer(self, x, y, health, maxHealth, speed, size,
@@ -28,38 +28,49 @@ class Level:
                          shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                          meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
-  def generateTerrain(self):
-    self.terrain = []
-    for i in range (0,GRID_SIZE):
-      for j in range (0, GRID_SIZE):
-        a = {}
-        a['x']= i*16
-        a['y']= j*16
-        a['size'] = random.randint(TILE_SIZE / 5, TILE_SIZE / 2)
-        rand = random.randint(0,100)
-        if rand < 3:
-          a['type'] = 'quicksand'
-          self.terrain.append(a)
-        elif rand < 5:
-          a['type'] = 'pit'
-          self.terrain.append(a)
-        elif rand < 10:
-          a['type'] = 'rock'
-          self.terrain.append(a)
+  def generateObstacles(self):
+    self.rocks = []
+    self.quicksand = []
+    self.pits = []
+    
+    rocks = random.randrange(10)
+    quicksand = random.randrange(15)
+    pits = random.randrange(5)
+
+    for i in range(rocks):
+      self.rocks.append({
+        'x': random.random() * ROOM_SIZE,
+        'y': random.random() * ROOM_SIZE,
+        'size': random.random() * 75 + 25,
+        'type': 'rock'
+      })
+
+    for i in range(quicksand):
+      self.quicksand.append({
+        'x': random.random() * ROOM_SIZE,
+        'y': random.random() * ROOM_SIZE,
+        'size': random.random() * 50 + 25,
+        'type': 'quicksand'
+      })
+
+    for i in range(pits):
+      self.pits.append({
+        'x': random.random() * ROOM_SIZE,
+        'y': random.random() * ROOM_SIZE,
+        'size': random.random() * 15 + 5,
+        'type': 'pit'
+      })
 
   def asDict(self):
     return {
       'player': self.player.asDict(),
       'room': {
         'enemies': [enemy.asDict() for enemy in self.enemies],
-        'terrain': self.terrain
+        'rocks': self.rocks,
+        'quicksand': self.quicksand,
+        'pits': self.pits
       }
     }
-
-
-
-  def asDict(self):
-    return self.__dict__
     
 class Entity(object):
   def __init__(self, x, y, health, maxHealth, speed, size):
@@ -78,11 +89,11 @@ class Enemy(Entity):
     health = random.randint(10, 50)
     attack = random.randint(4, 32)
     
-    super(Enemy, self).__init__(random.randint(0, ROOM_SIZE),
-                                random.randint(0, ROOM_SIZE),
+    super(Enemy, self).__init__(random.random() * ROOM_SIZE,
+                                random.random() * ROOM_SIZE,
                                 health,
                                 health,
-                                random.randint(0, 300),
+                                random.randrange(300),
                                 attack)
     self.attack = attack
 
@@ -102,9 +113,6 @@ class Player(Entity):
     self.meleeArc = meleeArc
     self.meleeSpeed = meleeSpeed
     self.meleeDelay = meleeDelay
-
-  def asDict(self):
-    return self.__dict__
     
 
 

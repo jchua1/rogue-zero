@@ -37,10 +37,16 @@ Game.prototype.receiveLevel = function (level) {
     enemies[i] = cast(enemy, Enemy);
   });
 
-  this.room.tiles.forEach(function (row, i, tiles) {
-    row.forEach(function (tile, j, row) {
-      tiles[i][j] = cast(tile, Tile);
-    });
+  this.room.rocks.forEach(function (rock, i, rocks) {
+    rocks[i] = cast(rock, Obstacle);
+  });
+
+  this.room.quicksand.forEach(function (patch, i, quicksand) {
+    quicksand[i] = cast(patch, Obstacle);
+  });
+  
+  this.room.pits.forEach(function (pit, i, pits) {
+    pits[i] = cast(pit, Obstacle);
   });
 };
 
@@ -49,7 +55,10 @@ Game.prototype.update = function () {
   var enemies = this.room.enemies;
   var projectiles = this.projectiles;
   var melees = this.melees;
-  var tiles = this.room.tiles;
+  var items = this.room.items;
+  var rocks = this.room.rocks;
+  var quicksand = this.room.quicksand;
+  var pits = this.room.pits;
 	var now = (new Date()).getTime() / 1000;
   
   if (this.lastFrameTime != 0) {
@@ -79,59 +88,83 @@ Game.prototype.update = function () {
 
     player.vx = horizontal * player.speed * walk * player.speedModifier;
     player.vy = vertical * player.speed * walk * player.speedModifier;
+    player.speedModifier = 1;
     
     player.update(delta);
 
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 3; j++) {
-        var x = coords[0] + i - 1;
-        var y = coords[1] + j - 1;
+    enemies.forEach(function (enemy, i, enemies) {
+      var dispX = player.x - enemy.x;
+      var dispY = player.y - enemy.y;
+      var disp = magnitude(dispX, dispY);
+      dispX /= disp;
+      dispY /= disp;
 
-        if (x >= 0 && x < Constants.GRID_SIZE &&
-            y >= 0 && y < Constants.GRID_SIZE) {
-          var tile = tiles[coords[0] + i - 1][coords[1] + j - 1];
-
-          if (collide(player, tile)) {
-            switch (tile.terrain) {
-            case 'pit':
-              player.shouldExist = false;
-              break;
-
-            case 'quicksand':
-              player.speedModifier = 0.2;
-              break;
-
-            case 'rock':
-              var shape = tile.getShape();
-              var center = getCenterOfTangentCircle(shape,
-                                                    [player.x - shape.x,
-                                                     player.y - shape.y],
-                                                    player.size);
-              player.x = center[0];
-              player.y = center[1];
-
-              // if (i == 0) {
-              // horizontal = Math.max(horizontal, 0);
-              // } else if (i == 2) {
-              // horizontal = Math.min(horizontal, 0);
-              // }
-
-              // if (j == 0) {
-              // vertical = Math.max(vertical, 0);
-              // } else if (j == 2) {
-              // vertical = Math.min(vertical, 0);
-              // }
-
-              break;
-
-            default:
-              player.speedModifier = 1;
-              break;
-            }
-          }
-        }
+      enemy.vx = dispX * enemy.speed * enemy.speedModifier;
+      enemy.vy = dispY * enemy.speed * enemy.speedModifier;
+      
+      enemy.update(delta);
+      
+      if (collide(enemy, player)) {
+        player.takeDamage(enemy.attack);
       }
-    }
+
+      if (!enemy.shouldExist) {
+        enemies.splice(i, 1);
+        return;
+      }
+    });
+    
+    rocks.forEach(function (rock, i, rocks) {
+      if (collide(player, rock)) {
+        var center = getCenterOfTangentCircle(rock.getShape(),
+                                              [player.x - rock.x,
+                                               player.y - rock.y],
+                                              player.size);
+        player.x = center[0];
+        player.y = center[1];
+      }
+
+      enemies.forEach(function (enemy, j, enemies) {
+        if (collide(enemy, rock)) {
+          var center = getCenterOfTangentCircle(rock.getShape(),
+                                                [enemy.x - rock.x,
+                                                 enemy.y - rock.y],
+                                                enemy.size);
+          enemy.x = center[0];
+          enemy.y = center[1];
+        }
+      });
+
+      projectiles.forEach(function (projectile, j, projectiles) {
+        if (collide(projectile, rock)) {
+          projectile.shouldExist = false;
+        }
+      });
+    });
+
+    pits.forEach(function (pit, i, pits) {
+      if (collide(player, pit)) {
+        player.shouldExist = false;
+      }
+
+      enemies.forEach(function (enemy, j, enemies) {
+        if (collide(enemy, pit)) {
+          enemy.shouldExist = false;
+        }
+      });
+    });
+    
+    quicksand.forEach(function (patch, i, quicksand) {
+      if (collide(player, patch)) {
+        player.speedModifier = 0.2;
+      }
+
+      enemies.forEach(function (enemy, j, enemies) {
+        if (collide(enemy, patch)) {
+          enemy.speedModifier = 0.2;
+        }
+      });
+    });
     
     if (switchWeapon) {
       if (this.currentWeapon == 'gun') {
@@ -213,68 +246,6 @@ Game.prototype.update = function () {
         return;
       }
     });
-
-    enemies.forEach(function (enemy, i, enemies) {
-      var coords = getTile(enemy.x, enemy.y);
-      var dispX = player.x - enemy.x;
-      var dispY = player.y - enemy.y;
-      var disp = magnitude(dispX, dispY);
-      dispX /= disp;
-      dispY /= disp;
-
-      enemy.vx = dispX * enemy.speed * enemy.speedModifier;
-      enemy.vy = dispY * enemy.speed * enemy.speedModifier;
-      
-      enemy.update(delta);
-
-      for (var j = 0; j < 3; j++) {
-        for (var k = 0; k < 3; k++) {
-          var x = coords[0] + j - 1;
-          var y = coords[1] + k - 1;
-
-          if (x >= 0 && x < Constants.GRID_SIZE &&
-              y >= 0 && y < Constants.GRID_SIZE) {
-            var tile = tiles[coords[0] + j - 1][coords[1] + k - 1];
-
-            if (collide(enemy, tile)) {
-              switch (tile.terrain) {
-              case 'pit':
-                enemy.shouldExist = false;
-                break;
-
-              case 'quicksand':
-                enemy.speedModifier = 0.2;
-                break;
-
-              case 'rock':
-                var shape = tile.getShape();
-                var center = getCenterOfTangentCircle(shape,
-                                                      [enemy.x - shape.x,
-                                                       enemy.y - shape.y],
-                                                      enemy.size);
-                enemy.x = center[0];
-                enemy.y = center[1];
-
-                break;
-
-              default:
-                enemy.speedModifier = 1;
-                break;
-              }
-            }
-          }
-        }
-      }
-      
-      if (collide(enemy, player)) {
-        player.takeDamage(enemy.attack);
-      }
-
-      if (!enemy.shouldExist) {
-        enemies.splice(i, 1);
-        return;
-      }
-    });
   }
   
 	this.lastFrameTime = now;
@@ -287,19 +258,27 @@ Game.prototype.update = function () {
 Game.prototype.draw = function () {
   var drawing = this.drawing;
   var player = this.player;
-  var tiles = this.room.tiles;
   var enemies = this.room.enemies;
   var melees = this.melees;
   var projectiles = this.projectiles;
+  var quicksand = this.room.quicksand;
+  var pits = this.room.pits;
+  var rocks = this.room.rocks;
 
   drawing.clear();
 
   drawing.renderBackground();
 
-  tiles.forEach(function (row, i, tiles) {
-    row.forEach(function (tile, j, row) {
-      drawing.renderTile(tile);
-    });
+  quicksand.forEach(function (patch, i, quicksand) {
+    drawing.renderPatch(patch);
+  });
+
+  pits.forEach(function (pit, i, pits) {
+    drawing.renderPit(pit);
+  });
+
+  rocks.forEach(function (rock, i, rocks) {
+    drawing.renderRock(rock);
   });
 
   enemies.forEach(function (enemy, i, enemies) {

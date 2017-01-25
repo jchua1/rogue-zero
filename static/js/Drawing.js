@@ -67,7 +67,7 @@ Drawing.prototype.renderProjectile = function (projectile) {
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
   this.context.rect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
-	this.context.fillStyle = Constants.BACKGROUND_COLOR;
+	this.context.fillStyle = Constants.GROUND_COLOR;
   this.context.fill();
   this.context.beginPath();
   this.context.fillStyle = Constants.BACKGROUND_BORDER;
@@ -75,36 +75,33 @@ Drawing.prototype.renderBackground = function () {
 	this.context.restore();
 };
 
-Drawing.prototype.renderTile = function (tile) {
+Drawing.prototype.renderPit = function (pit) {
   this.context.save();
-  this.context.translate(tile.x, tile.y);
+  this.context.translate(pit.x, pit.y);
   this.context.beginPath();
-  this.context.rect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
-  this.context.fillStyle = Constants.GROUND_COLOR;
+  this.context.arc(0, 0, pit.size, 0, 2 * Math.PI);
+  this.context.fillStyle = Constants.PIT_COLOR;
   this.context.fill();
+  this.context.restore();
+};
 
-  if (tile.terrain != 'ground') {
-    this.context.beginPath();
-    this.context.translate(Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2);
-    this.context.arc(0, 0, tile.terrainSize, 0, 2 * Math.PI);
+Drawing.prototype.renderRock = function (rock) {
+  this.context.save();
+  this.context.translate(rock.x, rock.y);
+  this.context.beginPath();
+  this.context.arc(0, 0, rock.size, 0, 2 * Math.PI);
+  this.context.fillStyle = Constants.ROCK_COLOR;
+  this.context.fill();
+  this.context.restore();
+};
 
-    switch (tile.terrain) {
-    case 'rock':
-      this.context.fillStyle = Constants.ROCK_COLOR;
-      break;
-
-    case 'pit':
-      this.context.fillStyle = Constants.PIT_COLOR;
-      break;
-
-    case 'quicksand':
-      this.context.fillStyle = Constants.QUICKSAND_COLOR;
-      break;
-    }
-    
-    this.context.fill();
-  } 
-
+Drawing.prototype.renderPatch = function (patch) {
+  this.context.save();
+  this.context.translate(patch.x, patch.y);
+  this.context.beginPath();
+  this.context.arc(0, 0, patch.size, 0, 2 * Math.PI);
+  this.context.fillStyle = Constants.QUICKSAND_COLOR;
+  this.context.fill();
   this.context.restore();
 };
 
