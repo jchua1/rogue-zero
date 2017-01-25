@@ -1,33 +1,45 @@
 import sqlite3
 import json
 
-f = "../data/data.db"
+f = "data/data.db"
 
 
 #before this we need to check if the door has been accessed
-def saveRoom(userid, roomid, enemies, items, terrain, exitdoor):#needs userid, old room id, old terrain, the exited door
+
+def door(playerinfo, roominfo, user):
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    query = ("SELECT user_id FROM users WHERE username=?")
+    userID = c.execute(query,(user,)).fetchone()[0]
+    print 'room'
+    #print playerinfo
+    terrains = json.dumps(roominfo)
+    saveRoom(userID, 'enemies', 'items', terrains, 1)
+
+def saveRoom(userid, enemies, items, terrain, exitdoor):#needs userid, old room id, old terrain, the exited door
     #find the highest room id
     newroomid = newID(userid)
     #update the room in the users table
-    updateRoom(userid, newroomid)
+    currentroom = updateRoom(userid, newroomid)
     #Access the old room and set the exited door value to the new room id
-    updateOld(userid, roomid, newroomid, enemies, items, terrain, exitdoor)
+    updateOld(userid, currentroom, newroomid, enemies, items, terrain, exitdoor)
     #Generate the new room with the new id and assign the appropriate door value to the old room id
-    makeNew(userid, roomid, newroomid, exitdoor)
+    makeNew(userid, currentroom, newroomid, exitdoor)
     
 def updateRoom(userid, roomid):
     db = sqlite3.connect(f)
     c = db.cursor()
-    #query = ("SELECT current_room FROM users WHERE user_id=?")
-    #a = c.execute(query, (userid,))
-    #c = db.cursor()
+    query = ("SELECT current_room FROM users WHERE user_id=?")
+    a = c.execute(query, (userid,)).fetchone()[0]
+    c = db.cursor()
     query = ("UPDATE users SET current_room=? WHERE user_id=?")
     sel = ""
     sel = c.execute(query,(roomid, userid))
     db.commit()
     db.close()
-    #return a
-
+    print a
+    return a
+    
 def newID(userID):
     db = sqlite3.connect(f)
     c = db.cursor()
@@ -99,5 +111,5 @@ def makeNew(userid, oldroom, newroom, olddoor):
 #db.commit()
 #db.close()
 
-saveRoom(0,4,'enemies','items','terrain',4)
+ #saveRoom(0,4,'enemies','items','terrain',4)
 
