@@ -13,16 +13,13 @@
 
 .skills{
     padding-top:100px;
-    padding-bottom:100px;
+    padding-bottom:100px;	
 }
 
 .oldUpgrade{
 
 }
 
-.newUpgrade:hover{
-	border-style:solid;
-}
 
 img{
 	max-height:75x;
