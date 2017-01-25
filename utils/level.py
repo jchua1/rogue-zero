@@ -1,17 +1,25 @@
 import random
 import math
+import upgrades
 
 ROOM_SIZE = 800
 GRID_SIZE = 25
 TILE_SIZE = ROOM_SIZE / GRID_SIZE
 
+healthLevel= 0
+speedLevel= 0
+shootDmgLevel=0
+shootSpeedLevel=0
+meleeDmgLevel=0
+meleeRangeLevel=0
+
 class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, 100, 100, 250, 16,
-                        5, 800, 5, 1000, 0.5,
-                        20, 75, math.pi / 16, math.pi / 2, 10, 1)
+    self.generatePlayer(10, 10, upgrade.health(healthLevel), upgrade.speed(speedLevel), 250, 16,
+                        upgrade.shootDamage(shootDmgLevel), 800, 5, 1000, uppgrade.shootSpeed(shootSpeedLevel),
+                        upgrade.meleeDamage(meleeDmgLevel), upgrade.meleeRange(meleeRangeLevel), math.pi / 16, math.pi / 2, 10, 1)
     self.generateObstacles()
 
     
