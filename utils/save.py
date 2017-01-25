@@ -1,11 +1,58 @@
 import sqlite3
 import json
 
-f = "data/data.db"
+f = "../data/data.db"
 
 
 #before this we need to check if the door has been accessed
 
+#needs userid to get roomid, use them both to update in rooms
+def leaveroom(user, roominfo):
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    query = ("SELECT user_id FROM users WHERE username=?")
+    userID = c.execute(query,(user,)).fetchone()[0]
+    query = ("SELECT current_room FROM users WHERE user_id=?")
+    currentroom = c.execute(query, (userID,)).fetchone()[0]
+    query = ("UPDATE rooms SET terrain=? WHERE user_id=? AND room_id=?")
+    c.execute(query,(roominfo, userID, currentroom))
+    db.commit()
+    db.close()
+
+def checkdoor(user, door):#returns the room that door links to
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    query = ("SELECT user_id FROM users WHERE username=?")
+    userID = c.execute(query,(user,)).fetchone()[0]
+    query = ("SELECT current_room FROM users WHERE user_id=?")
+    currentroom = c.execute(query, (userID,)).fetchone()[0]
+    query = ("SELECT exits FROM rooms WHERE user_id=? AND room_id=?")
+    c.execute(query,(userID,currentroom))
+    doors = c.fetchone()[0]
+    d = json.loads(doors)
+    db.commit()
+    db.close()
+    if door == 1:
+        return d['d1']
+    elif door == 2:
+        return d['d2']
+    elif door == 3:
+        return d['d3']
+    else:
+        return d['d4']
+    
+def enterOld(user, roomid):#returns the terrain for an old room and updates the current room to roomid
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    query = ("SELECT user_id FROM users WHERE username=?")
+    userID = c.execute(query,(user,)).fetchone()[0]
+    query = ("SELECT terrain FROM rooms WHERE user_id=? AND room_id=?")
+    terrain = c.execute(query,(userID, roomid)).fetchone()[0]
+    db.commit()
+    db.close()
+    updateRoom(userID, roomid)
+    return terrain
+    
 def door(playerinfo, roominfo, user):
     db = sqlite3.connect(f)
     c = db.cursor()
@@ -26,19 +73,13 @@ def saveRoom(userid, enemies, items, terrain, exitdoor):#needs userid, old room 
     #Generate the new room with the new id and assign the appropriate door value to the old room id
     makeNew(userid, currentroom, newroomid, exitdoor)
     
-def updateRoom(userid, roomid):
+def updateRoom(userid, roomid):#updates the current room
     db = sqlite3.connect(f)
     c = db.cursor()
-    query = ("SELECT current_room FROM users WHERE user_id=?")
-    a = c.execute(query, (userid,)).fetchone()[0]
-    c = db.cursor()
     query = ("UPDATE users SET current_room=? WHERE user_id=?")
-    sel = ""
     sel = c.execute(query,(roomid, userid))
     db.commit()
     db.close()
-    print a
-    return a
     
 def newID(userID):
     db = sqlite3.connect(f)
@@ -110,6 +151,7 @@ def makeNew(userid, oldroom, newroom, olddoor):
 #c.execute('''INSERT INTO rooms VALUES (0,1,'enemies','items','terrain','{"d1":-1,"d2":-1,"d3":-1,"d4":-1}')''')
 #db.commit()
 #db.close()
-
- #saveRoom(0,4,'enemies','items','terrain',4)
-
+#saveRoom(0,'enemies','items','terrain',1)
+#updateRoom(0,1)
+#leaveroom('asdf','hi')
+#enterOld('asdf',3)
