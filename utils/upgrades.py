@@ -18,5 +18,5 @@ def meleeDamage(level):
 def meleeRange(level):
   return 75 + level * 2; 
 
-def cost (level):
+def cost(level):
   return 500 * math.pow(2, level);
