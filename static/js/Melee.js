@@ -1,12 +1,13 @@
 function Melee() {
   this.startTheta = 0;
   this.arc = 0;
-  this.range = 0;
+  this.size = 0;
   this.width = 0;
   this.damage = 0;
   this.owner = 0;
   this.origColor = Constants.MELEE_COLOR;
   this.color = this.origColor;
+  this.shape = 'sector';
 }
 
 Melee.inheritsFrom(Entity);
@@ -20,15 +21,4 @@ Melee.prototype.update = function (delta) {
   if (mod(this.theta - this.startTheta, 2 * Math.PI) >= this.arc) {
     this.shouldExist = false;
   }
-};
-
-Melee.prototype.getShape = function () {
-  return {
-    type: 'sector',
-    x: this.x,
-    y: this.y,
-    r: this.range,
-    width: this.width,
-    theta: this.theta
-  };
 };

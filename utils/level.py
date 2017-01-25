@@ -9,7 +9,7 @@ class Level:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()
-    self.generatePlayer(10, 10, 100, 100, 250, 16,
+    self.generatePlayer(10, 10, 100, 100, 250, 16, 1,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateObstacles()
@@ -21,10 +21,10 @@ class Level:
     for i in range(random.randrange(10)):
       self.enemies.append(Enemy())
 
-  def generatePlayer(self, x, y, health, maxHealth, speed, size,
+  def generatePlayer(self, x, y, health, maxHealth, speed, size, switchDelay,
                      shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                      meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
-    self.player = Player(x, y, health, maxHealth, speed, size,
+    self.player = Player(x, y, health, maxHealth, speed, size, switchDelay,
                          shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                          meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
@@ -98,10 +98,11 @@ class Enemy(Entity):
     self.attack = attack
 
 class Player(Entity):
-  def __init__(self, x, y, health, maxHealth, speed, size,
+  def __init__(self, x, y, health, maxHealth, speed, size, switchDelay,
                shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
     super(Player, self).__init__(x, y, health, maxHealth, speed, size)
+    self.switchDelay = switchDelay
     self.shootDamage = shootDamage
     self.shootRange = shootRange
     self.shootSize = shootSize

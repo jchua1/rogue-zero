@@ -38,12 +38,12 @@ Drawing.prototype.renderMelee = function (melee) {
   this.context.rotate(Math.PI / 2 + melee.theta);
 
   this.context.beginPath();
-  this.context.arc(0, 0, melee.range,
+  this.context.arc(0, 0, melee.size,
                    Math.PI / 2, 0, true);
 
   this.context.scale(1, 0.3);
 
-  this.context.arc(0, 0, melee.range,
+  this.context.arc(0, 0, melee.size,
                    0, Math.PI / 2, 0, false);
   
   this.context.closePath();

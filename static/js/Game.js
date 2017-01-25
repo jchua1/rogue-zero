@@ -84,14 +84,10 @@ Game.prototype.update = function () {
 
 	  var delta = now - this.lastFrameTime;
 
-    var coords = getTile(player.x, player.y);
-
     player.vx = horizontal * player.speed * walk * player.speedModifier;
     player.vy = vertical * player.speed * walk * player.speedModifier;
     player.speedModifier = 1;
     
-    player.update(delta);
-
     enemies.forEach(function (enemy, i, enemies) {
       var dispX = player.x - enemy.x;
       var dispY = player.y - enemy.y;
@@ -116,17 +112,25 @@ Game.prototype.update = function () {
     
     rocks.forEach(function (rock, i, rocks) {
       if (collide(player, rock)) {
-        var center = getCenterOfTangentCircle(rock.getShape(),
-                                              [player.x - rock.x,
-                                               player.y - rock.y],
-                                              player.size);
-        player.x = center[0];
-        player.y = center[1];
+        var towardsRock = [player.x - rock.x, player.y - rock.y];
+        towardsRock = normalize(towardsRock);
+        var speedTowardsRock = dotProduct([player.vx, player.vy],
+                                          towardsRock);
+
+        player.vx -= speedTowardsRock * towardsRock[0];
+        player.vy -= speedTowardsRock * towardsRock[1];
+
+        // var center = getCenterOfTangentCircle(rock,
+                                              // [player.x - rock.x,
+                                               // player.y - rock.y],
+                                              // player.size);
+        // player.x = center[0];
+        // player.y = center[1];
       }
 
       enemies.forEach(function (enemy, j, enemies) {
         if (collide(enemy, rock)) {
-          var center = getCenterOfTangentCircle(rock.getShape(),
+          var center = getCenterOfTangentCircle(rock,
                                                 [enemy.x - rock.x,
                                                  enemy.y - rock.y],
                                                 enemy.size);
@@ -141,6 +145,8 @@ Game.prototype.update = function () {
         }
       });
     });
+
+    player.update(delta);
 
     pits.forEach(function (pit, i, pits) {
       if (collide(player, pit)) {
@@ -166,63 +172,64 @@ Game.prototype.update = function () {
       });
     });
     
-    if (switchWeapon) {
-      if (this.currentWeapon == 'gun') {
-        this.currentWeapon = 'sword';
-      } else {
-        this.currentWeapon = 'gun';
+    if (now - player.lastSwitchTime >= player.switchDelay) {
+      if (switchWeapon) {
+        if (this.currentWeapon == 'gun') {
+          this.currentWeapon = 'sword';
+        } else {
+          this.currentWeapon = 'gun';
+        }
+
+        player.lastSwitchTime = now;
+      } else if (attack) {
+        if (this.currentWeapon == 'sword') {
+          if (now - player.lastMeleeTime > player.meleeDelay) {
+            var melee = new Melee();
+
+            update({
+              startTheta: player.theta - player.meleeArc / 2,
+              theta: player.theta - player.meleeArc / 2,
+              omega: player.meleeSpeed,
+              arc: player.meleeArc,
+              size: player.meleeRange,
+              width: player.meleeWidth,
+              damage: player.meleeDamage,
+              owner: player
+            }, melee);
+
+            melees.push(melee);
+            player.lastMeleeTime = now;
+          }
+        } else if (this.currentWeapon == 'gun') {
+          if (now - player.lastShootTime > player.shootDelay) {
+            var projectile = new Projectile();
+
+            update({
+              x: player.x,
+              y: player.y,
+              vx: player.shootSpeed * -Math.cos(heading),
+              vy: player.shootSpeed * -Math.sin(heading),
+              range: player.shootRange,
+              size: player.shootSize,
+              startX: player.x,
+              startY: player.y,
+              damage: player.shootDamage
+            }, projectile);
+
+            projectiles.push(projectile);
+            player.lastShootTime = now;
+          }
+        }
       }
     }
     
-    if (attack) {
-      if (this.currentWeapon == 'sword') {
-        if (now - player.lastMeleeTime > player.meleeDelay) {
-          var melee = new Melee();
-
-          update({
-            startTheta: player.theta - player.meleeArc / 2,
-            theta: player.theta - player.meleeArc / 2,
-            omega: player.meleeSpeed,
-            arc: player.meleeArc,
-            range: player.meleeRange,
-            width: player.meleeWidth,
-            damage: player.meleeDamage,
-            owner: player
-          }, melee);
-
-          melees.push(melee);
-          player.lastMeleeTime = now;
-        }
-      } else if (this.currentWeapon == 'gun') {
-        if (now - player.lastShootTime > player.shootDelay) {
-          var projectile = new Projectile();
-
-          update({
-            x: player.x,
-            y: player.y,
-            vx: player.shootSpeed * -Math.cos(heading),
-            vy: player.shootSpeed * -Math.sin(heading),
-            range: player.shootRange,
-            size: player.shootSize,
-            startX: player.x,
-            startY: player.y,
-            damage: player.shootDamage
-          }, projectile);
-
-          projectiles.push(projectile);
-          player.lastShootTime = now;
-        }
-      }
-    }
-
     melees.forEach(function (melee, i, melees) {
       melee.update(delta);
 
       enemies.forEach(function (enemy, j, enemies) {
-        if (distance(melee.x, melee.y, enemy.x, enemy.y) <= melee.range + enemy.size)
-          if (collide(melee, enemy)) {
-            enemy.takeDamage(melee.damage);
-          }
+        if (collide(melee, enemy)) {
+          enemy.takeDamage(melee.damage);
+        }
       });  
 
       if (!melee.shouldExist) {
