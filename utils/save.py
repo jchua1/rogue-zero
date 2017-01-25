@@ -5,7 +5,7 @@ f = "../data/data.db"
 
 
 #before this we need to check if the door has been accessed
-def saveRoom(userid, roomid, terrain, exitdoor):
+def saveRoom(userid, roomid, terrain, exitdoor):#needs userid, old room id, new terrain, the exited door
     #find the highest room id
     newroomid = newID(userid)
     #update the room in the users table
@@ -85,4 +85,4 @@ def makeNew(userid, oldroom, newroom, olddoor):
     db.close()
 
     
-saveRoom(0,4,'sdfsd',3)#need to get terrain passed of new room
+saveRoom(0,4,'sdfsd',3)
