@@ -1,6 +1,6 @@
 from flask import Flask, session, request, url_for, redirect, render_template
 from flask_socketio import SocketIO, send, emit
-from utils import level, users
+from utils import level, users, upgrades
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -14,7 +14,7 @@ def game():
   return render_template('game.html')
 
 @socketio.on('new_player')
-def new_player(data):
+def newPlayer(data):
   name = data['name']
   print 'new player %s connected' % name
   emit('new_level', getLevel())
@@ -34,6 +34,11 @@ def getLevel(seed = None):
   print newLevel
   return newLevel
 
+@socketio.on('save_level')
+def saveLevel(data):
+  player = data['player']
+  room = data['room']
+  
 #login
 @app.route('/')
 def root():

@@ -1,20 +1,20 @@
 def health(level):
-	return 100+ level * 10;
-	
+  return 100+ level * 10;
+
 def speed(level):
-	return 250 + level * 5;
-	
+  return 250 + level * 5;
+
 def shootDamage(level):
-	return 5 + level * 1;
+  return 5 + level * 1;
 
 def shootSpeed(level):
-	return 1000 + level * 100;
+  return 1000 + level * 100;
 
 def meleeDamage(level):
-	return 20 + level * 3;
-	
+  return 20 + level * 3;
+
 def meleeRange(level):
-	return 75 + level * 2; 
+  return 75 + level * 2; 
 
 def cost(level):
-	return 500 * math.pow(2, level);
+  return 500 * math.pow(2, level);
