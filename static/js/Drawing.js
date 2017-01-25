@@ -116,6 +116,17 @@ Drawing.prototype.renderPatch = function (patch) {
   this.context.restore();
 };
 
+Drawing.prototype.renderDoor = function (door) {
+  this.context.save();
+  this.setRoomClip();
+  this.context.translate(door.x, door.y);
+  this.context.beginPath();
+  this.context.arc(0, 0, door.size, 0, 2 * Math.PI);
+  this.context.fillStyle = 'blue';
+  this.context.fill();
+  this.context.restore();
+};
+
 Drawing.prototype.renderHealth = function (entity) {
   this.context.save();
   this.context.translate(entity.x, entity.y);

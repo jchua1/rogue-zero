@@ -1,3 +1,6 @@
+2017-01-25 - kli
+	Added borders and doors.
+
 2017-01-24 - jchua
 	Added single door generation.
 	Fixed bugs in login functionality.

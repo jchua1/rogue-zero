@@ -47,9 +47,15 @@ Game.prototype.receiveLevel = function (level) {
   this.room.pits.forEach(function (pit, i, pits) {
     pits[i] = cast(pit, Obstacle);
   });
+
+  this.room.doors.forEach(function (door, i, doors) {
+    doors[i] = cast(door, Obstacle);
+  });
 };
 
-Game.prototype.sendLevel = function () {
+Game.prototype.saveLevel = function () {
+  console.log('saving...');
+  
   this.socket.emit('save_level', {
     player: this.player,
     room: this.room
@@ -65,6 +71,7 @@ Game.prototype.update = function () {
   var rocks = this.room.rocks;
   var quicksand = this.room.quicksand;
   var pits = this.room.pits;
+  var doors = this.room.doors;
 	var now = (new Date()).getTime() / 1000;
   
   if (this.lastFrameTime != 0) {
@@ -183,17 +190,31 @@ Game.prototype.update = function () {
       });
     });
 
+    if (enemies.length == 0) {
+      var doorReached = -1;
+      
+      doors.forEach(function (door, i, doors) {
+        if (collide(player, door)) {
+          doorReached = i;
+        }
+      });
+
+      if (doorReached >= 0) {
+        this.saveLevel();
+      }
+    }
+    
     if (now - player.lastSwitchTime > player.switchDelay) {
       if (switchWeapon) {
-        if (this.player.currentWeapon == 'gun') {
-          this.player.currentWeapon = 'sword';
+        if (player.currentWeapon == 'gun') {
+          player.currentWeapon = 'sword';
         } else {
-          this.player.currentWeapon = 'gun';
+          player.currentWeapon = 'gun';
         }
 
         player.lastSwitchTime = now;
       } else if (attack) {
-        if (this.player.currentWeapon == 'sword') {
+        if (player.currentWeapon == 'sword') {
           if (now - player.lastMeleeTime > player.meleeDelay) {
             var melee = new Melee();
 
@@ -211,7 +232,7 @@ Game.prototype.update = function () {
             melees.push(melee);
             player.lastMeleeTime = now;
           }
-        } else if (this.player.currentWeapon == 'gun') {
+        } else if (player.currentWeapon == 'gun') {
           if (now - player.lastShootTime > player.shootDelay) {
             var projectile = new Projectile();
 
@@ -282,6 +303,7 @@ Game.prototype.draw = function () {
   var quicksand = this.room.quicksand;
   var pits = this.room.pits;
   var rocks = this.room.rocks;
+  var doors = this.room.doors;
 
   drawing.clear();
 
@@ -311,6 +333,10 @@ Game.prototype.draw = function () {
     drawing.renderProjectile(projectile);
   });
 
+  doors.forEach(function (door, i, doors) {
+    drawing.renderDoor(door);
+  });
+  
   drawing.renderPlayer(player);
 };
 
