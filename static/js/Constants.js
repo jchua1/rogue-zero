@@ -2,7 +2,9 @@ function Constants() {
 	throw new Error('Constants should not be instantiated!');
 }
 
-Constants.CANVAS_SIZE = 800;
+Constants.ROOM_SIZE = 800;
+Constants.BORDER_SIZE = 50;
+Constants.CANVAS_SIZE = Constants.ROOM_SIZE + 2 * Constants.BORDER_SIZE;
 
 Constants.BACKGROUND_BORDER = 'black';
 Constants.BACKGROUND_COLOR = 'white';

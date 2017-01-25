@@ -3,13 +3,32 @@ import math
 import upgrades
 
 ROOM_SIZE = 800
-GRID_SIZE = 25
-TILE_SIZE = ROOM_SIZE / GRID_SIZE
+BORDER_SIZE = 50
+CANVAS_SIZE = ROOM_SIZE + 2 * BORDER_SIZE
 
-D1 = [400,0]
-D2 = [800,400]
-D3 = [400,800]
-D4 = [0,400]
+PLAYER_SIZE = 15
+DOOR_SIZE = 15
+MAX_PITS = 5
+MIN_PIT_SIZE = 15
+MAX_PIT_SIZE = 50
+MAX_PATCHES = 15
+MIN_PATCH_SIZE = 25
+MAX_PATCH_SIZE = 75
+MAX_ROCKS = 10
+MIN_ROCK_SIZE = 25
+MAX_ROCK_SIZE = 100
+
+MIN_ENEMY_HEALTH = 5
+MAX_ENEMY_HEALTH = 50
+MIN_ENEMY_SPEED = 15
+MAX_ENEMY_SPEED = 75
+MIN_ENEMY_ATTACK = 5
+MAX_ENEMY_ATTACK = 25
+
+D1 = [0.5 * CANVAS_SIZE,0]
+D2 = [CANVAS_SIZE, 0.5 * CANVAS_SIZE]
+D3 = [0.5 * CANVAS_SIZE, CANVAS_SIZE]
+D4 = [0, 0.5 * CANVAS_SIZE]
 
 healthLevel= 0
 speedLevel= 0
@@ -25,14 +44,14 @@ class Level:
     # self.generatePlayer(10, 10,
                         # upgrades.health(healthLevel),
                         # upgrades.speed(speedLevel),
-                        # 250, 16, 500,
+                        # 250, PLAYER_SIZE, 500,
                         # upgrades.shootDamage(shootDmgLevel),
                         # 800, 5, 1000,
                         # upgrades.shootSpeed(shootSpeedLevel),
                         # upgrades.meleeDamage(meleeDmgLevel),
                         # upgrades.meleeRange(meleeRangeLevel),
                         # math.pi / 16, math.pi / 2, 10, 1)
-    self.generatePlayer(10, 10, 100, 100, 250, 16, 0.5,
+    self.generatePlayer(75, 75, 100, 100, 250, PLAYER_SIZE, 0.5,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateObstacles()
@@ -41,6 +60,7 @@ class Level:
     
   def generateEnemies(self):
     self.enemies = []
+
 
     for i in range(random.randrange(10)):
       self.enemies.append(Enemy())
@@ -64,7 +84,7 @@ class Level:
     self.doors.append({
       'x': x,
       'y': y,
-      'size': 15
+      'size': DOOR_SIZE
     })
     
   def generateObstacles(self):
@@ -72,20 +92,20 @@ class Level:
     self.quicksand = []
     self.pits = []
     
-    rocks = random.randrange(10)
-    quicksand = random.randrange(15)
-    pits = random.randrange(5)
+    rocks = random.randrange(MAX_ROCKS)
+    quicksand = random.randrange(MAX_PATCHES)
+    pits = random.randrange(MAX_PITS)
 
     for i in range(rocks):
       while True:
-        size = random.randrange(25, 100)
-        x = random.randrange(2 * size, ROOM_SIZE - 2 * size)
-        y = random.randrange(2 * size, ROOM_SIZE - 2 * size)
+        size = random.randrange(MIN_ROCK_SIZE, MAX_ROCK_SIZE)
+        x = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size)
+        y = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size)
 
         test = True
 
         for rock in self.rocks:
-          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + 32) ** 2: 
+          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + PLAYER_SIZE) ** 2: 
             test = False
             break
 
@@ -101,17 +121,17 @@ class Level:
 
     for i in range(quicksand):
       self.quicksand.append({
-        'x': random.randrange(ROOM_SIZE),
-        'y': random.randrange(ROOM_SIZE),
-        'size': random.randrange(25, 75),
+        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
+        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
+        'size': random.randrange(MIN_PATCH_SIZE, MAX_PATCH_SIZE),
         'type': 'quicksand'
       })
 
     for i in range(pits):
       self.pits.append({
-        'x': random.randrange(ROOM_SIZE),
-        'y': random.randrange(ROOM_SIZE),
-        'size': random.randrange(5, 25),
+        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
+        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
+        'size': random.randrange(MIN_PIT_SIZE, MAX_PIT_SIZE),
         'type': 'pit'
       })
 
@@ -141,14 +161,14 @@ class Entity(object):
 
 class Enemy(Entity):
   def __init__(self):
-    health = random.randint(10, 50)
-    attack = random.randint(4, 32)
+    health = random.randint(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH)
+    attack = random.randint(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK)
     
     super(Enemy, self).__init__(random.random() * ROOM_SIZE,
                                 random.random() * ROOM_SIZE,
                                 health,
                                 health,
-                                random.randrange(300),
+                                random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED),
                                 attack)
     self.attack = attack
 
