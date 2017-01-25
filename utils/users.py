@@ -4,7 +4,7 @@ from sqlite3 import connect
 f = "data/data.db"
 
 def login(user, password):
-    db = connect(f)
+    db = connect("data/data.db")
     c = db.cursor()
     query = "SELECT password FROM users WHERE username=?"
     sel = ""
@@ -12,16 +12,18 @@ def login(user, password):
         sel = c.execute(query,(user,))
     except:
         c.execute("CREATE TABLE users (user_id INTEGER, username TEXT, password TEXT, current_room INTEGER, items TEXT, char_state TEXT)")
-        sel = c.execute(query,(user,));
+        sel = c.execute(query, (user,))
+    u = sel.fetchone()
+    if u == None:
+        return "Username does not exist."
     password = sha1(password).hexdigest()
-    p = sel.fetchone()[0]
+    p = u[0]
+    db.commit()
+    db.close()
     if password == p:
         return ""
     else:
         return "User login has failed. Invalid password."
-    db.commit()
-    db.close()
-    return "Username does not exist."
 
 def register(user, password):
     db = connect(f)

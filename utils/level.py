@@ -6,6 +6,11 @@ ROOM_SIZE = 800
 GRID_SIZE = 25
 TILE_SIZE = ROOM_SIZE / GRID_SIZE
 
+D1 = [400,0]
+D2 = [800,400]
+D3 = [400,800]
+D4 = [0,400]
+
 healthLevel= 0
 speedLevel= 0
 shootDmgLevel=0
@@ -31,6 +36,7 @@ class Level:
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateObstacles()
+    self.generateDoors()
 
     
   def generateEnemies(self):
@@ -46,6 +52,21 @@ class Level:
                          shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                          meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
+  def generateDoors(self):
+    self.doors = []
+    
+    door = [D1, D2, D3, D4]
+    side = random.choice(door)
+
+    x = side[0]
+    y = side[1]
+
+    self.doors.append({
+      'x': x,
+      'y': y,
+      'size': 15
+    })
+    
   def generateObstacles(self):
     self.rocks = []
     self.quicksand = []
@@ -101,7 +122,8 @@ class Level:
         'enemies': [enemy.asDict() for enemy in self.enemies],
         'rocks': self.rocks,
         'quicksand': self.quicksand,
-        'pits': self.pits
+        'pits': self.pits,
+        'doors': self.doors
       }
     }
 
@@ -147,4 +169,3 @@ class Player(Entity):
     self.meleeArc = meleeArc
     self.meleeSpeed = meleeSpeed
     self.meleeDelay = meleeDelay
-

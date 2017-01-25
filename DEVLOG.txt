@@ -1,4 +1,8 @@
-2017-01-24- dchiu
+2017-01-24 - jchua
+	Added single door generation.
+	Fixed bugs in login functionality.
+
+2017-01-24 - dchiu
 	fixed javascript in profile/upgrades
 	added basic algorithm for upgrades
 	still need to connect upgrade.py and upgrade.js to rest of project.
