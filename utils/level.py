@@ -103,7 +103,7 @@ class Enemy(Entity):
                                 random.randint(0, ROOM_SIZE),
                                 health,
                                 health,
-                                random.randint(0, 50),
+                                random.randint(0, 300),
                                 attack)
     self.attack = attack
 

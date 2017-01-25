@@ -5,10 +5,10 @@ function Game(socket, drawing) {
   this.room = {};
   this.projectiles = [];
   this.melees = [];
-  this.hasData = false;
   this.isRunning = false;
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
+  this.currentWeapon = 'gun';
 }
 
 Game.create = function (socket, canvasElement) {
@@ -70,8 +70,8 @@ Game.prototype.update = function () {
       player.theta = heading;
     }
 
-	  var shoot = Input.LEFT_CLICK;
-    var melee = Input.MISC_KEYS[70]; // F
+	  var attack = Input.LEFT_CLICK;
+    var switchWeapon = Input.RIGHT_CLICK;
 
 	  var delta = now - this.lastFrameTime;
 
@@ -132,45 +132,53 @@ Game.prototype.update = function () {
         }
       }
     }
-
-    if (melee) {
-      if (now - player.lastMeleeTime > player.meleeDelay) {
-        var melee = new Melee();
-
-        update({
-          startTheta: player.theta - player.meleeArc / 2,
-          theta: player.theta - player.meleeArc / 2,
-          omega: player.meleeSpeed,
-          arc: player.meleeArc,
-          range: player.meleeRange,
-          width: player.meleeWidth,
-          damage: player.meleeDamage,
-          owner: player
-        }, melee);
-
-        melees.push(melee);
-        player.lastMeleeTime = now;
+    
+    if (switchWeapon) {
+      if (this.currentWeapon == 'gun') {
+        this.currentWeapon = 'sword';
+      } else {
+        this.currentWeapon = 'gun';
       }
     }
+    
+    if (attack) {
+      if (this.currentWeapon == 'sword') {
+        if (now - player.lastMeleeTime > player.meleeDelay) {
+          var melee = new Melee();
 
-    if (shoot) {
-      if (now - player.lastShootTime > player.shootDelay) {
-        var projectile = new Projectile();
+          update({
+            startTheta: player.theta - player.meleeArc / 2,
+            theta: player.theta - player.meleeArc / 2,
+            omega: player.meleeSpeed,
+            arc: player.meleeArc,
+            range: player.meleeRange,
+            width: player.meleeWidth,
+            damage: player.meleeDamage,
+            owner: player
+          }, melee);
 
-        update({
-          x: player.x,
-          y: player.y,
-          vx: player.shootSpeed * -Math.cos(heading),
-          vy: player.shootSpeed * -Math.sin(heading),
-          range: player.shootRange,
-          size: player.shootSize,
-          startX: player.x,
-          startY: player.y,
-          damage: player.shootDamage
-        }, projectile);
+          melees.push(melee);
+          player.lastMeleeTime = now;
+        }
+      } else if (this.currentWeapon == 'gun') {
+        if (now - player.lastShootTime > player.shootDelay) {
+          var projectile = new Projectile();
 
-        projectiles.push(projectile);
-        player.lastShootTime = now;
+          update({
+            x: player.x,
+            y: player.y,
+            vx: player.shootSpeed * -Math.cos(heading),
+            vy: player.shootSpeed * -Math.sin(heading),
+            range: player.shootRange,
+            size: player.shootSize,
+            startX: player.x,
+            startY: player.y,
+            damage: player.shootDamage
+          }, projectile);
+
+          projectiles.push(projectile);
+          player.lastShootTime = now;
+        }
       }
     }
 
