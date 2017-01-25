@@ -71,7 +71,7 @@ class Level:
         'pits': self.pits
       }
     }
-    
+
 class Entity(object):
   def __init__(self, x, y, health, maxHealth, speed, size):
     self.x = x
