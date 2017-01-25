@@ -4,8 +4,16 @@ var attackSpeed = document.getElementById("c");
 var shootDamage = document.getElementById("d");
 var meleeDamage = document.getElementById("e");
 var meleeSize = document.getElementById("f");
+var exp = Number(document.getElementById("exp").innerHTML);
 
-console.log(exp)
+var healthCost= Number(document.getElementById("acost").innerHTML);
+var speedCost= Number(document.getElementById("bcost").innerHTML);
+var attackSpeedCost= Number(document.getElementById("ccost").innerHTML);
+var shootDamageCost= Number(document.getElementById("dcost").innerHTML);
+var meleeDamageCost= Number(document.getElementById("ecost").innerHTML);
+var meleeSizeCost= Number(document.getElementById("fcost").innerHTML);
+
+console.log(exp);
 
 var healthCount = "global";
 var speedCount = "global";
@@ -16,62 +24,104 @@ var meleeSizeCount = "global";
 
 
 health.addEventListener("mouseover", function(e){
-	health.style.border="thick solid green"
+	if( exp > healthCost){
+		health.style.border="thick solid green"
+	}
+	else{
+		health.style.border="thick solid red"
+	}
 });
 health.addEventListener("mouseout", function(e){
 	health.style.border="none"
 });
 health.addEventListener("click", function(e){
-	healthCount += 1;
+	if( exp > healthCost){
+		healthCount += 1;
+	}
 });
 
 speed.addEventListener("mouseover", function(e){
-	speed.style.border="thick solid green"
+	if( exp > speedCost){
+		speed.style.border="thick solid green"
+	}
+	else{
+		speed.style.border="thick solid red"
+	}
 });
 speed.addEventListener("mouseout", function(e){
 	speed.style.border="none"
 });
 speed.addEventListener("click", function(e){
-	speedCount += 1;
+	if( exp > speedCost){
+		speedCount += 1;
+	}
 });
 
 attackSpeed.addEventListener("mouseover", function(e){
-	attackSpeed.style.border="thick solid green"
+	if( exp > attackSpeedCost){
+		attackSpeed.style.border="thick solid green"
+	}
+	else{
+		attackSpeed.style.border="thick solid red"
+	}
 });
 attackSpeed.addEventListener("mouseout", function(e){
 	attackSpeed.style.border="none"
 });
 attackSpeed.addEventListener("click", function(e){
-	attackSpeedCount += 1;
+	if( exp > attackSpeedCost){
+		attackSpeed += 1;
+	}
 });
 
 shootDamage.addEventListener("mouseover", function(e){
-	shootDamage.style.border="thick solid green"
+	if( exp > shootDamageCost){
+		shootDamage.style.border="thick solid green"
+	}
+	else{
+		shootDamage.style.border="thick solid red"
+	}
 });
 shootDamage.addEventListener("mouseout", function(e){
 	shootDamage.style.border="none"
 });
 shootDamage.addEventListener("click", function(e){
-	shootDamageCount += 1;
+	if( exp > shootDamageCost){
+		shootDamage += 1;
+	}
 });
 
 meleeDamage.addEventListener("mouseover", function(e){
-	meleeDamage.style.border="thick solid green"
+	if( exp > meleeDamageCost){
+		meleeDamage.style.border="thick solid green"
+	}
+	else{
+		meleeDamage.style.border="thick solid red"
+	}
 });
 meleeDamage.addEventListener("mouseout", function(e){
 	meleeDamage.style.border="none"
 });
 meleeDamage.addEventListener("click", function(e){
-	meleeDamageCount += 1;
+	if( exp > meleeDamageCost){
+		meleeDamage += 1;
+	}
 });
 
 meleeSize.addEventListener("mouseover", function(e){
-	meleeSize.style.border="thick solid green"
+	if( exp > meleeDamageCost){
+		meleeSize.style.border="thick solid green"
+	}
+	else{
+		meleeSize.style.border="thick solid red"
+	}
 });
 meleeSize.addEventListener("mouseout", function(e){
 	meleeSize.style.border="none"
 });
 meleeSize.addEventListener("click", function(e){
-	meleeSizeCount += 1;
+	if( exp > meleeDamageCost){
+		meleeDamage += 1;
+	}
 });
 

@@ -1,3 +1,8 @@
+2017-01-24- dchiu
+	fixed javascript in profile/upgrades
+	added basic algorithm for upgrades
+	still need to connect upgrade.py and upgrade.js to rest of project.
+
 2017-01-24 - kli
 	Added more advanced terrain rendering.
 	Made everything circles for easier unit collision.
