@@ -7,6 +7,13 @@ Drawing.create = function (context) {
 	return drawing;
 }
 
+Drawing.prototype.setRoomClip = function () {
+  this.context.beginPath();
+  this.context.rect(Constants.BORDER_SIZE, Constants.BORDER_SIZE,
+                    Constants.ROOM_SIZE, Constants.ROOM_SIZE);
+  this.context.clip();
+};
+
 Drawing.prototype.renderPlayer = function (player) {
 	this.context.save();
   this.context.translate(player.x, player.y);
@@ -22,6 +29,7 @@ Drawing.prototype.renderPlayer = function (player) {
 
 Drawing.prototype.renderEnemy = function (enemy) {
 	this.context.save();
+  this.setRoomClip();
   this.context.fillStyle = enemy.color;
   this.context.translate(enemy.x, enemy.y);
   this.context.beginPath();
@@ -56,6 +64,7 @@ Drawing.prototype.renderMelee = function (melee) {
 
 Drawing.prototype.renderProjectile = function (projectile) {
 	this.context.save();
+  this.setRoomClip();
   this.context.fillStyle = Constants.PROJECTILE_COLOR;
   this.context.translate(projectile.x, projectile.y);
   this.context.beginPath();
@@ -66,17 +75,17 @@ Drawing.prototype.renderProjectile = function (projectile) {
 
 Drawing.prototype.renderBackground = function () {
 	this.context.save();
-  this.context.rect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
-	this.context.fillStyle = Constants.GROUND_COLOR;
-  this.context.fill();
-  this.context.beginPath();
   this.context.fillStyle = Constants.BACKGROUND_BORDER;
-  this.context.stroke();
+  this.context.fillRect(0, 0, Constants.CANVAS_SIZE, Constants.CANVAS_SIZE);
+	this.context.fillStyle = Constants.GROUND_COLOR;
+  this.context.fillRect(Constants.BORDER_SIZE, Constants.BORDER_SIZE,
+                        Constants.ROOM_SIZE, Constants.ROOM_SIZE);
 	this.context.restore();
 };
 
 Drawing.prototype.renderPit = function (pit) {
   this.context.save();
+  this.setRoomClip();
   this.context.translate(pit.x, pit.y);
   this.context.beginPath();
   this.context.arc(0, 0, pit.size, 0, 2 * Math.PI);
@@ -87,6 +96,7 @@ Drawing.prototype.renderPit = function (pit) {
 
 Drawing.prototype.renderRock = function (rock) {
   this.context.save();
+  this.setRoomClip();
   this.context.translate(rock.x, rock.y);
   this.context.beginPath();
   this.context.arc(0, 0, rock.size, 0, 2 * Math.PI);
@@ -97,6 +107,7 @@ Drawing.prototype.renderRock = function (rock) {
 
 Drawing.prototype.renderPatch = function (patch) {
   this.context.save();
+  this.setRoomClip();
   this.context.translate(patch.x, patch.y);
   this.context.beginPath();
   this.context.arc(0, 0, patch.size, 0, 2 * Math.PI);

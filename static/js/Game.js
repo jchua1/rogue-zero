@@ -145,15 +145,15 @@ Game.prototype.update = function () {
       });
     });
   
-    if (this.player.x <= this.player.size) {
+    if (this.player.x <= this.player.size + Constants.BORDER_SIZE) {
       this.player.vx = Math.max(this.player.vx, 0);
-    } else if (this.player.x >= Constants.CANVAS_SIZE - this.player.size) {
+    } else if (this.player.x >= Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size) {
       this.player.vx = Math.min(this.player.vx, 0);
     }
 
-    if (this.player.y <= this.player.size) {
+    if (this.player.y <= this.player.size + Constants.BORDER_SIZE) {
       this.player.vy = Math.max(this.player.vy, 0);
-    } else if (this.player.y >= Constants.CANVAS_SIZE - this.player.size) {
+    } else if (this.player.y >= Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size) {
       this.player.vy = Math.min(this.player.vy, 0);
     }
 

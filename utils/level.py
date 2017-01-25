@@ -163,9 +163,12 @@ class Enemy(Entity):
   def __init__(self):
     health = random.randint(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH)
     attack = random.randint(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK)
+    size = health
     
-    super(Enemy, self).__init__(random.random() * ROOM_SIZE,
-                                random.random() * ROOM_SIZE,
+    super(Enemy, self).__init__(random.randrange(BORDER_SIZE + size,
+                                                 CANVAS_SIZE - BORDER_SIZE - size),
+                                random.randrange(BORDER_SIZE + size,
+                                                 CANVAS_SIZE - BORDER_SIZE - size),
                                 health,
                                 health,
                                 random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED),
