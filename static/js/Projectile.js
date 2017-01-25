@@ -6,6 +6,7 @@ function Projectile() {
   this.damage = 0;
   this.origColor = Constants.PROJECTILE_COLOR;
   this.color = this.origColor;
+  this.shape = 'circle';
 }
 
 Projectile.inheritsFrom(Entity);
@@ -20,11 +21,3 @@ Projectile.prototype.update = function (delta) {
   }
 };
 
-Projectile.prototype.getShape = function () {
-  return {
-    type: 'circle',
-    x: this.x,
-    y: this.y,
-    r: this.size
-  };
-};

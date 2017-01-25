@@ -7,6 +7,7 @@ function Enemy() {
   this.speedModifier = 1;
   this.origColor = Constants.ENEMY_COLOR;
   this.color = this.origColor;
+  this.shape = 'circle';
 }
 
 Enemy.inheritsFrom(Entity);
@@ -24,11 +25,3 @@ Enemy.prototype.takeDamage = function (damage) {
   this.health = bound(this.health - damage, 0, this.maxHealth);
 };
 
-Enemy.prototype.getShape = function () {
-  return {
-    type: 'circle',
-    x: this.x,
-    y: this.y,
-    r: this.size
-  };
-};

@@ -99,28 +99,21 @@ function distance(x1, y1, x2, y2) {
 }
 
 function collide(obj1, obj2) {
-  var shape1 = obj1.getShape();
-  var shape2 = obj2.getShape();
-
-  if (!shape1 || !shape2) {
-    return false;
-  }
-  
-  if (shape1.type == 'circle') {
-    if (shape2.type == 'circle') {
-      return collideCircleCircle(shape1, shape2);
-    } else if (shape2.type == 'sector') {
-      return collideSectorCircle(shape2, shape1);
-    } else if (shape2.type == 'rectangle') {
-      return collideCircleRectangle(shape1, shape2);
+  if (obj1.shape == 'circle') {
+    if (obj2.shape == 'circle') {
+      return collideCircleCircle(obj1, obj2);
+    } else if (obj2.shape == 'sector') {
+      return collideSectorCircle(obj2, obj1);
+    } else if (obj2.shape == 'rectangle') {
+      return collideCircleRectangle(obj1, obj2);
     } 
-  } else if (shape1.type == 'sector') {
-    if (shape2.type == 'circle') {
-      return collideSectorCircle(shape1, shape2);
+  } else if (obj1.shape == 'sector') {
+    if (obj2.shape == 'circle') {
+      return collideSectorCircle(obj1, obj2);
     }
-  } else if (shape1.type == 'rectangle') {
-    if (shape2.type == 'circle') {
-      return collideCircleRectangle(shape2, shape1);
+  } else if (obj1.shape == 'rectangle') {
+    if (obj2.shape == 'circle') {
+      return collideCircleRectangle(obj2, obj1);
     }
   }
 
@@ -128,7 +121,7 @@ function collide(obj1, obj2) {
 }
 
 function collideCircleCircle(circle1, circle2) {
-  return distance(circle1.x, circle1.y, circle2.x, circle2.y) <= circle1.r + circle2.r;
+  return distance(circle1.x, circle1.y, circle2.x, circle2.y) <= circle1.size + circle2.size;
 }
 
 function collideSectorCircle(sector, circle) {
@@ -140,7 +133,7 @@ function collideCircleRectangle(circle, rectangle) {
   var closestX = bound(circle.x, rectangle.x, rectangle.x + rectangle.width);
   var closestY = bound(circle.y, rectangle.y, rectangle.y + rectangle.height);
 
-  return distance(circle.x, circle.y, closestX, closestY) <= circle.r;
+  return distance(circle.x, circle.y, closestX, closestY) <= circle.size;
 }
 
 function getTile(x, y) {
@@ -148,10 +141,24 @@ function getTile(x, y) {
 }
 
 function getCenterOfTangentCircle(circle, direction, radius) {
-  var directionMagnitude = magnitude(direction[0], direction[1]);
-  direction[0] /= directionMagnitude;
-  direction[1] /= directionMagnitude;
+  direction = normalize(direction);
   
-  return [circle.x + (circle.r + radius) * direction[0],
-          circle.y + (circle.r + radius) * direction[1]];
+  return [circle.x + (circle.size + radius) * direction[0],
+          circle.y + (circle.size + radius) * direction[1]];
 }
+
+function normalize(vector) {
+  var vectorMagnitude = magnitude(vector[0], vector[1]);
+  return [vector[0] / vectorMagnitude,
+          vector[1] / vectorMagnitude];
+}
+
+function getTangentVector(circle, direction) {
+  direction = normalize(direction);
+  return [-direction[1], direction[0]];
+}
+
+function dotProduct(vector1, vector2) {
+  return vector1[0] * vector2[0] + vector1[1] * vector2[1];
+}
+
