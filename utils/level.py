@@ -76,16 +76,18 @@ class Level:
     self.doors = []
     
     door = [D1, D2, D3, D4]
-    side = random.choice(door)
+    #side = random.choice(door)
 
-    x = side[0]
-    y = side[1]
+    #x = side[0]
+    #y = side[1]
 
-    self.doors.append({
-      'x': x,
-      'y': y,
-      'size': DOOR_SIZE
-    })
+    for side in door:
+
+      self.doors.append({
+        'x': side[0],
+        'y': side[1],
+        'size': DOOR_SIZE
+      })
     
   def generateObstacles(self):
     self.rocks = []
