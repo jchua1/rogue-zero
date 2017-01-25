@@ -20,10 +20,9 @@ function Player() {
   this.lastSwitchTime = 0;
   this.origColor = Constants.PLAYER_COLOR;
   this.color = this.origColor;
-  this.lastTile = {};
-  this.currentTile = {};
   this.invincible = 0;
   this.shape = 'circle';
+  this.currentWeapon = 'gun';
 }
 
 Player.inheritsFrom(Entity);
@@ -32,18 +31,6 @@ Player.prototype.update = function (delta) {
   if (this.health <= 0) {
     this.shouldExist = false;
     return;
-  }
-  
-  if (this.x <= this.size) {
-    this.vx = Math.max(this.vx, 0);
-  } else if (this.x >= Constants.CANVAS_SIZE - this.size) {
-    this.vx = Math.min(this.vx, 0);
-  }
-
-  if (this.y <= this.size) {
-    this.vy = Math.max(this.vy, 0);
-  } else if (this.y >= Constants.CANVAS_SIZE - this.size) {
-    this.vy = Math.min(this.vy, 0);
   }
 
   this.parent.update.call(this, delta);

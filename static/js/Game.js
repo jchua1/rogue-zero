@@ -8,7 +8,6 @@ function Game(socket, drawing) {
   this.isRunning = false;
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
-  this.currentWeapon = 'gun';
 }
 
 Game.create = function (socket, canvasElement) {
@@ -47,6 +46,15 @@ Game.prototype.receiveLevel = function (level) {
   
   this.room.pits.forEach(function (pit, i, pits) {
     pits[i] = cast(pit, Obstacle);
+  });
+};
+
+Game.prototype.sendLevel = function () {
+  console.log(this.player);
+  console.log(this.room);
+  this.socket.emit('save_level', {
+    player: this.player,
+    room: this.room
   });
 };
 
@@ -97,6 +105,7 @@ Game.prototype.update = function () {
 
       enemy.vx = dispX * enemy.speed * enemy.speedModifier;
       enemy.vy = dispY * enemy.speed * enemy.speedModifier;
+      enemy.speedModifier = 1;
       
       enemy.update(delta);
       
@@ -137,6 +146,18 @@ Game.prototype.update = function () {
         }
       });
     });
+  
+    if (this.player.x <= this.player.size) {
+      this.player.vx = Math.max(this.player.vx, 0);
+    } else if (this.player.x >= Constants.CANVAS_SIZE - this.player.size) {
+      this.player.vx = Math.min(this.player.vx, 0);
+    }
+
+    if (this.player.y <= this.player.size) {
+      this.player.vy = Math.max(this.player.vy, 0);
+    } else if (this.player.y >= Constants.CANVAS_SIZE - this.player.size) {
+      this.player.vy = Math.min(this.player.vy, 0);
+    }
 
     player.update(delta);
 
@@ -166,15 +187,15 @@ Game.prototype.update = function () {
     
     if (now - player.lastSwitchTime >= player.switchDelay) {
       if (switchWeapon) {
-        if (this.currentWeapon == 'gun') {
-          this.currentWeapon = 'sword';
+        if (this.player.currentWeapon == 'gun') {
+          this.player.currentWeapon = 'sword';
         } else {
-          this.currentWeapon = 'gun';
+          this.player.currentWeapon = 'gun';
         }
 
         player.lastSwitchTime = now;
       } else if (attack) {
-        if (this.currentWeapon == 'sword') {
+        if (this.player.currentWeapon == 'sword') {
           if (now - player.lastMeleeTime > player.meleeDelay) {
             var melee = new Melee();
 
@@ -192,7 +213,7 @@ Game.prototype.update = function () {
             melees.push(melee);
             player.lastMeleeTime = now;
           }
-        } else if (this.currentWeapon == 'gun') {
+        } else if (this.player.currentWeapon == 'gun') {
           if (now - player.lastShootTime > player.shootDelay) {
             var projectile = new Projectile();
 
