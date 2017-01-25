@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	Input.applyEventHandlers(canvasElement);
 	Input.addMouseTracker(canvasElement);
 
-	console.log('loaded');
+  canvasElement.focus();
 
 	socket.emit('new_player', {
 		name: 'test'
