@@ -38,26 +38,42 @@ class Level:
     pits = random.randrange(5)
 
     for i in range(rocks):
-      self.rocks.append({
-        'x': random.random() * ROOM_SIZE,
-        'y': random.random() * ROOM_SIZE,
-        'size': random.random() * 75 + 25,
-        'type': 'rock'
-      })
+      while True:
+        size = random.randrange(25, 100)
+        x = random.randrange(2 * size, ROOM_SIZE - 2 * size)
+        y = random.randrange(2 * size, ROOM_SIZE - 2 * size)
+
+        test = True
+
+        for rock in self.rocks:
+          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + 32) ** 2: 
+            print 'Collided with rock'
+            test = False
+            break
+
+        if test:
+          self.rocks.append({
+            'x': x,
+            'y': y,
+            'size': size,
+            'type': 'rock'
+          })
+
+          break
 
     for i in range(quicksand):
       self.quicksand.append({
-        'x': random.random() * ROOM_SIZE,
-        'y': random.random() * ROOM_SIZE,
-        'size': random.random() * 50 + 25,
+        'x': random.randrange(ROOM_SIZE),
+        'y': random.randrange(ROOM_SIZE),
+        'size': random.randrange(25, 75),
         'type': 'quicksand'
       })
 
     for i in range(pits):
       self.pits.append({
-        'x': random.random() * ROOM_SIZE,
-        'y': random.random() * ROOM_SIZE,
-        'size': random.random() * 15 + 5,
+        'x': random.randrange(ROOM_SIZE),
+        'y': random.randrange(ROOM_SIZE),
+        'size': random.randrange(5, 25),
         'type': 'pit'
       })
 
@@ -114,6 +130,4 @@ class Player(Entity):
     self.meleeArc = meleeArc
     self.meleeSpeed = meleeSpeed
     self.meleeDelay = meleeDelay
-    
-
 

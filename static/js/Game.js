@@ -112,20 +112,12 @@ Game.prototype.update = function () {
     
     rocks.forEach(function (rock, i, rocks) {
       if (collide(player, rock)) {
-        var towardsRock = [player.x - rock.x, player.y - rock.y];
-        towardsRock = normalize(towardsRock);
-        var speedTowardsRock = dotProduct([player.vx, player.vy],
-                                          towardsRock);
-
-        player.vx -= speedTowardsRock * towardsRock[0];
-        player.vy -= speedTowardsRock * towardsRock[1];
-
-        // var center = getCenterOfTangentCircle(rock,
-                                              // [player.x - rock.x,
-                                               // player.y - rock.y],
-                                              // player.size);
-        // player.x = center[0];
-        // player.y = center[1];
+        var center = getCenterOfTangentCircle(rock,
+                                              [player.x - rock.x,
+                                               player.y - rock.y],
+                                              player.size);
+        player.x = center[0];
+        player.y = center[1];
       }
 
       enemies.forEach(function (enemy, j, enemies) {
