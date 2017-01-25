@@ -43,15 +43,6 @@ Player.prototype.update = function (delta) {
       this.color = this.origColor;
     }
   }
-
-  if (this.currentTile.terrain == 'pit') {
-    this.shouldExist = false;
-    return;
-  } else if (this.currentTile.terrain == 'quicksand') {
-    this.speedModifier = 0.2;
-  } else {
-    this.speedModifier = 1;
-  }
 };
 
 Player.prototype.takeDamage = function (damage) {

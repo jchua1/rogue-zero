@@ -12,12 +12,12 @@ class Level:
     self.generatePlayer(10, 10, 100, 100, 250, 16,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
-    #self.generateTiles()
+    self.generateTiles()
     
   def generateEnemies(self):
     self.enemies = []
 
-    for i in range(random.randint(0, 10)):
+    for i in range(random.randint(1, 10)):
       self.enemies.append(Enemy())
 
   def generatePlayer(self, x, y, health, maxHealth, speed, size,
@@ -27,7 +27,7 @@ class Level:
                          shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                          meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
 
-  '''def generateTiles(self):
+  def generateTiles(self):
     self.tiles = []
 
     TILE_SIZE = ROOM_SIZE / GRID_SIZE
@@ -38,18 +38,18 @@ class Level:
       for j in range(0, GRID_SIZE): 
         row.append(Tile(TILE_SIZE * i, TILE_SIZE * j))
 
-      self.tiles.append(row)'''
+      self.tiles.append(row)
       
   def asDict(self):
     return {
       'player': self.player.asDict(),
       'room': {
         'enemies': [enemy.asDict() for enemy in self.enemies],
-        #'tiles': [[tile.asDict() for tile in row] for row in self.tiles]
+        'tiles': [[tile.asDict() for tile in row] for row in self.tiles]
       }
     }
 
-'''class Tile:
+class Tile:
   def __init__(self, x, y):
     self.x = x
     self.y = y
@@ -80,7 +80,7 @@ class Level:
       self.item = 'empty'
 
   def asDict(self):
-    return self.__dict__'''
+    return self.__dict__
     
 class Entity(object):
   def __init__(self, x, y, health, maxHealth, speed, size):

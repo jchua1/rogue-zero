@@ -4,6 +4,7 @@ function Enemy() {
   this.maxHealth = 0;
 	this.attack = 0;
 	this.speed = 0;
+  this.speedModifier = 1;
   this.origColor = Constants.ENEMY_COLOR;
   this.color = this.origColor;
 }
