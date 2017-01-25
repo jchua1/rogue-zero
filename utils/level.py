@@ -56,11 +56,6 @@ class Level:
       }
     }
 
-
-
-  def asDict(self):
-    return self.__dict__
-    
 class Entity(object):
   def __init__(self, x, y, health, maxHealth, speed, size):
     self.x = x
