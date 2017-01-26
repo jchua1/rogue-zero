@@ -17,8 +17,8 @@ MAX_PATCH_SIZE = 75
 MAX_ROCKS = 10
 MIN_ROCK_SIZE = 25
 MAX_ROCK_SIZE = 100
-MIN_ENEMIES = 1
-MAX_ENEMIES = 1
+MIN_ENEMIES = 0
+MAX_ENEMIES = 10
 
 MIN_ENEMY_HEALTH = 5
 MAX_ENEMY_HEALTH = 50
@@ -40,7 +40,7 @@ meleeDmgLevel=0
 meleeRangeLevel=0
 
 class Room:
-  def __init__(self, x = 75, y = 75, health = 100):
+  def __init__(self, x = 75, y = 75, health = 100, maxHealth = 100):
     # self.generatePlayer(10, 10,
                         # upgrades.health(healthLevel),
                         # upgrades.speed(speedLevel),
@@ -51,7 +51,7 @@ class Room:
                         # upgrades.meleeDamage(meleeDmgLevel),
                         # upgrades.meleeRange(meleeRangeLevel),
                         # math.pi / 16, math.pi / 2, 10, 1)
-    self.generatePlayer(x, y, health, health, 250, PLAYER_SIZE, 0.5,
+    self.generatePlayer(x, y, health, maxHealth, 250, PLAYER_SIZE, 0.5,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateEnemies()

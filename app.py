@@ -97,7 +97,7 @@ def saveRoom(data):
   if nextRoomID == -1: #entirely new room
     nextRoomID = db.nextRoomID(userID)
     print 'generating new room with id %d' % nextRoomID
-    nextRoom = level.Room(player['x'], player['y'], player['health']).asDict()
+    nextRoom = level.Room(player['x'], player['y'], player['health'], player['maxHealth']).asDict()
     nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
     db.createNewRoom(userID, nextRoomID, nextRoom['room'])
     currentRoom['doors'][exitDoor]['link'] = nextRoomID
