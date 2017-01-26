@@ -237,15 +237,11 @@ Game.prototype.update = function () {
     
     if (now - this.player.lastSwitchTime > this.player.switchDelay) {
       if (switchWeapon) {
-        if (this.player.currentWeapon == 'gun') {
-          this.player.currentWeapon = 'sword';
-        } else {
-          this.player.currentWeapon = 'gun';
-        }
-
+        this.player.currentWeapon = (this.player.currentWeapon + 1) % this.player.weapons.length;
         this.player.lastSwitchTime = now;
       } else if (attack) {
-        if (this.player.currentWeapon == 'sword') {
+        console.log(this.player.weapons + ' ' + this.player.currentWeapon);
+        if (this.player.weapons[this.player.currentWeapon] == 'sword') {
           if (now - this.player.lastMeleeTime > this.player.meleeDelay) {
             var melee = new Melee();
 
@@ -263,7 +259,7 @@ Game.prototype.update = function () {
             this.melees.push(melee);
             this.player.lastMeleeTime = now;
           }
-        } else if (this.player.currentWeapon == 'gun') {
+        } else if (this.player.weapons[this.player.currentWeapon] == 'gun') {
           if (now - this.player.lastShootTime > this.player.shootDelay) {
             var projectile = new Projectile();
 

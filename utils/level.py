@@ -40,7 +40,7 @@ meleeDmgLevel=0
 meleeRangeLevel=0
 
 class Room:
-  def __init__(self, x = 75, y = 75, health = 100, maxHealth = 100):
+  def __init__(self, player = None):
     # self.generatePlayer(10, 10,
                         # upgrades.health(healthLevel),
                         # upgrades.speed(speedLevel),
@@ -51,9 +51,12 @@ class Room:
                         # upgrades.meleeDamage(meleeDmgLevel),
                         # upgrades.meleeRange(meleeRangeLevel),
                         # math.pi / 16, math.pi / 2, 10, 1)
-    self.generatePlayer(x, y, health, maxHealth, 250, PLAYER_SIZE, 0.5,
-                        5, 800, 5, 1000, 0.5,
-                        20, 75, math.pi / 16, math.pi / 2, 10, 1)
+    if player:
+      self.player = Player(player)
+    else:
+      self.generatePlayer(75, 75, 100, 100, 250, PLAYER_SIZE, 0.5,
+                          5, 800, 5, 1000, 0.5,
+                          20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateEnemies()
     self.generateObstacles()
     self.generateDoors()
@@ -61,16 +64,32 @@ class Room:
   def generateEnemies(self):
     self.enemies = []
 
-
     for i in range(random.randrange(MIN_ENEMIES, MAX_ENEMIES + 1)):
       self.enemies.append(Enemy())
 
   def generatePlayer(self, x, y, health, maxHealth, speed, size, switchDelay,
                      shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
                      meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
-    self.player = Player(x, y, health, maxHealth, speed, size, switchDelay,
-                         shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
-                         meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay)
+    self.player = Player({
+      'x': x,
+      'y': y,
+      'health': health,
+      'maxHealth': maxHealth,
+      'speed': speed,
+      'size': size,
+      'switchDelay': switchDelay,
+      'shootDamage': shootDamage,
+      'shootRange': shootRange,
+      'shootSize': shootSize,
+      'shootSpeed': shootSpeed,
+      'shootDelay': shootDelay,
+      'meleeDamage': meleeDamage,
+      'meleeRange': meleeRange,
+      'meleeWidth': meleeWidth,
+      'meleeArc': meleeArc,
+      'meleeSpeed': meleeSpeed,
+      'meleeDelay': meleeDelay
+    })
 
   def generateDoors(self):
     self.doors = []
@@ -171,19 +190,22 @@ class Enemy(Entity):
     self.attack = attack
 
 class Player(Entity):
-  def __init__(self, x, y, health, maxHealth, speed, size, switchDelay,
-               shootDamage, shootRange, shootSize, shootSpeed, shootDelay,
-               meleeDamage, meleeRange, meleeWidth, meleeArc, meleeSpeed, meleeDelay):
-    super(Player, self).__init__(x, y, health, maxHealth, speed, size)
-    self.switchDelay = switchDelay
-    self.shootDamage = shootDamage
-    self.shootRange = shootRange
-    self.shootSize = shootSize
-    self.shootSpeed = shootSpeed
-    self.shootDelay = shootDelay
-    self.meleeDamage = meleeDamage
-    self.meleeRange = meleeRange
-    self.meleeWidth = meleeWidth
-    self.meleeArc = meleeArc
-    self.meleeSpeed = meleeSpeed
-    self.meleeDelay = meleeDelay
+  def __init__(self, player):
+    super(Player, self).__init__(player['x'], player['y'],
+                                 player['health'], player['maxHealth'],
+                                 player['speed'], player['size'])
+    self.switchDelay = player['switchDelay']
+    self.shootDamage = player['shootDamage']
+    self.shootRange = player['shootRange']
+    self.shootSize = player['shootSize']
+    self.shootSpeed = player['shootSpeed']
+    self.shootDelay = player['shootDelay']
+    self.meleeDamage = player['meleeDamage']
+    self.meleeRange = player['meleeRange']
+    self.meleeWidth = player['meleeWidth']
+    self.meleeArc = player['meleeArc']
+    self.meleeSpeed = player['meleeSpeed']
+    self.meleeDelay = player['meleeDelay']
+    self.weapons = ['gun', 'sword']
+    self.currentWeapon = 0
+

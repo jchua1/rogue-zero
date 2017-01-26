@@ -22,7 +22,8 @@ function Player() {
   this.color = this.origColor;
   this.invincible = 0;
   this.shape = 'circle';
-  this.currentWeapon = 'gun';
+  this.weapons = [];
+  this.currentWeapon = 0;
   this.experience = 0;
   this.defaultAttributes = [];
 }

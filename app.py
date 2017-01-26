@@ -97,7 +97,7 @@ def saveRoom(data):
   if nextRoomID == -1: #entirely new room
     nextRoomID = db.nextRoomID(userID)
     print 'generating new room with id %d' % nextRoomID
-    nextRoom = level.Room(player['x'], player['y'], player['health'], player['maxHealth']).asDict()
+    nextRoom = level.Room(player).asDict()
     nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
     db.createNewRoom(userID, nextRoomID, nextRoom['room'])
     currentRoom['doors'][exitDoor]['link'] = nextRoomID
@@ -115,15 +115,6 @@ def saveRoom(data):
   db.updateCurrentRoomID(userID, currentRoomID)
   db.closeDB()
   emit('new_room', nextRoom)
-
-  #db.door(player, room, session['username'])
-  #db.leaveroom(session['username'], room) #this is 'current lvl', update its room in the db
-  #enterroom = db.checkdoor(session['username'], room, door)
-  #if enterroom != -1: check if the exit door has been used
-  #if so load level the level and set the current level to that id
-  #oldroomstuff = enterOld(session['username'], enterroom)
-  #otherwise generate a new level and id, store them in the db
-  #getLevel(newlevel), and update currentroom
   
 #login
 @app.route('/')
