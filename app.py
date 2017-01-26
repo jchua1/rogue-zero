@@ -26,8 +26,8 @@ def getRoom():
 @socketio.on('upgradePlayers')
 def upgrades(data):
   skills = data['upgrades']
+  print skills
   
-print skills
   
 @socketio.on('save_room')
 def saveRoom(data):
