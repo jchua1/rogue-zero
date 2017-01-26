@@ -1,8 +1,7 @@
 from flask import Flask, session, request, url_for, redirect, render_template, flash
 from flask_socketio import SocketIO, send, emit
-from utils import level, upgrades, util, db
+from utils import level, util, db#, upgrades
 import json
-from pprint import pprint
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -28,24 +27,25 @@ def isLoggedIn():
 def game():
   if isLoggedIn():
     return render_template('game.html',
-                           healthOldSkill = upgrades.health(0),
-                           healthCost=upgrades.cost(0),
-                           healthNewSkill= upgrades.health(0+1),
-                           speedOldSkill = upgrades.speed(0),
-                           speedCost=upgrades.cost(0),
-                           speedNewSkill= upgrades.speed(0+1),
-                           atkspdOldSkill = upgrades.shootSpeed(0),
-                           atkspdCost=upgrades.cost(0),
-                           atkspdNewSkill= upgrades.shootSpeed(0+1),
-                           shootdmgOldSkill = upgrades.health(0),
-                           shootdmgCost=upgrades.cost(0),
-                           shootdmgNewSkill= upgrades.shootDamage(0+1),
-                           meleedmgOldSkill = upgrades.meleeDamage(0),
-                           meleedmgCost=upgrades.cost(0),
-                           meleedmgNewSkill= upgrades.meleeDamage(0+1),
-                           meleesizeOldSkill = upgrades.meleeRange(0),
-                           meleeSizeCost=upgrades.cost(0),
-                           meleesizeNewSkill= upgrades.meleeRange(0+1))
+                           # healthOldSkill = upgrades.health(0),
+                           # healthCost=upgrades.cost(0),
+                           # healthNewSkill= upgrades.health(0+1),
+                           # speedOldSkill = upgrades.speed(0),
+                           # speedCost=upgrades.cost(0),
+                           # speedNewSkill= upgrades.speed(0+1),
+                           # atkspdOldSkill = upgrades.shootSpeed(0),
+                           # atkspdCost=upgrades.cost(0),
+                           # atkspdNewSkill= upgrades.shootSpeed(0+1),
+                           # shootdmgOldSkill = upgrades.health(0),
+                           # shootdmgCost=upgrades.cost(0),
+                           # shootdmgNewSkill= upgrades.shootDamage(0+1),
+                           # meleedmgOldSkill = upgrades.meleeDamage(0),
+                           # meleedmgCost=upgrades.cost(0),
+                           # meleedmgNewSkill= upgrades.meleeDamage(0+1),
+                           # meleesizeOldSkill = upgrades.meleeRange(0),
+                           # meleeSizeCost=upgrades.cost(0),
+                           # meleesizeNewSkill= upgrades.meleeRange(0+1)
+    )
 
   return redirect(url_for('root'))
 
@@ -68,7 +68,6 @@ def sendRoom():
       'room': db.getRoom(userID, roomID)
     };
 
-  pprint(room)
   emit('new_room', room)
 
 @socketio.on('upgradePlayers')

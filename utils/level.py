@@ -1,6 +1,6 @@
 import random
 import math
-import upgrades
+# import upgrades
 
 ROOM_SIZE = 600
 BORDER_SIZE = 50
@@ -32,12 +32,12 @@ DOOR_POSITIONS = [[0.5 * CANVAS_SIZE, BORDER_SIZE],
                   [0.5 * CANVAS_SIZE, CANVAS_SIZE - BORDER_SIZE],
                   [BORDER_SIZE, 0.5 * CANVAS_SIZE]]
 
-healthLevel= 0
-speedLevel= 0
-shootDmgLevel=0
-shootSpeedLevel=0
-meleeDmgLevel=0
-meleeRangeLevel=0
+# healthLevel= 0
+# speedLevel= 0
+# shootDmgLevel=0
+# shootSpeedLevel=0
+# meleeDmgLevel=0
+# meleeRangeLevel=0
 
 class Room:
   def __init__(self, player = None):
