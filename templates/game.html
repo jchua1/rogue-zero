@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Rogue Zero</title>
-		<link rel="stylesheet" type="text/css" href="/static/css/index.css">
-		<link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+		<link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
 	  <!------------------ GAME STUFF ---------------------->
@@ -42,7 +42,7 @@
 		      
 		      <tr class="skills" id="health">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{healthOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
@@ -50,13 +50,13 @@
 			  <p id="acost">{{healthCost}}</p>
 			</td>
 			<td class="newUpgrade" id="a">
-			  {{newSkill}}
+			  {{healthNewSkill}}
 			</td>
 		      </tr>
 
 		      <tr class="skills" id="speed">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{SpeedOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
@@ -64,13 +64,13 @@
 			  <p id="bcost">{{speedCost}}</p>
 			</td>
 			<td class="newUpgrade" id="b">
-			  {{newSkill}}
+			  {{speedNewSkill}}
 			</td>
 		      </tr>
 		      
 		      <tr class="skills" id="attackSpeed">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{atkspdOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
@@ -78,41 +78,41 @@
 			  <p id="ccost">{{atkSpdCost}}</p>
 			</td>
 			<td class="newUpgrade" id="c">
-			  {{newSkill}}
+			  {{atkspdNewSkill}}
 			</td>
 		      </tr>
 
 		      <tr class="skills" id="shootDamage">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{shootdmgOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
 			  <br>
-			  <p id="dcost">{{ShootDmgcost}}</p>
+			  <p id="dcost">{{shootdmgCost}}</p>
 			</td>
 			<td class="newUpgrade" id="d">
-			  {{newSkill}}
+			  {{shootdmgNewSkill}}
 			</td>
 		      </tr>
 
 		      <tr class="skills" id="meleeDmg">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{meleedmgOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
 			  <br>
-			  <p id="ecost">{{meleeDmgcost}}</p>
+			  <p id="ecost">{{meleedmgCost}}</p>
 			</td>
 			<td class="newUpgrade" id="e">
-			  {{newSkill}}
+			  {{meleedmgNewSkill}}
 			</td>
 		      </tr>
 
 		      <tr class="skills" id="meleeSize">
 			<td class="oldUpgrade">
-			  {{oldSkill}}
+			  {{meleesizeOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
@@ -120,7 +120,7 @@
 			  <p id="fcost">{{meleeSizeCost}}</p>
 			</td>
 			<td class="newUpgrade" id="f">
-			  {{newSkill}}
+			  {{meleesizeNewSkill}}
 			</td>
 		      </tr>
 		      

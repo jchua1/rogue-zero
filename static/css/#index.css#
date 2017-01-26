@@ -24,11 +24,6 @@
 
 }
 
-html{
-    cursor:crosshair;
-}
-
-
 img{
 	max-height:75x;
 	max-width:75px;

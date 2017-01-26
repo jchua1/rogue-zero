@@ -1,3 +1,5 @@
+import math
+
 def health(level):
   return 100+ level * 10;
 
