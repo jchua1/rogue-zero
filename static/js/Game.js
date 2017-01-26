@@ -9,6 +9,7 @@ function Game(socket, drawing) {
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
   this.exitDoor = -1;
+  this.canEnterDoor = false;
   this.defaultAttributes = [];
 }
 
@@ -34,7 +35,6 @@ Game.prototype.receiveRoom = function (data) {
   update(data, this);
   this.player = cast(this.player, Player);
 
-  console.log(this);
   this.room.defaultAttributes = [];
   
   for (key in data.room) {
@@ -72,6 +72,7 @@ Game.prototype.reset = function () {
   this.projectiles = [];
   this.melees = [];
   this.exitDoor = -1;
+  this.canEnterDoor = false;
 };
 
 Game.prototype.saveRoom = function () {
@@ -179,18 +180,11 @@ Game.prototype.update = function () {
         }
       });
     });
-  
-    if (this.player.x <= this.player.size + Constants.BORDER_SIZE) {
-      this.player.vx = Math.max(this.player.vx, 0);
-    } else if (this.player.x >= Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size) {
-      this.player.vx = Math.min(this.player.vx, 0);
-    }
 
-    if (this.player.y <= this.player.size + Constants.BORDER_SIZE) {
-      this.player.vy = Math.max(this.player.vy, 0);
-    } else if (this.player.y >= Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size) {
-      this.player.vy = Math.min(this.player.vy, 0);
-    }
+    this.player.x = bound(this.player.x, this.player.size + Constants.BORDER_SIZE,
+                          Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size);
+    this.player.y = bound(this.player.y, this.player.size + Constants.BORDER_SIZE,
+                          Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size);
 
     this.player.update(delta);
 
@@ -218,17 +212,27 @@ Game.prototype.update = function () {
       });
     });
 
-    if (this.room.enemies.length == 0) {
-      this.room.doors.forEach((door, i, doors) => {
-        if (collide(this.player, door)) {
-          this.exitDoor = i;
+    var onDoor = false;
+    
+    this.room.doors.forEach((door, i, doors) => {
+      if (collide(this.player, door)) {
+        onDoor = true;
+        
+        if (this.canEnterDoor) {
+          if (this.room.enemies.length == 0) {
+            this.exitDoor = i;
+          }
         }
-      });
+      } 
+    });
 
-      if (this.exitDoor != -1) {
-        this.saveRoom();
-        this.stop();
-      }
+    if (!onDoor) {
+      this.canEnterDoor = true;
+    }
+
+    if (this.exitDoor != -1) {
+      this.saveRoom();
+      this.stop();
     }
     
     if (now - this.player.lastSwitchTime > this.player.switchDelay) {

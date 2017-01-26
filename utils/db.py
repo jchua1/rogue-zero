@@ -7,7 +7,7 @@ c = None
 db = None
 
 def createDB():
-  c.execute('CREATE TABLE IF NOT EXISTS users (user_id INTEGER, username TEXT, passhash TEXT, current_room INTEGER, char_state TEXT);')
+  c.execute('CREATE TABLE IF NOT EXISTS users (user_id INTEGER, username TEXT, passhash TEXT, current_room INTEGER, player_info TEXT);')
   c.execute('CREATE TABLE IF NOT EXISTS rooms (user_id INTEGER, room_id INTEGER, room_info TEXT)')
 
 def initDB():
@@ -37,7 +37,7 @@ def getCurrentRoomID(userID):
 #needs userid to get roomid, use them both to update in rooms
 def updateRoom(userID, roomID, roomInfo):
   c.execute('UPDATE rooms SET room_info=? WHERE user_id=? AND room_id=?',
-            (roomInfo, userID, roomID))
+            (json.dumps(roomInfo), userID, roomID))
 
 def getRoom(userID, roomID):
   c.execute('SELECT room_info FROM rooms WHERE user_id=? AND room_id=?',
@@ -56,29 +56,22 @@ def getDoorLink(userID, door):#returns the room that door links to
 
 def updateCurrentRoomID(userID, roomID):
   c.execute('UPDATE users SET current_room=? WHERE user_id=?', (roomID, userID))
-  
-def saveRoom(userID, roomInfo, exitDoor):#needs userid, old room id, old terrain, the exited door
-  #find the highest room id
-  newRoomID = nextRoomID(userID)
-  #update the room in the users table
-  currentRoomID = getCurrentRoomID(userID)
-  updateCurrentRoomID(userID, newRoomID)
-  #Access the old room and set the exited door value to the new room id
-  updateOldRoom(userID, currentRoom, newRoomID, roomInfo, exitDoor)
-  #Generate the new room with the new id and assign the appropriate door value to the old room id
-  
-def nextRoomID(userID):
+
+def maxRoomID(userID):
   c.execute('SELECT MAX(room_id) FROM rooms WHERE user_id=?', (userID,))
   maxID = c.fetchone()[0]
 
   if maxID is None:
-    return 0
+    return -1
   else:
-    return maxID + 1
+    return maxID
+    
+def nextRoomID(userID):
+  return maxRoomID(userID) + 1
   
 def createNewRoom(userID, roomID, roomInfo):
-  c.execute('INSERT INTO rooms VALUES (?, ?, ?)', (userID, roomID, roomInfo))
-  
+  c.execute('INSERT INTO rooms VALUES (?, ?, ?)', (userID, roomID, json.dumps(roomInfo)))
+
 def login(username, password):
   if isRegistered(username):
     c.execute('SELECT passhash FROM users WHERE username=?', (username,))
@@ -91,14 +84,17 @@ def login(username, password):
   else:
     return 'User not found.', -1
 
-def nextUserID():
+def maxUserID():
   c.execute('SELECT MAX(user_id) FROM users')
   maxID = c.fetchone()[0]
 
   if maxID is None:
-    return 0
+    return -1
   else:
-    return maxID + 1
+    return maxID
+
+def nextUserID():
+  return maxUserID() + 1
     
 def register(username, password, confirm):
   if password != confirm:
@@ -120,3 +116,13 @@ def register(username, password, confirm):
 def isRegistered(username):
   c.execute('SELECT * FROM users WHERE username=?', (username,))
   return c.fetchone() is not None
+
+def getPlayer(userID):
+  c.execute('SELECT player_info FROM users WHERE user_id=?', (userID,))
+  player = json.loads(c.fetchone()[0])
+  return player
+
+def updatePlayer(userID, playerInfo):
+  c.execute('UPDATE users SET player_info=? WHERE user_id=?',
+            (json.dumps(playerInfo), userID))
+  
