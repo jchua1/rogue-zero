@@ -1,6 +1,7 @@
 from flask import Flask, session, request, url_for, redirect, render_template
 from flask_socketio import SocketIO, send, emit
 from utils import level, users, upgrades
+import json
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -18,10 +19,30 @@ def sendRoom():
   room = level.Room().asDict()
   emit('new_room', room)
 
+@socketio.on('upgradePlayers')
+def upgrades(data):
+  skills = data['upgrades']
+  print skills
+  
 @socketio.on('save_room')
 def saveRoom(data):
   player = data['player']
   room = data['room']
+  room = json.dumps(room)
+  xcor = player['x']
+  ycor = player['y']
+  if xcor < 100 and ycor > 300 and ycor < 400:
+    door = 1
+  elif xcor > 580 and ycor > 300 and ycor < 400:
+    door = 3
+  elif ycor < 100 and xcor > 300 and xcor < 400:
+    door = 2
+  else:
+    door = 4
+  print room
+  print session['username']
+  print door
+  print player
   #save.door(player, room, session['username'])
   #save.leaveroom(session['username'], room) #this is 'current lvl', update its room in the db
   #enterroom = save.checkdoor(session['username'], room, door)
