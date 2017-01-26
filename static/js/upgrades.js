@@ -31,7 +31,7 @@ var list= [healthCount, speedCount, attackSpeedCount, shootDamageCount, meleeDam
 var socket=io.connect("127.0.0.1:5000");
 $("#confirm").click(function(){
     socket.send('upgrades', list)
-}
+});
 
 
 ///////////////////////////////////////////////////////////////

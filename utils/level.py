@@ -107,7 +107,7 @@ class Room:
         test = True
 
         for rock in self.rocks:
-          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + PLAYER_SIZE) ** 2: 
+          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + 2 * PLAYER_SIZE) ** 2: 
             test = False
             break
 
