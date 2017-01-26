@@ -41,7 +41,7 @@
 		    <table id="skillTable">
 		      
 		      <tr class="skills" id="health">
-			<td class="oldUpgrade">
+			<td class="oldUpgrade" id="z">
 			  {{healthOldSkill}}
 			</td>
 			<td class="arrow">
@@ -54,7 +54,7 @@
 			</td>
 		      </tr>
 
-		      <tr class="skills" id="speed">
+		      <tr class="skills" id="speed" id="y">
 			<td class="oldUpgrade">
 			  {{speedOldSkill}}
 			</td>
@@ -69,7 +69,7 @@
 		      </tr>
 		      
 		      <tr class="skills" id="attackSpeed">
-			<td class="oldUpgrade">
+			<td class="oldUpgrade" id="x">
 			  {{atkspdOldSkill}}
 			</td>
 			<td class="arrow">
@@ -83,7 +83,7 @@
 		      </tr>
 
 		      <tr class="skills" id="shootDamage">
-			<td class="oldUpgrade">
+			<td class="oldUpgrade" id="w">
 			  {{shootdmgOldSkill}}
 			</td>
 			<td class="arrow">
@@ -97,7 +97,7 @@
 		      </tr>
 
 		      <tr class="skills" id="meleeDmg">
-			<td class="oldUpgrade">
+			<td class="oldUpgrade" id="v">
 			  {{meleedmgOldSkill}}
 			</td>
 			<td class="arrow">
@@ -111,7 +111,7 @@
 		      </tr>
 
 		      <tr class="skills" id="meleeSize">
-			<td class="oldUpgrade">
+			<td class="oldUpgrade" id="u">
 			  {{meleesizeOldSkill}}
 			</td>
 			<td class="arrow">

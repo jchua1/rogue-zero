@@ -24,6 +24,7 @@ function Player() {
   this.shape = 'circle';
   this.currentWeapon = 'gun';
   this.experience = 0;
+  this.defaultAttributes = [];
 }
 
 Player.inheritsFrom(Entity);

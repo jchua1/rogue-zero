@@ -1,2 +1,3 @@
 utils/*.pyc
 .emacs*
+data/data.db

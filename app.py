@@ -1,7 +1,8 @@
-from flask import Flask, session, request, url_for, redirect, render_template
+from flask import Flask, session, request, url_for, redirect, render_template, flash
 from flask_socketio import SocketIO, send, emit
-from utils import level, users, upgrades
+from utils import level, upgrades, util, db
 import json
+from pprint import pprint
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -10,32 +11,64 @@ def run():
   app.secret_key = 'hi'
   socketio.run(app, debug = True)
 
+def isLoggedIn():
+  if 'username' in session:
+    db.initDB()
+    if db.isRegistered(session['username']):
+      db.closeDB()
+      return True
+    else:
+      db.closeDB()
+      session.pop('username')
+      return False
+  else:
+    return False
+  
 @app.route('/game/')
 def game():
-  return render_template('game.html',
-                         healthOldSkill = upgrades.health(0),
-                         healthCost=upgrades.cost(0),
-                         healthNewSkill= upgrades.health(0+1),
-                         speedOldSkill = upgrades.speed(0),
-                         speedCost=upgrades.cost(0),
-                         speedNewSkill= upgrades.speed(0+1),
-                         atkspdOldSkill = upgrades.shootSpeed(0),
-                         atkspdCost=upgrades.cost(0),
-                         atkspdNewSkill= upgrades.shootSpeed(0+1),
-                         shootdmgOldSkill = upgrades.health(0),
-                         shootdmgCost=upgrades.cost(0),
-                         shootdmgNewSkill= upgrades.shootDamage(0+1),
-                         meleedmgOldSkill = upgrades.meleeDamage(0),
-                         meleedmgCost=upgrades.cost(0),
-                         meleedmgNewSkill= upgrades.meleeDamage(0+1),
-                         meleesizeOldSkill = upgrades.meleeRange(0),
-                         meleeSizeCost=upgrades.cost(0),
-                         meleesizeNewSkill= upgrades.meleeRange(0+1)
-                         )
+  if isLoggedIn():
+    return render_template('game.html',
+                           healthOldSkill = upgrades.health(0),
+                           healthCost=upgrades.cost(0),
+                           healthNewSkill= upgrades.health(0+1),
+                           speedOldSkill = upgrades.speed(0),
+                           speedCost=upgrades.cost(0),
+                           speedNewSkill= upgrades.speed(0+1),
+                           atkspdOldSkill = upgrades.shootSpeed(0),
+                           atkspdCost=upgrades.cost(0),
+                           atkspdNewSkill= upgrades.shootSpeed(0+1),
+                           shootdmgOldSkill = upgrades.health(0),
+                           shootdmgCost=upgrades.cost(0),
+                           shootdmgNewSkill= upgrades.shootDamage(0+1),
+                           meleedmgOldSkill = upgrades.meleeDamage(0),
+                           meleedmgCost=upgrades.cost(0),
+                           meleedmgNewSkill= upgrades.meleeDamage(0+1),
+                           meleesizeOldSkill = upgrades.meleeRange(0),
+                           meleeSizeCost=upgrades.cost(0),
+                           meleesizeNewSkill= upgrades.meleeRange(0+1))
+
+  return redirect(url_for('root'))
 
 @socketio.on('get_room')
 def sendRoom():
-  room = level.Room().asDict()
+  db.initDB()
+  username = session['username']
+  userID = db.getUserID(username)
+  roomID = db.maxRoomID(userID)
+  room = None
+  
+  if roomID == -1:
+    print 'room does not exist'
+    room = level.Room().asDict()
+    db.createNewRoom(userID, roomID, room['room'])
+  else:
+    print 'fetching existing room %d' % roomID
+    room = {
+      'player': db.getPlayer(userID),
+      'room': db.getRoom(userID, roomID)
+    };
+
+  pprint(room)
   emit('new_room', room)
 
 @socketio.on('upgradePlayers')
@@ -45,26 +78,47 @@ def notUpgrades(data):
   
 @socketio.on('save_room')
 def saveRoom(data):
+  db.initDB()
   player = data['player']
-  room = data['room']
-  room = json.dumps(room)
-  xcor = player['x']
-  ycor = player['y']
-  if xcor < 100 and ycor > 300 and ycor < 400:
-    door = 1
-  elif xcor > 580 and ycor > 300 and ycor < 400:
-    door = 3
-  elif ycor < 100 and xcor > 300 and xcor < 400:
-    door = 2
+  currentRoom = data['room']
+  exitDoor = data['exitDoor']
+  entryDoor = (exitDoor + 2) % 4
+  username = session['username']
+  userID = db.getUserID(username)
+
+  currentRoomID = db.getCurrentRoomID(userID)
+  nextRoomID = currentRoom['doors'][exitDoor]['link']
+  nextRoom = None
+
+  newPosition = level.DOOR_POSITIONS[(exitDoor + 2) % 4]
+  player['x'] = newPosition[0]
+  player['y'] = newPosition[1]
+  
+  if nextRoomID == -1: #entirely new room
+    nextRoomID = db.nextRoomID(userID)
+    print 'generating new room with id %d' % nextRoomID
+    nextRoom = level.Room(player['x'], player['y'], player['health'], player['maxHealth']).asDict()
+    nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
+    db.createNewRoom(userID, nextRoomID, nextRoom['room'])
+    currentRoom['doors'][exitDoor]['link'] = nextRoomID
   else:
-    door = 4
-  print room
-  print session['username']
-  print door
-  print player
-  #save.door(player, room, session['username'])
-  #save.leaveroom(session['username'], room) #this is 'current lvl', update its room in the db
-  #enterroom = save.checkdoor(session['username'], room, door)
+    print 'fetching old room with id %d' % nextRoomID
+    nextRoom = {
+      'player': player,
+      'room': db.getRoom(userID, nextRoomID)
+    }
+    nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
+    db.updateRoom(userID, nextRoomID, nextRoom['room'])
+
+  db.updatePlayer(userID, nextRoom['player'])
+  db.updateRoom(userID, currentRoomID, currentRoom)
+  db.updateCurrentRoomID(userID, currentRoomID)
+  db.closeDB()
+  emit('new_room', nextRoom)
+
+  #db.door(player, room, session['username'])
+  #db.leaveroom(session['username'], room) #this is 'current lvl', update its room in the db
+  #enterroom = db.checkdoor(session['username'], room, door)
   #if enterroom != -1: check if the exit door has been used
   #if so load level the level and set the current level to that id
   #oldroomstuff = enterOld(session['username'], enterroom)
@@ -74,45 +128,48 @@ def saveRoom(data):
 #login
 @app.route('/')
 def root():
-  if 'username' in session.keys():
+  if isLoggedIn():
     return redirect(url_for('game'))
   
-  return redirect(url_for('login'))
+  return redirect(url_for('auth'))
 
-@app.route('/login/')
+@app.route('/auth/')
+def auth():
+  if isLoggedIn():
+    return redirect(url_for('game'))
+    
+  return render_template('auth.html')
+
+@app.route('/login/', methods = ['POST'])
 def login():
-  if 'username' in session:
-    return redirect(url_for('game'))
-    
-  return render_template('login.html')
-
-@app.route('/authenticate/', methods = ['POST'])
-def authenticate():
-  pw = request.form['pass']
-  un = request.form['user']
-  text = users.login(un,pw)#error message
+  username = request.form['username']
+  password = request.form['password']
+  db.initDB()
+  text, status = db.login(username, password) #error message
+  db.closeDB()
   
-  if text == '':#if no error message, succesful go back home
-    session['username'] = un
+  if status == 0: #if no error message, succesful go back home
+    session['username'] = username
     return redirect(url_for('game'))
-    
-  return render_template('login.html', message = text)
+  else:
+    return render_template('auth.html', message = text)
 
 @app.route('/register/', methods=['POST'])
 def register():
-  pw = request.form['pass']
-  un = request.form['user']
-  pw2 = request.form['passconf']
+  username = request.form['username']
+  password = request.form['password']
+  confirm = request.form['confirm']
+  db.initDB()
+  text, status = db.register(username, password, confirm)
+  db.closeDB()
   
-  if pw2 == pw:
-    regRet = users.register(un,pw)#returns an error/success message
-    return render_template('login.html', message = regRet)
-
-  return render_template('login.html', message = 'Passwords don\'t match')
+  return render_template('auth.html', message = text)
     
 @app.route('/logout/')
 def logout():
-  session.pop('username')
+  if 'username' in session:
+    session.pop('username')
+    
   return redirect(url_for('root'))
   
 if __name__ == '__main__':
