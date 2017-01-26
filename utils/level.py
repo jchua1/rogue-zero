@@ -58,8 +58,8 @@ class Room:
                           5, 800, 5, 1000, 0.5,
                           20, 75, math.pi / 16, math.pi / 2, 10, 1)
     self.generateEnemies()
-    self.generateObstacles()
     self.generateDoors()
+    self.generateObstacles()
 
   def generateEnemies(self):
     self.enemies = []
@@ -114,42 +114,86 @@ class Room:
 
     for i in range(rocks):
       while True:
-        size = random.randrange(MIN_ROCK_SIZE, MAX_ROCK_SIZE + 1)
-        x = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size + 1)
-        y = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size + 1)
+        rock_size = random.randrange(MIN_ROCK_SIZE, MAX_ROCK_SIZE + 1)
+        rock_x = random.randrange(2 * rock_size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * rock_size + 1)
+        rock_y = random.randrange(2 * rock_size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * rock_size + 1)
 
         test = True
 
         for rock in self.rocks:
-          if (rock['x'] - x) ** 2 + (rock['y'] - y) ** 2 <= (rock['size'] + size + 2 * PLAYER_SIZE) ** 2: 
+          if (rock['x'] - rock_x) ** 2 + (rock['y'] - rock_y) ** 2 <= (rock['size'] + rock_size + PLAYER_SIZE) ** 2:
+            test = False
+            break
+
+        if (rock_x - self.player.x) ** 2 + (rock_y - self.player.y) ** 2 <= (rock_size + self.player.size) ** 2:
+          test = False
+
+        for door in DOOR_POSITIONS:
+          if (rock_x - door[0]) ** 2 + (rock_y - door[1]) ** 2 <= (rock_size + DOOR_SIZE) ** 2:
             test = False
             break
 
         if test:
           self.rocks.append({
-            'x': x,
-            'y': y,
-            'size': size,
+            'x': rock_x,
+            'y': rock_y,
+            'size': rock_size,
             'type': 'rock'
           })
 
           break
 
     for i in range(quicksand):
-      self.quicksand.append({
-        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
-        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
-        'size': random.randrange(MIN_PATCH_SIZE, MAX_PATCH_SIZE + 1),
-        'type': 'quicksand'
-      })
+      while True:
+        patch_size = random.randrange(MIN_PATCH_SIZE, MAX_PATCH_SIZE + 1)
+        patch_x = random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1)
+        patch_y = random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1)
+
+        test = True
+
+        if (patch_x - self.player.x) ** 2 + (patch_y - self.player.y) ** 2 <= (patch_size +  self.player.size) ** 2:
+          test = False
+
+        for door in DOOR_POSITIONS:
+          if (patch_x - door[0]) ** 2 + (patch_y - door[1]) ** 2 <= (patch_size + 2 * DOOR_SIZE) ** 2:
+            test = False
+            break
+            
+        if test:
+          self.quicksand.append({
+            'x': patch_x,
+            'y': patch_y,
+            'size': patch_size,
+            'type': 'quicksand'
+          })
+
+          break
 
     for i in range(pits):
-      self.pits.append({
-        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
-        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
-        'size': random.randrange(MIN_PIT_SIZE, MAX_PIT_SIZE + 1),
-        'type': 'pit'
-      })
+      while True:
+        pit_size = random.randrange(MIN_PIT_SIZE, MAX_PIT_SIZE + 1)
+        pit_x = random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1)
+        pit_y = random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1)
+
+        test = True
+
+        if (pit_x - self.player.x) ** 2 + (pit_y - self.player.y) ** 2 <= (pit_size + self.player.size) ** 2:
+          test = False
+
+        for door in DOOR_POSITIONS:
+          if (pit_x - door[0]) ** 2 + (pit_y - door[1]) ** 2 <= (pit_size + DOOR_SIZE) ** 2:
+            test = False
+            break
+            
+        if test:
+          self.pits.append({
+            'x': pit_x,
+            'y': pit_y,
+            'size': pit_size,
+            'type': 'pit'
+          })
+
+          break
 
   def asDict(self):
     return {
