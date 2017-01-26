@@ -327,7 +327,7 @@ Game.prototype.update = function () {
           enemy.takeDamage(melee.damage);
 
           if (enemy.health == 0) {
-            this.player.score += enemy.health;
+            this.player.score += enemy.maxHealth;
           }
         }
       });  
@@ -346,7 +346,7 @@ Game.prototype.update = function () {
           enemy.takeDamage(projectile.damage);
 
           if (enemy.health == 0) {
-            this.player.score += enemy.health;
+            this.player.score += enemy.maxHealth;
           }
           
           projectile.shouldExist = false;

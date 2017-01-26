@@ -12,4 +12,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
   canvasElement.focus();
 
 	socket.emit('get_room');
+
+  window.onbeforeunload = function () {
+    socket.disconnect();
+    socket.close();
+  };
 });
+
