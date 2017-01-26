@@ -10,25 +10,19 @@ def run():
   app.secret_key = 'hi'
   socketio.run(app, debug = True)
 
-@app.route('/game')
+@app.route('/game/')
 def game():
   return render_template('game.html')
 
 @socketio.on('get_room')
 def sendRoom():
-  room = getRoom()
+  room = level.Room().asDict()
   emit('new_room', room)
 
-def getRoom():
-  newRoom = level.Room().asDict()
-  print newRoom
-  return newRoom
-  
 @socketio.on('upgradePlayers')
 def upgrades(data):
   skills = data['upgrades']
   print skills
-  
   
 @socketio.on('save_room')
 def saveRoom(data):
@@ -73,7 +67,7 @@ def login():
     
   return render_template('login.html')
 
-@app.route('/authenticate/', methods=['POST'])
+@app.route('/authenticate/', methods = ['POST'])
 def authenticate():
   pw = request.form['pass']
   un = request.form['user']
