@@ -21,11 +21,10 @@ Game.create = function (socket, canvasElement) {
 };
 
 Game.prototype.init = function () {
-  var context = this;
-  
-  this.socket.on('new_room', function (data) {
-    context.receiveRoom(data);
-    context.start();
+  this.socket.on('new_room', (data) => {
+    console.log(this);
+    this.receiveRoom(data);
+    this.start();
   });
 };
 
@@ -33,23 +32,23 @@ Game.prototype.receiveRoom = function (room) {
   update(room, this);
   this.player = cast(this.player, Player);
 
-  this.room.enemies.forEach(function (enemy, i, enemies) {
+  this.room.enemies.forEach((enemy, i, enemies) => {
     enemies[i] = cast(enemy, Enemy);
   });
 
-  this.room.rocks.forEach(function (rock, i, rocks) {
+  this.room.rocks.forEach((rock, i, rocks) => {
     rocks[i] = cast(rock, Obstacle);
   });
 
-  this.room.quicksand.forEach(function (patch, i, quicksand) {
+  this.room.quicksand.forEach((patch, i, quicksand) => {
     quicksand[i] = cast(patch, Obstacle);
   });
   
-  this.room.pits.forEach(function (pit, i, pits) {
+  this.room.pits.forEach((pit, i, pits) => {
     pits[i] = cast(pit, Obstacle);
   });
 
-  this.room.doors.forEach(function (door, i, doors) {
+  this.room.doors.forEach((door, i, doors) => {
     doors[i] = cast(door, Obstacle);
   });
 };
@@ -76,15 +75,6 @@ Game.prototype.nextRoom = function () {
 };
 
 Game.prototype.update = function () {
-  var player = this.player;
-  var enemies = this.room.enemies;
-  var projectiles = this.projectiles;
-  var melees = this.melees;
-  var items = this.room.items;
-  var rocks = this.room.rocks;
-  var quicksand = this.room.quicksand;
-  var pits = this.room.pits;
-  var doors = this.room.doors;
 	var now = (new Date()).getTime() / 1000;
   
   if (this.lastFrameTime != 0) {
@@ -100,9 +90,9 @@ Game.prototype.update = function () {
     var walk = (Input.MISC_KEYS[16] ? 0.2 : 1);
 
     if (Input.MOUSE.length == 2) {
-	    var heading = Math.PI + Math.atan2(Input.MOUSE[1] - player.y,
-													               Input.MOUSE[0] - player.x);
-      player.theta = heading;
+	    var heading = Math.PI + Math.atan2(Input.MOUSE[1] - this.player.y,
+													               Input.MOUSE[0] - this.player.x);
+      this.player.theta = heading;
     }
 
 	  var attack = Input.LEFT_CLICK;
@@ -110,13 +100,13 @@ Game.prototype.update = function () {
 
 	  var delta = now - this.lastFrameTime;
 
-    player.vx = horizontal * player.speed * walk * player.speedModifier;
-    player.vy = vertical * player.speed * walk * player.speedModifier;
-    player.speedModifier = 1;
+    this.player.vx = horizontal * this.player.speed * walk * this.player.speedModifier;
+    this.player.vy = vertical * this.player.speed * walk * this.player.speedModifier;
+    this.player.speedModifier = 1;
     
-    enemies.forEach(function (enemy, i, enemies) {
-      var dispX = player.x - enemy.x;
-      var dispY = player.y - enemy.y;
+    this.room.enemies.forEach((enemy, i, enemies) => {
+      var dispX = this.player.x - enemy.x;
+      var dispY = this.player.y - enemy.y;
       var disp = magnitude(dispX, dispY);
       dispX /= disp;
       dispY /= disp;
@@ -127,8 +117,8 @@ Game.prototype.update = function () {
       
       enemy.update(delta);
       
-      if (collide(enemy, player)) {
-        player.takeDamage(enemy.attack);
+      if (collide(enemy, this.player)) {
+        this.player.takeDamage(enemy.attack);
       }
 
       if (!enemy.shouldExist) {
@@ -137,17 +127,17 @@ Game.prototype.update = function () {
       }
     });
     
-    rocks.forEach(function (rock, i, rocks) {
-      if (collide(player, rock)) {
+    this.room.rocks.forEach((rock, i, rocks) => {
+      if (collide(this.player, rock)) {
         var center = getCenterOfTangentCircle(rock,
-                                              [player.x - rock.x,
-                                               player.y - rock.y],
-                                              player.size);
-        player.x = center[0];
-        player.y = center[1];
+                                              [this.player.x - rock.x,
+                                               this.player.y - rock.y],
+                                              this.player.size);
+        this.player.x = center[0];
+        this.player.y = center[1];
       }
 
-      enemies.forEach(function (enemy, j, enemies) {
+      this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(enemy, rock)) {
           var center = getCenterOfTangentCircle(rock,
                                                 [enemy.x - rock.x,
@@ -158,7 +148,7 @@ Game.prototype.update = function () {
         }
       });
 
-      projectiles.forEach(function (projectile, j, projectiles) {
+      this.projectiles.forEach((projectile, j, projectiles) => {
         if (collide(projectile, rock)) {
           projectile.shouldExist = false;
         }
@@ -177,37 +167,37 @@ Game.prototype.update = function () {
       this.player.vy = Math.min(this.player.vy, 0);
     }
 
-    player.update(delta);
+    this.player.update(delta);
 
-    pits.forEach(function (pit, i, pits) {
-      if (collide(player, pit)) {
-        player.shouldExist = false;
+    this.room.pits.forEach((pit, i, pits) => {
+      if (collide(this.player, pit)) {
+        this.player.shouldExist = false;
       }
 
-      enemies.forEach(function (enemy, j, enemies) {
+      this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(enemy, pit)) {
           enemy.shouldExist = false;
         }
       });
     });
     
-    quicksand.forEach(function (patch, i, quicksand) {
-      if (collide(player, patch)) {
-        player.speedModifier = 0.2;
+    this.room.quicksand.forEach((patch, i, quicksand) => {
+      if (collide(this.player, patch)) {
+        this.player.speedModifier = 0.2;
       }
 
-      enemies.forEach(function (enemy, j, enemies) {
+      this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(enemy, patch)) {
           enemy.speedModifier = 0.2;
         }
       });
     });
 
-    if (enemies.length == 0) {
+    if (this.room.enemies.length == 0) {
       var doorReached = -1;
       
-      doors.forEach(function (door, i, doors) {
-        if (collide(player, door)) {
+      this.room.doors.forEach((door, i, doors) => {
+        if (collide(this.player, door)) {
           doorReached = i;
         }
       });
@@ -217,61 +207,61 @@ Game.prototype.update = function () {
       }
     }
     
-    if (now - player.lastSwitchTime > player.switchDelay) {
+    if (now - this.player.lastSwitchTime > this.player.switchDelay) {
       if (switchWeapon) {
-        if (player.currentWeapon == 'gun') {
-          player.currentWeapon = 'sword';
+        if (this.player.currentWeapon == 'gun') {
+          this.player.currentWeapon = 'sword';
         } else {
-          player.currentWeapon = 'gun';
+          this.player.currentWeapon = 'gun';
         }
 
-        player.lastSwitchTime = now;
+        this.player.lastSwitchTime = now;
       } else if (attack) {
-        if (player.currentWeapon == 'sword') {
-          if (now - player.lastMeleeTime > player.meleeDelay) {
+        if (this.player.currentWeapon == 'sword') {
+          if (now - this.player.lastMeleeTime > this.player.meleeDelay) {
             var melee = new Melee();
 
             update({
-              startTheta: player.theta - player.meleeArc / 2,
-              theta: player.theta - player.meleeArc / 2,
-              omega: player.meleeSpeed,
-              arc: player.meleeArc,
-              size: player.meleeRange,
-              width: player.meleeWidth,
-              damage: player.meleeDamage,
-              owner: player
+              startTheta: this.player.theta - this.player.meleeArc / 2,
+              theta: this.player.theta - this.player.meleeArc / 2,
+              omega: this.player.meleeSpeed,
+              arc: this.player.meleeArc,
+              size: this.player.meleeRange,
+              width: this.player.meleeWidth,
+              damage: this.player.meleeDamage,
+              owner: this.player
             }, melee);
 
-            melees.push(melee);
-            player.lastMeleeTime = now;
+            this.melees.push(melee);
+            this.player.lastMeleeTime = now;
           }
-        } else if (player.currentWeapon == 'gun') {
-          if (now - player.lastShootTime > player.shootDelay) {
+        } else if (this.player.currentWeapon == 'gun') {
+          if (now - this.player.lastShootTime > this.player.shootDelay) {
             var projectile = new Projectile();
 
             update({
-              x: player.x,
-              y: player.y,
-              vx: player.shootSpeed * -Math.cos(heading),
-              vy: player.shootSpeed * -Math.sin(heading),
-              range: player.shootRange,
-              size: player.shootSize,
-              startX: player.x,
-              startY: player.y,
-              damage: player.shootDamage
+              x: this.player.x,
+              y: this.player.y,
+              vx: this.player.shootSpeed * -Math.cos(heading),
+              vy: this.player.shootSpeed * -Math.sin(heading),
+              range: this.player.shootRange,
+              size: this.player.shootSize,
+              startX: this.player.x,
+              startY: this.player.y,
+              damage: this.player.shootDamage
             }, projectile);
 
-            projectiles.push(projectile);
-            player.lastShootTime = now;
+            this.projectiles.push(projectile);
+            this.player.lastShootTime = now;
           }
         }
       }
     }
     
-    melees.forEach(function (melee, i, melees) {
+    this.melees.forEach((melee, i, melees) => {
       melee.update(delta);
 
-      enemies.forEach(function (enemy, j, enemies) {
+      this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(melee, enemy)) {
           enemy.takeDamage(melee.damage);
         }
@@ -283,10 +273,10 @@ Game.prototype.update = function () {
       }
     });
 
-    projectiles.forEach(function (projectile, i, projectiles) {
+    this.projectiles.forEach((projectile, i, projectiles) => {
       projectile.update(delta);
 
-      enemies.forEach(function (enemy, j, enemies) {
+      this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(projectile, enemy)) {
           enemy.takeDamage(projectile.damage);
           projectile.shouldExist = false;
@@ -302,62 +292,50 @@ Game.prototype.update = function () {
   
 	this.lastFrameTime = now;
 
-  if (!player.shouldExist) {
+  if (!this.player.shouldExist) {
     this.isRunning = false;
   }
 };
 
 Game.prototype.draw = function () {
-  var drawing = this.drawing;
-  var player = this.player;
-  var enemies = this.room.enemies;
-  var melees = this.melees;
-  var projectiles = this.projectiles;
-  var quicksand = this.room.quicksand;
-  var pits = this.room.pits;
-  var rocks = this.room.rocks;
-  var doors = this.room.doors;
+  this.drawing.clear();
 
-  drawing.clear();
+  this.drawing.renderBackground();
 
-  drawing.renderBackground();
-
-  quicksand.forEach(function (patch, i, quicksand) {
-    drawing.renderPatch(patch);
+  this.room.quicksand.forEach((patch, i, quicksand) => {
+    this.drawing.renderPatch(patch);
   });
 
-  pits.forEach(function (pit, i, pits) {
-    drawing.renderPit(pit);
+  this.room.pits.forEach((pit, i, pits) => {
+    this.drawing.renderPit(pit);
   });
 
-  rocks.forEach(function (rock, i, rocks) {
-    drawing.renderRock(rock);
+  this.room.rocks.forEach((rock, i, rocks) => {
+    this.drawing.renderRock(rock);
   });
 
-  enemies.forEach(function (enemy, i, enemies) {
-    drawing.renderEnemy(enemy);
+  this.room.enemies.forEach((enemy, i, enemies) => {
+    this.drawing.renderEnemy(enemy);
   });
 
-  melees.forEach(function (melee, i, melees) {
-    drawing.renderMelee(melee);
+  this.melees.forEach((melee, i, melees) => {
+    this.drawing.renderMelee(melee);
   });
 
-  projectiles.forEach(function (projectile, i, projectiles) {
-    drawing.renderProjectile(projectile);
+  this.projectiles.forEach((projectile, i, projectiles) => {
+    this.drawing.renderProjectile(projectile);
   });
 
-  doors.forEach(function (door, i, doors) {
-    drawing.renderDoor(door);
+  this.room.doors.forEach((door, i, doors) => {
+    this.drawing.renderDoor(door);
   });
   
-  drawing.renderPlayer(player);
+  this.drawing.renderPlayer(this.player);
 };
 
 Game.prototype.animate = function () {
-  var context = this;
-  
-  this.animationFrameId = window.requestAnimationFrame(function () {
-    context.run();
+  this.animationFrameId = window.requestAnimationFrame(() => {
+    this.run();
   });
 };
 
