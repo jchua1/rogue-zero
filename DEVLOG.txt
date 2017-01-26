@@ -3,7 +3,9 @@
 	Began death sequence and database clearing
 
 2017-01-25 - jchua
+	Modified door spawning to make doors spawn on all 4 sides.
 	Added conditionals to make sure terrain doesn't spawn on player or doors.
+	Styling.
 
 2017-01-25 - nng
 	Modified saving levels and differentiating loading and saving levels
