@@ -17,7 +17,7 @@ def game():
                          healthCost=upgrades.cost(0),
                          healthNewSkill= upgrades.health(0+1),
                          speedOldSkill = upgrades.speed(0),
-                         speedCost=upgradesspeed.cost(0),
+                         speedCost=upgrades.cost(0),
                          speedNewSkill= upgrades.speed(0+1),
                          atkspdOldSkill = upgrades.shootSpeed(0),
                          atkspdCost=upgrades.cost(0),
@@ -30,7 +30,7 @@ def game():
                          meleedmgNewSkill= upgrades.meleeDamage(0+1),
                          meleesizeOldSkill = upgrades.meleeRange(0),
                          meleeSizeCost=upgrades.cost(0),
-                         meleesizeNewSkill= upgrades.meleeRange(+1)
+                         meleesizeNewSkill= upgrades.meleeRange(0+1)
                          )
 
 @socketio.on('get_room')
@@ -39,7 +39,7 @@ def sendRoom():
   emit('new_room', room)
 
 @socketio.on('upgradePlayers')
-def upgrades(data):
+def notUpgrades(data):
   skills = data['upgrades']
   print skills
   
