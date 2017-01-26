@@ -129,10 +129,15 @@ Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
 
   if (!this.player.shouldExist) {
-      this.socket.emit('player_death');
-      this.socket.on('redirect', (data) => {
-	  window.location.href = data.destination + '?score=' + this.player.score;
-      });
+    if (this.player.score > this.player.highScore) {
+      this.player.highScore = this.player.score;
+    }
+    
+    this.socket.emit('player_death');
+    this.socket.on('redirect', (data) => {
+	    window.location.href = data.destination + '?score=' + this.player.score +
+        '&highScore=' + this.player.highScore;
+    });
   }
   
   if (this.lastFrameTime != 0) {

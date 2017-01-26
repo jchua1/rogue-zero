@@ -25,6 +25,7 @@ function Player() {
   this.weapons = [];
   this.currentWeapon = 0;
   this.score = 0;
+  this.highScore = 0;
   this.defaultAttributes = [];
 }
 

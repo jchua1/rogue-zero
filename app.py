@@ -88,7 +88,7 @@ def playerDeath():#clears user info in database
 
 @app.route('/death/')
 def death():
-  return render_template('death.html', score = request.args['score'])
+  return render_template('death.html', score = request.args['score'], highScore = request.args['highScore'])
   
 @socketio.on('save_room')
 def saveRoom(data):
