@@ -1,3 +1,6 @@
+2017-01-26 - kli
+	Finished project.
+
 2017-01-26 - nng
 	Minor aesthetic tweaks
 	Began death sequence and database clearing
