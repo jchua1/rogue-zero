@@ -1,5 +1,7 @@
 # Rogue Zero
 
+## Video Link - https://youtu.be/FTL-X6PmUqA
+
 ## Overview
 Rogue Zero is a roguelike game, or a single player RPG/dungeon crawler. The objective is to kill the monsters and move from room to room, trying to last as long as you can. The rooms are randomly generated, as are the monsters.
 
