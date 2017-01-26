@@ -17,6 +17,8 @@ MAX_PATCH_SIZE = 75
 MAX_ROCKS = 10
 MIN_ROCK_SIZE = 25
 MAX_ROCK_SIZE = 100
+MIN_ENEMIES = 0
+MAX_ENEMIES = 10
 
 MIN_ENEMY_HEALTH = 5
 MAX_ENEMY_HEALTH = 50
@@ -60,7 +62,7 @@ class Room:
     self.enemies = []
 
 
-    for i in range(random.randrange(10)):
+    for i in range(random.randrange(MIN_ENEMIES, MAX_ENEMIES + 1)):
       self.enemies.append(Enemy())
 
   def generatePlayer(self, x, y, health, maxHealth, speed, size, switchDelay,
@@ -78,7 +80,8 @@ class Room:
         'x': DOOR_POSITIONS[i][0],
         'y': DOOR_POSITIONS[i][1],
         'size': DOOR_SIZE,
-        'side': i
+        'side': i,
+        'link': -1
       })
     
   def generateObstacles(self):
@@ -86,15 +89,15 @@ class Room:
     self.quicksand = []
     self.pits = []
     
-    rocks = random.randrange(MAX_ROCKS)
-    quicksand = random.randrange(MAX_PATCHES)
-    pits = random.randrange(MAX_PITS)
+    rocks = random.randrange(MAX_ROCKS + 1)
+    quicksand = random.randrange(MAX_PATCHES + 1)
+    pits = random.randrange(MAX_PITS + 1)
 
     for i in range(rocks):
       while True:
-        size = random.randrange(MIN_ROCK_SIZE, MAX_ROCK_SIZE)
-        x = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size)
-        y = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size)
+        size = random.randrange(MIN_ROCK_SIZE, MAX_ROCK_SIZE + 1)
+        x = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size + 1)
+        y = random.randrange(2 * size + BORDER_SIZE, ROOM_SIZE + BORDER_SIZE - 2 * size + 1)
 
         test = True
 
@@ -115,17 +118,17 @@ class Room:
 
     for i in range(quicksand):
       self.quicksand.append({
-        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
-        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
-        'size': random.randrange(MIN_PATCH_SIZE, MAX_PATCH_SIZE),
+        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
+        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
+        'size': random.randrange(MIN_PATCH_SIZE, MAX_PATCH_SIZE + 1),
         'type': 'quicksand'
       })
 
     for i in range(pits):
       self.pits.append({
-        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
-        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE),
-        'size': random.randrange(MIN_PIT_SIZE, MAX_PIT_SIZE),
+        'x': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
+        'y': random.randrange(BORDER_SIZE, CANVAS_SIZE - BORDER_SIZE + 1),
+        'size': random.randrange(MIN_PIT_SIZE, MAX_PIT_SIZE + 1),
         'type': 'pit'
       })
 
@@ -155,15 +158,15 @@ class Entity(object):
 
 class Enemy(Entity):
   def __init__(self):
-    health = random.randrange(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH)
-    attack = random.randrange(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK)
-    speed = random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED)
+    health = random.randrange(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH + 1)
+    attack = random.randrange(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK + 1)
+    speed = random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED + 1)
     size = health
     
     super(Enemy, self).__init__(random.randrange(BORDER_SIZE + size,
-                                                 CANVAS_SIZE - BORDER_SIZE - size),
+                                                 CANVAS_SIZE - BORDER_SIZE - size + 1),
                                 random.randrange(BORDER_SIZE + size,
-                                                 CANVAS_SIZE - BORDER_SIZE - size),
+                                                 CANVAS_SIZE - BORDER_SIZE - size + 1),
                                 health, health, speed, size)
     self.attack = attack
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
 	<link href="https://fonts.googleapis.com/css?family=Kumar+One" rel="stylesheet">
-	<script src="../static/bootstrap/js/jquery.min.js"></script>
-	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/static/bootstrap/js/jquery.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -30,15 +30,15 @@
 		<div id="collapse1" class="panel-collapse collapse in">
 		  <div class="panel-body">
 		  <!-- Login-->
-			<form class="form" action="/authenticate/" method="POST">
+			<form class="form" action="/login/" method="POST">
 			<div class="form-group">
-			  <input type="text" name="user" class="form-control" placeholder="Username">
+			  <input type="text" name="username" class="form-control" placeholder="Username">
 			</div>
 			
 			<br>
 			
 			<div class="form-group">
-			  <input type="password" name="pass" class="form-control" placeholder="Password">
+			  <input type="password" name="password" class="form-control" placeholder="Password">
 			</div>
 
 			<div class="form-group">
@@ -61,17 +61,17 @@
 		  <!-- Register-->
 			<form class="form" action="/register/" method="post">
 			<div class="form-group">
-			  <input type="text" name="user" class="form-control" placeholder="Username">
+			  <input type="text" name="username" class="form-control" placeholder="Username">
 			</div>
 			
 			<br>
 			
 			<div class="form-group">
-			  <input type="password" name="pass" class="form-control" placeholder="Password">
+			  <input type="password" name="password" class="form-control" placeholder="Password">
 			</div>
 			
 			<div class="form-group">
-			  <input type="password" name="passconf" class="form-control" placeholder="Confirm Password">
+			  <input type="password" name="confirm" class="form-control" placeholder="Confirm Password">
 			</div>
 			
 			<div class="form-group">

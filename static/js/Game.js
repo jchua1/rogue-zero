@@ -8,6 +8,8 @@ function Game(socket, drawing) {
   this.isRunning = false;
   this.animationFrameId = 0;
 	this.lastFrameTime = 0;
+  this.exitDoor = -1;
+  this.defaultAttributes = [];
 }
 
 Game.create = function (socket, canvasElement) {
@@ -27,9 +29,21 @@ Game.prototype.init = function () {
   });
 };
 
-Game.prototype.receiveRoom = function (room) {
-  update(room, this);
+Game.prototype.receiveRoom = function (data) {
+  this.reset();
+  update(data, this);
   this.player = cast(this.player, Player);
+
+  console.log(this);
+  this.room.defaultAttributes = [];
+  
+  for (key in data.room) {
+    this.room.defaultAttributes.push(key);
+  }
+  
+  for (key in data.player) {
+    this.player.defaultAttributes.push(key);
+  }  
 
   this.room.enemies.forEach((enemy, i, enemies) => {
     enemies[i] = cast(enemy, Enemy);
@@ -57,15 +71,34 @@ Game.prototype.reset = function () {
   this.room = {};
   this.projectiles = [];
   this.melees = [];
+  this.exitDoor = -1;
 };
 
 Game.prototype.saveRoom = function () {
-  console.log('saving...');
+  var player = {};
+  var room = {};
+
+  for (var key in this.room) {
+    if (this.room.defaultAttributes.includes(key)) {
+      room[key] = this.room[key];
+    }
+  }
   
-  this.socket.emit('save_room', {
-    player: this.player,
-    room: this.room
-  });
+  for (var key in this.player) {
+    if (this.player.defaultAttributes.includes(key)) {
+      player[key] = this.player[key];
+    }
+  }
+
+  var packet = {
+    player: player,
+    room: room,
+    exitDoor: this.exitDoor
+  };
+
+  console.log(packet);
+  
+  this.socket.emit('save_room', packet);
 };
 
 Game.prototype.update = function () {
@@ -186,15 +219,13 @@ Game.prototype.update = function () {
     });
 
     if (this.room.enemies.length == 0) {
-      var doorReached = -1;
-      
       this.room.doors.forEach((door, i, doors) => {
         if (collide(this.player, door)) {
-          doorReached = i;
+          this.exitDoor = i;
         }
       });
 
-      if (doorReached >= 0) {
+      if (this.exitDoor != -1) {
         this.saveRoom();
         this.stop();
       }
