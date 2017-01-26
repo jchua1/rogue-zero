@@ -37,7 +37,7 @@ shootSpeedLevel=0
 meleeDmgLevel=0
 meleeRangeLevel=0
 
-class Level:
+class Room:
   def __init__(self, seed):
     random.seed(seed)
     self.generateEnemies()

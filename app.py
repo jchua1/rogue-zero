@@ -18,26 +18,26 @@ def newPlayer(data):
   name = data['name']
   print 'new player %s connected' % name
 
-  emit('new_level', getLevel())
+  emit('new_room', getRoom())
 
 
-@socketio.on('get_level')
-def sendLevel(data = {}):
+@socketio.on('get_room')
+def sendRoom(data = {}):
   seed = None
   
   if 'seed' in data:
     seed = data['seed']
 
-  print 'generating level with seed %s' % seed
-  emit('new_level', getLevel(seed))
+  print 'generating room with seed %s' % seed
+  emit('new_room', getRoom(seed))
 
-def getLevel(seed = None):
-  newLevel = level.Level(seed).asDict()
-  print newLevel
-  return newLevel
+def getRoom(seed = None):
+  newRoom = level.Room(seed).asDict()
+  print newRoom
+  return newRoom
 
-@socketio.on('save_level')
-def saveLevel(data):
+@socketio.on('save_room')
+def saveRoom(data):
   player = data['player']
   room = data['room']
   #save.door(player, room, session['username'])

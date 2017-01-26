@@ -23,13 +23,14 @@ Game.create = function (socket, canvasElement) {
 Game.prototype.init = function () {
   var context = this;
   
-  this.socket.on('new_level', function (data) {
-    context.receiveLevel(data);
+  this.socket.on('new_room', function (data) {
+    context.receiveRoom(data);
+    context.start();
   });
 };
 
-Game.prototype.receiveLevel = function (level) {
-  update(level, this);
+Game.prototype.receiveRoom = function (room) {
+  update(room, this);
   this.player = cast(this.player, Player);
 
   this.room.enemies.forEach(function (enemy, i, enemies) {
@@ -53,13 +54,25 @@ Game.prototype.receiveLevel = function (level) {
   });
 };
 
-Game.prototype.saveLevel = function () {
+Game.prototype.reset = function () {
+  this.player = {};
+  this.room = {};
+  this.projectiles = [];
+  this.melees = [];
+};
+
+Game.prototype.saveRoom = function () {
   console.log('saving...');
   
-  this.socket.emit('save_level', {
+  this.socket.emit('save_room', {
     player: this.player,
     room: this.room
   });
+};
+
+Game.prototype.nextRoom = function () {
+  this.isRunning = false;
+  this.reset();
 };
 
 Game.prototype.update = function () {
@@ -200,7 +213,7 @@ Game.prototype.update = function () {
       });
 
       if (doorReached >= 0) {
-        this.saveLevel();
+        this.saveRoom();
       }
     }
     
