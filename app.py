@@ -13,24 +13,24 @@ def run():
 @app.route('/game/')
 def game():
   return render_template('game.html',
-                         healthOldSkill = upgrade.health(),
-                         healthCost=upgrade.cost(),
-                         healthNewSkill= upgrade.health(+1),
-                         speedOldSkill = upgrade.speed(),
-                         speedCost=speed.cost(),
-                         speedNewSkill= upgrade.speed(+1),
-                         atkspdOldSkill = upgrade.shootSpeed(),
-                         atkspdCost=upgrade.cost(),
-                         atkspdNewSkill= upgrade.shootSpeed(+1),
-                         shootdmgOldSkill = upgrade.health(),
-                         shootdmgCost=upgrade.cost(),
-                         shootdmgNewSkill= upgrade.shootDamage(+1),
-                         meleedmgOldSkill = upgrade.meleeDamage(),
-                         meleedmgCost=upgrade.cost(),
-                         meleedmgNewSkill= upgrade.meleeDamage(+1),
-                         meleesizeOldSkill = upgrade.meleeRange(),
-                         meleeSizeCost=upgrade.cost(),
-                         meleesizeNewSkill= upgrade.meleeRange(+1)
+                         healthOldSkill = upgrades.health(0),
+                         healthCost=upgrades.cost(0),
+                         healthNewSkill= upgrades.health(0+1),
+                         speedOldSkill = upgrades.speed(0),
+                         speedCost=upgradesspeed.cost(0),
+                         speedNewSkill= upgrades.speed(0+1),
+                         atkspdOldSkill = upgrades.shootSpeed(0),
+                         atkspdCost=upgrades.cost(0),
+                         atkspdNewSkill= upgrades.shootSpeed(0+1),
+                         shootdmgOldSkill = upgrades.health(0),
+                         shootdmgCost=upgrades.cost(0),
+                         shootdmgNewSkill= upgrades.shootDamage(0+1),
+                         meleedmgOldSkill = upgrades.meleeDamage(0),
+                         meleedmgCost=upgrades.cost(0),
+                         meleedmgNewSkill= upgrades.meleeDamage(0+1),
+                         meleesizeOldSkill = upgrades.meleeRange(0),
+                         meleeSizeCost=upgrades.cost(0),
+                         meleesizeNewSkill= upgrades.meleeRange(+1)
                          )
 
 @socketio.on('get_room')
