@@ -15,7 +15,8 @@ def game():
 
 @socketio.on('get_room')
 def sendRoom():
-  emit('new_room', getRoom())
+  room = getRoom()
+  emit('new_room', room)
 
 def getRoom():
   newRoom = level.Room().asDict()
