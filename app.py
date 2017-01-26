@@ -12,7 +12,26 @@ def run():
 
 @app.route('/game/')
 def game():
-  return render_template('game.html')
+  return render_template('game.html',
+                         healthOldSkill = upgrade.health(),
+                         healthCost=upgrade.cost(),
+                         healthNewSkill= upgrade.health(+1),
+                         speedOldSkill = upgrade.speed(),
+                         speedCost=speed.cost(),
+                         speedNewSkill= upgrade.speed(+1),
+                         atkspdOldSkill = upgrade.shootSpeed(),
+                         atkspdCost=upgrade.cost(),
+                         atkspdNewSkill= upgrade.shootSpeed(+1),
+                         shootdmgOldSkill = upgrade.health(),
+                         shootdmgCost=upgrade.cost(),
+                         shootdmgNewSkill= upgrade.shootDamage(+1),
+                         meleedmgOldSkill = upgrade.meleeDamage(),
+                         meleedmgCost=upgrade.cost(),
+                         meleedmgNewSkill= upgrade.meleeDamage(+1),
+                         meleesizeOldSkill = upgrade.meleeRange(),
+                         meleeSizeCost=upgrade.cost(),
+                         meleesizeNewSkill= upgrade.meleeRange(+1)
+                         )
 
 @socketio.on('get_room')
 def sendRoom():
