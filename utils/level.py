@@ -2,7 +2,7 @@ import random
 import math
 import upgrades
 
-ROOM_SIZE = 800
+ROOM_SIZE = 600
 BORDER_SIZE = 50
 CANVAS_SIZE = ROOM_SIZE + 2 * BORDER_SIZE
 
