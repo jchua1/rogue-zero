@@ -329,9 +329,6 @@ Game.prototype.update = function () {
   
 	this.lastFrameTime = now;
 
-  if (!this.player.shouldExist) {
-    this.isRunning = false;
-  }
 };
 
 Game.prototype.draw = function () {
