@@ -1,15 +1,147 @@
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>
-			Rogue Zero
-		</title>
+		<title>Rogue Zero</title>
 		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'css/index.css')}}">
+		<link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+		<script src="../static/bootstrap/js/jquery.min.js"></script>
+		<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 	</head>
 	<body>
+	  <!------------------ GAME STUFF ---------------------->
 		<div id="container">
 			<canvas id="canvas" oncontextmenu="return false;">
 			</canvas>
 		</div>
+		<script src="static/js/socket.io.js"></script>
+		<script src="static/js/Constants.js"></script>
+		<script src="static/js/Util.js"></script>
+		<script src="static/js/Game.js"></script>
+		<script src="static/js/Drawing.js"></script>
+		<script src="static/js/Input.js"></script>
+		<script src="static/js/Entity.js"></script>
+		<script src="static/js/Player.js"></script>
+		<script src="static/js/Enemy.js"></script>
+		<script src="static/js/Melee.js"></script>
+		<script src="static/js/Projectile.js"></script>
+		<script src="static/js/Obstacle.js"></script>
+		<script src="static/js/client.js"></script>
+
+		<!---------- END OF GAME STUFF ------------------------->
+
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		
+		<!-------------- UPGRADES STUFF ----------------------->
+		<div>
+		  <div class="col-md-7">
+		    
+		    <table id="skillTable">
+		      
+		      <tr class="skills" id="health">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="acost">{{healthCost}}</p>
+			</td>
+			<td class="newUpgrade" id="a">
+			  {{newSkill}}
+			</td>
+		      </tr>
+
+		      <tr class="skills" id="speed">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="bcost">{{speedCost}}</p>
+			</td>
+			<td class="newUpgrade" id="b">
+			  {{newSkill}}
+			</td>
+		      </tr>
+		      
+		      <tr class="skills" id="attackSpeed">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="ccost">{{atkSpdCost}}</p>
+			</td>
+			<td class="newUpgrade" id="c">
+			  {{newSkill}}
+			</td>
+		      </tr>
+
+		      <tr class="skills" id="shootDamage">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="dcost">{{ShootDmgcost}}</p>
+			</td>
+			<td class="newUpgrade" id="d">
+			  {{newSkill}}
+			</td>
+		      </tr>
+
+		      <tr class="skills" id="meleeDmg">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="ecost">{{meleeDmgcost}}</p>
+			</td>
+			<td class="newUpgrade" id="e">
+			  {{newSkill}}
+			</td>
+		      </tr>
+
+		      <tr class="skills" id="meleeSize">
+			<td class="oldUpgrade">
+			  {{oldSkill}}
+			</td>
+			<td class="arrow">
+			  <img src="arrow.png"> 
+			  <br>
+			  <p id="fcost">{{meleeSizeCost}}</p>
+			</td>
+			<td class="newUpgrade" id="f">
+			  {{newSkill}}
+			</td>
+		      </tr>
+		      
+		    </table>
+		    
+		  </div>
+
+		  <div class="col-md-5">
+		    <h1>Character Color</h1>
+		    <input type="color" name="charColor" onchange="clickColor(0,-1,-1,5)" value="#ff0000" style="width:25%; height:100px;">
+		    <br>
+		    <h2>Skill Points:</h2>
+		    <p id="exp">{{skillPoints}}</p>
+		    <br>
+		    <br>
+		    <button type="button" class="btn btn-primary" id="confirm"> Confirm </button> 
+		  </div>
+		  
+		  <script type="text/javascript" src="../static/js/upgrades.js"> </script>
+		</div>
+		
+		<!-------------- END OF UPGRADE STUFF ----------------->
+		
 		<script src="/static/js/socket.io.js"></script>
 		<script src="/static/js/Constants.js"></script>
 		<script src="/static/js/Util.js"></script>
