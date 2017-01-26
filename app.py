@@ -84,8 +84,12 @@ def playerDeath():#clears user info in database
   db.initDB()
   db.reset(session['username'])
   db.closeDB()
-  return render_template('death.html')
+  emit('redirect', {'destination': '/death/'})
 
+@app.route('/death/')
+def death():
+  return render_template('death.html', score = request.args['score'])
+  
 @socketio.on('save_room')
 def saveRoom(data):
   db.initDB()

@@ -129,7 +129,10 @@ Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
 
   if (!this.player.shouldExist) {
-    this.socket.emit('player_death');
+      this.socket.emit('player_death');
+      this.socket.on('redirect', (data) => {
+	  window.location.href = data.destination + '?score=' + this.player.score;
+      });
   }
   
   if (this.lastFrameTime != 0) {
