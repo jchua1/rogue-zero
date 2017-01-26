@@ -7,7 +7,7 @@
 	</head>
 	<body>
 	  <!------------------ GAME STUFF ---------------------->
-		<div id="container">
+		<div class="container-md-7"id="container">
 			<canvas id="canvas" oncontextmenu="return false;">
 			</canvas>
 		</div>
@@ -32,11 +32,11 @@
 
 		<!---------- END OF GAME STUFF ------------------------->
 
-		<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
 		
 		<!-------------- UPGRADES STUFF ----------------------->
 		<div>
-		  <div class="col-md-7">
+		  <div class="col-md-5">
 		    
 		    <table id="skillTable">
 		      
@@ -56,7 +56,7 @@
 
 		      <tr class="skills" id="speed">
 			<td class="oldUpgrade">
-			  {{SpeedOldSkill}}
+			  {{speedOldSkill}}
 			</td>
 			<td class="arrow">
 			  <img src="/static/img/arrow.png"> 
@@ -128,7 +128,8 @@
 		    
 		  </div>
 
-		  <div class="col-md-5">
+		  <br>
+		  <center>
 		    <h1>Character Color</h1>
 		    <input type="color" name="charColor" onchange="clickColor(0,-1,-1,5)" value="#ff0000" style="width:25%; height:100px;">
 		    <br>
@@ -137,7 +138,7 @@
 		    <br>
 		    <br>
 		    <button type="button" class="btn btn-primary" id="confirm"> Confirm </button> 
-		  </div>
+		  </center>
 		  
 		  <script type="text/javascript" src="../static/js/upgrades.js"> </script>
 		</div>
