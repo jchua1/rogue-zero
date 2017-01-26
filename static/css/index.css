@@ -32,13 +32,13 @@
 #deathTitle{
     font-family: 'Press Start 2P', cursive;
     font-size: 60px;
-    font-color:white;
+    color:white;
 }
 
 .ded{
     font-family: 'Press Start 2P', cursive;
     font-size: 20px;
-    font-color:white;
+    color:white;
 }
 
 #canvas:hover{

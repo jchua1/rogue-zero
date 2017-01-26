@@ -80,15 +80,34 @@ def sendRoom():
   # print skills
 
 @socketio.on('player_death')
-def playerDeath():#clears user info in database
+def playerDeath(data):#clears user info in database
   db.initDB()
-  db.reset(session['username'])
+  username = session['username']
+  userID = db.getUserID(username)
+  highScore = db.getHighScore(userID)
+
+  print data['score']
+  print highScore
+  
+  if data['score'] > highScore:
+    db.setHighScore(userID, data['score'])
+  
+  db.reset(userID)
+
   db.closeDB()
   emit('redirect', {'destination': '/death/'})
 
 @app.route('/death/')
 def death():
-  return render_template('death.html', score = request.args['score'], highScore = request.args['highScore'])
+  if isLoggedIn():
+    db.initDB()
+    username = session['username']
+    userID = db.getUserID(username)
+    highScore = db.getHighScore(userID)
+  
+    return render_template('death.html', score = request.args['score'], highScore = highScore)
+  else:
+    return redirect(url_for('root'))
   
 @socketio.on('save_room')
 def saveRoom(data):

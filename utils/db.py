@@ -7,7 +7,7 @@ c = None
 db = None
 
 def createDB():
-  c.execute('CREATE TABLE IF NOT EXISTS users (user_id INTEGER, username TEXT, passhash TEXT, current_room INTEGER, player_info TEXT);')
+  c.execute('CREATE TABLE IF NOT EXISTS users (user_id INTEGER, username TEXT, passhash TEXT, current_room INTEGER, high_score INTEGER, player_info TEXT);')
   c.execute('CREATE TABLE IF NOT EXISTS rooms (user_id INTEGER, room_id INTEGER, room_info TEXT)')
 
 def initDB():
@@ -28,10 +28,17 @@ def getUserID(username):
 
   return userID
 
-def reset(username):
-  userID = getUserID(username)
+def reset(userID):
   c.execute('DELETE FROM rooms WHERE user_id =?',(userID,))
-  c.execute('UPDATE users SET current_room = 0, player_info = \'\' WHERE user_id=?',(userID,))
+  c.execute('UPDATE users SET current_room = 0 WHERE user_id=?',(userID,))
+
+def getHighScore(userID):
+  c.execute('SELECT high_score FROM users WHERE user_id=?', (userID,))
+  highScore = c.fetchone()[0]
+  return highScore
+  
+def setHighScore(userID, score):
+  c.execute('UPDATE users SET high_score=? WHERE user_id=?', (score, userID))
 
 def getCurrentRoomID(userID):
   c.execute('SELECT current_room FROM users WHERE user_id=?', (userID,))
@@ -114,8 +121,8 @@ def register(username, password, confirm):
     return 'Username and password must be different.', -1
   else:
     userID = nextUserID()
-    c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?)',
-              (userID, username, hashlib.sha256(password).hexdigest(), 0, ''))
+    c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+              (userID, username, hashlib.sha256(password).hexdigest(), 0, 0, ''))
     return 'Registered successfully!', 0
       
 def isRegistered(username):

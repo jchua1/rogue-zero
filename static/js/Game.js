@@ -133,7 +133,9 @@ Game.prototype.update = function () {
       this.player.highScore = this.player.score;
     }
     
-    this.socket.emit('player_death');
+    this.socket.emit('player_death', {
+      score: this.player.score
+    });
     this.socket.on('redirect', (data) => {
 	    window.location.href = data.destination + '?score=' + this.player.score +
         '&highScore=' + this.player.highScore;
