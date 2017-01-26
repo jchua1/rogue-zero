@@ -8,6 +8,7 @@ Constants.CANVAS_SIZE = Constants.ROOM_SIZE + 2 * Constants.BORDER_SIZE;
 
 Constants.BACKGROUND_BORDER = 'black';
 Constants.BACKGROUND_COLOR = 'white';
+Constants.UI_TEXT_COLOR = 'white';
 
 Constants.PLAYER_COLOR = '#00AA00';
 Constants.PLAYER_INVINCIBLE = '#ffe991';
@@ -21,9 +22,11 @@ Constants.MELEE_COLOR = '#e6f7ff';
 Constants.HEALTH_HEIGHT = 8;
 
 Constants.GROUND_COLOR = '#d9c8bf';
-Constants.ROCK_COLOR = 'grey';
+Constants.ROCK_COLOR = 'gray';
 Constants.PIT_COLOR = 'black';
 Constants.QUICKSAND_COLOR = '#ffbf80';
+Constants.DOOR_CLOSED_COLOR = '#aaaaaa';
+Constants.DOOR_OPEN_COLOR = 'brown';
 
 Constants.PLAYER_QUICKSAND_MODIFIER = 0.2;
 Constants.ENEMY_QUICKSAND_MODIFIER = 0.5;

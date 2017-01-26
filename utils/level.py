@@ -8,18 +8,21 @@ CANVAS_SIZE = ROOM_SIZE + 2 * BORDER_SIZE
 
 PLAYER_SIZE = 15
 DOOR_SIZE = 15
+
 MAX_PITS = 5
 MIN_PIT_SIZE = 15
 MAX_PIT_SIZE = 50
+
 MAX_PATCHES = 15
 MIN_PATCH_SIZE = 25
 MAX_PATCH_SIZE = 75
+
 MAX_ROCKS = 10
 MIN_ROCK_SIZE = 25
 MAX_ROCK_SIZE = 100
-MIN_ENEMIES = 0
-MAX_ENEMIES = 10
 
+MIN_ENEMIES = 0
+MAX_ENEMIES = 1
 MIN_ENEMY_HEALTH = 5
 MAX_ENEMY_HEALTH = 50
 MIN_ENEMY_SPEED = 15
@@ -88,7 +91,8 @@ class Room:
       'meleeWidth': meleeWidth,
       'meleeArc': meleeArc,
       'meleeSpeed': meleeSpeed,
-      'meleeDelay': meleeDelay
+      'meleeDelay': meleeDelay,
+      'currentWeapon': 0
     })
 
   def generateDoors(self):
@@ -181,7 +185,7 @@ class Room:
           test = False
 
         for door in DOOR_POSITIONS:
-          if (pit_x - door[0]) ** 2 + (pit_y - door[1]) ** 2 <= (pit_size + DOOR_SIZE) ** 2:
+          if (pit_x - door[0]) ** 2 + (pit_y - door[1]) ** 2 <= (pit_size + 2 * DOOR_SIZE) ** 2:
             test = False
             break
             
@@ -251,5 +255,5 @@ class Player(Entity):
     self.meleeSpeed = player['meleeSpeed']
     self.meleeDelay = player['meleeDelay']
     self.weapons = ['gun', 'sword']
-    self.currentWeapon = 0
+    self.currentWeapon = player['currentWeapon']
 

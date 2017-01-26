@@ -31,16 +31,19 @@ Game.prototype.init = function () {
 };
 
 Game.prototype.receiveRoom = function (data) {
+  console.log(data);
+  console.log(data.room.enemies);
   this.reset();
   update(data, this);
   this.player = cast(this.player, Player);
+  console.log(this.room.enemies);
 
   this.room.defaultAttributes = [];
   
   for (key in data.room) {
     this.room.defaultAttributes.push(key);
   }
-  
+
   for (key in data.player) {
     this.player.defaultAttributes.push(key);
   }  
@@ -51,18 +54,22 @@ Game.prototype.receiveRoom = function (data) {
 
   this.room.rocks.forEach((rock, i, rocks) => {
     rocks[i] = cast(rock, Obstacle);
+    rocks[i].color = Constants.ROCK_COLOR;
   });
 
   this.room.quicksand.forEach((patch, i, quicksand) => {
     quicksand[i] = cast(patch, Obstacle);
+    quicksand[i].color = Constants.QUICKSAND_COLOR;
   });
   
   this.room.pits.forEach((pit, i, pits) => {
     pits[i] = cast(pit, Obstacle);
+    pits[i].color = Constants.PIT_COLOR;
   });
 
   this.room.doors.forEach((door, i, doors) => {
     doors[i] = cast(door, Obstacle);
+    doors[i].color = Constants.DOOR_COLOR;
   });
 };
 
@@ -84,12 +91,28 @@ Game.prototype.saveRoom = function () {
       room[key] = this.room[key];
     }
   }
-  
+
   for (var key in this.player) {
     if (this.player.defaultAttributes.includes(key)) {
       player[key] = this.player[key];
     }
   }
+
+  this.room.pits.forEach((pit) => {
+    delete pit.color;
+  });
+  
+  this.room.quicksand.forEach((patch) => {
+    delete patch.color;
+  });
+
+  this.room.rocks.forEach((rock) => {
+    delete rock.color;
+  });
+
+  this.room.doors.forEach((door) => {
+    delete door.color;
+  });
 
   var packet = {
     player: player,
@@ -185,12 +208,12 @@ Game.prototype.update = function () {
       });
     });
 
+    this.player.update(delta);
+    
     this.player.x = bound(this.player.x, this.player.size + Constants.BORDER_SIZE,
                           Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size);
     this.player.y = bound(this.player.y, this.player.size + Constants.BORDER_SIZE,
                           Constants.CANVAS_SIZE - Constants.BORDER_SIZE - this.player.size);
-
-    this.player.update(delta);
 
     this.room.pits.forEach((pit, i, pits) => {
       if (collide(this.player, pit)) {
@@ -219,15 +242,23 @@ Game.prototype.update = function () {
     var onDoor = false;
     
     this.room.doors.forEach((door, i, doors) => {
+      var open = false;
+      
+      if (this.room.enemies.length == 0) {
+        open = true;
+      }
+      
       if (collide(this.player, door)) {
         onDoor = true;
         
         if (this.canEnterDoor) {
-          if (this.room.enemies.length == 0) {
+          if (open) {
             this.exitDoor = i;
           }
         }
-      } 
+      }
+
+      door.color = open ? Constants.DOOR_OPEN_COLOR : Constants.DOOR_CLOSED_COLOR;
     });
 
     if (!onDoor) {
@@ -235,8 +266,8 @@ Game.prototype.update = function () {
     }
 
     if (this.exitDoor != -1) {
-      this.saveRoom();
       this.stop();
+      this.saveRoom();
     }
     
     if (now - this.player.lastSwitchTime > this.player.switchDelay) {
@@ -244,7 +275,6 @@ Game.prototype.update = function () {
         this.player.currentWeapon = (this.player.currentWeapon + 1) % this.player.weapons.length;
         this.player.lastSwitchTime = now;
       } else if (attack) {
-        console.log(this.player.weapons + ' ' + this.player.currentWeapon);
         if (this.player.weapons[this.player.currentWeapon] == 'sword') {
           if (now - this.player.lastMeleeTime > this.player.meleeDelay) {
             var melee = new Melee();
@@ -328,10 +358,6 @@ Game.prototype.update = function () {
   }
   
 	this.lastFrameTime = now;
-
-  if (!this.player.shouldExist) {
-    this.isRunning = false;
-  }
 };
 
 Game.prototype.draw = function () {
@@ -368,6 +394,8 @@ Game.prototype.draw = function () {
   });
   
   this.drawing.renderPlayer(this.player);
+
+  this.drawing.renderUI(this.player);
 };
 
 Game.prototype.animate = function () {

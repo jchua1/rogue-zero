@@ -2,6 +2,7 @@ from flask import Flask, session, request, url_for, redirect, render_template, f
 from flask_socketio import SocketIO, send, emit
 from utils import level, util, db#, upgrades
 import json
+from pprint import pprint
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -54,10 +55,11 @@ def sendRoom():
   db.initDB()
   username = session['username']
   userID = db.getUserID(username)
-  roomID = db.maxRoomID(userID)
+  roomID = db.getCurrentRoomID(userID)
+  maxID = db.maxRoomID(userID)
   room = None
-  
-  if roomID == -1:
+
+  if roomID > maxID:
     print 'room does not exist'
     room = level.Room().asDict()
     db.createNewRoom(userID, roomID, room['room'])
@@ -68,6 +70,8 @@ def sendRoom():
       'room': db.getRoom(userID, roomID)
     };
 
+  pprint(room)
+  db.closeDB()
   emit('new_room', room)
 
 # @socketio.on('upgradePlayers')
@@ -87,15 +91,17 @@ def saveRoom(data):
 
   currentRoomID = db.getCurrentRoomID(userID)
   nextRoomID = currentRoom['doors'][exitDoor]['link']
+  maxRoomID = db.maxRoomID(userID)
+  # pprint(currentRoom)
   nextRoom = None
 
   newPosition = level.DOOR_POSITIONS[(exitDoor + 2) % 4]
   player['x'] = newPosition[0]
   player['y'] = newPosition[1]
-  
+
   if nextRoomID == -1: #entirely new room
     nextRoomID = db.nextRoomID(userID)
-    print 'generating new room with id %d' % nextRoomID
+    print 'generating new room with id %d from room %d' % (nextRoomID, currentRoomID)
     nextRoom = level.Room(player).asDict()
     nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
     db.createNewRoom(userID, nextRoomID, nextRoom['room'])
@@ -106,13 +112,17 @@ def saveRoom(data):
       'player': player,
       'room': db.getRoom(userID, nextRoomID)
     }
-    nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
-    db.updateRoom(userID, nextRoomID, nextRoom['room'])
+    # nextRoom['room']['doors'][entryDoor]['link'] = currentRoomID
+    # db.updateRoom(userID, nextRoomID, nextRoom['room'])
 
-  db.updatePlayer(userID, nextRoom['player'])
   db.updateRoom(userID, currentRoomID, currentRoom)
-  db.updateCurrentRoomID(userID, currentRoomID)
+  db.updatePlayer(userID, nextRoom['player'])
+  db.updateCurrentRoomID(userID, nextRoomID)
   db.closeDB()
+
+  # pprint(currentRoom)
+  pprint(nextRoom)
+  
   emit('new_room', nextRoom)
   
 #login

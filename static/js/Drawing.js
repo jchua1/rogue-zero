@@ -14,6 +14,15 @@ Drawing.prototype.setRoomClip = function () {
   this.context.clip();
 };
 
+Drawing.prototype.renderUI = function (player) {
+  this.context.save();
+  this.context.font = '24px Helvetica';
+  this.context.fillStyle = Constants.UI_TEXT_COLOR;
+  this.context.textBaseline = 'top';
+  this.context.fillText('Current weapon: ' + player.weapons[player.currentWeapon], 5, 5);
+  this.context.restore();
+};
+
 Drawing.prototype.renderPlayer = function (player) {
 	this.context.save();
   this.context.translate(player.x, player.y);
@@ -36,7 +45,6 @@ Drawing.prototype.renderEnemy = function (enemy) {
   this.context.arc(0, 0, enemy.size, 0, 2 * Math.PI);
 	this.context.fill();
   this.context.restore();
-
   this.renderHealth(enemy);
 };
 
@@ -89,7 +97,7 @@ Drawing.prototype.renderPit = function (pit) {
   this.context.translate(pit.x, pit.y);
   this.context.beginPath();
   this.context.arc(0, 0, pit.size, 0, 2 * Math.PI);
-  this.context.fillStyle = Constants.PIT_COLOR;
+  this.context.fillStyle = pit.color;
   this.context.fill();
   this.context.restore();
 };
@@ -100,7 +108,7 @@ Drawing.prototype.renderRock = function (rock) {
   this.context.translate(rock.x, rock.y);
   this.context.beginPath();
   this.context.arc(0, 0, rock.size, 0, 2 * Math.PI);
-  this.context.fillStyle = Constants.ROCK_COLOR;
+  this.context.fillStyle = rock.color;
   this.context.fill();
   this.context.restore();
 };
@@ -111,7 +119,7 @@ Drawing.prototype.renderPatch = function (patch) {
   this.context.translate(patch.x, patch.y);
   this.context.beginPath();
   this.context.arc(0, 0, patch.size, 0, 2 * Math.PI);
-  this.context.fillStyle = Constants.QUICKSAND_COLOR;
+  this.context.fillStyle = patch.color;
   this.context.fill();
   this.context.restore();
 };
@@ -122,7 +130,7 @@ Drawing.prototype.renderDoor = function (door) {
   this.context.translate(door.x, door.y);
   this.context.beginPath();
   this.context.arc(0, 0, door.size, 0, 2 * Math.PI);
-  this.context.fillStyle = 'blue';
+  this.context.fillStyle = door.color;
   this.context.fill();
   this.context.restore();
 };
