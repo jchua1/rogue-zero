@@ -25,7 +25,8 @@
 }
 
 #deathPage{
-    background-color:black;
+  background-color:black;
+	margin: 50px;
 }
 
 #deathTitle{
