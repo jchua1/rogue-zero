@@ -22,7 +22,6 @@ Game.create = function (socket, canvasElement) {
 
 Game.prototype.init = function () {
   this.socket.on('new_room', (data) => {
-    console.log(this);
     this.receiveRoom(data);
     this.start();
   });

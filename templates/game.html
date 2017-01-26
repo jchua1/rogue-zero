@@ -2,11 +2,8 @@
 <html>
 	<head>
 		<title>Rogue Zero</title>
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'css/index.css')}}">
-		<link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="../static/css/index.css">
-		<script src="../static/bootstrap/js/jquery.min.js"></script>
-		<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+		<link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
 	  <!------------------ GAME STUFF ---------------------->
@@ -14,19 +11,24 @@
 			<canvas id="canvas" oncontextmenu="return false;">
 			</canvas>
 		</div>
-		<script src="static/js/socket.io.js"></script>
-		<script src="static/js/Constants.js"></script>
-		<script src="static/js/Util.js"></script>
-		<script src="static/js/Game.js"></script>
-		<script src="static/js/Drawing.js"></script>
-		<script src="static/js/Input.js"></script>
-		<script src="static/js/Entity.js"></script>
-		<script src="static/js/Player.js"></script>
-		<script src="static/js/Enemy.js"></script>
-		<script src="static/js/Melee.js"></script>
-		<script src="static/js/Projectile.js"></script>
-		<script src="static/js/Obstacle.js"></script>
-		<script src="static/js/client.js"></script>
+
+		<div id="footer">
+			<script src="/static/bootstrap/js/jquery.min.js"></script>
+			<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+			<script src="/static/js/socket.io.js"></script>
+			<script src="/static/js/Constants.js"></script>
+			<script src="/static/js/Util.js"></script>
+			<script src="/static/js/Game.js"></script>
+			<script src="/static/js/Drawing.js"></script>
+			<script src="/static/js/Input.js"></script>
+			<script src="/static/js/Entity.js"></script>
+			<script src="/static/js/Player.js"></script>
+			<script src="/static/js/Enemy.js"></script>
+			<script src="/static/js/Melee.js"></script>
+			<script src="/static/js/Projectile.js"></script>
+			<script src="/static/js/Obstacle.js"></script>
+			<script src="/static/js/client.js"></script>
+		</div>
 
 		<!---------- END OF GAME STUFF ------------------------->
 
@@ -43,7 +45,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="acost">{{healthCost}}</p>
 			</td>
@@ -57,7 +59,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="bcost">{{speedCost}}</p>
 			</td>
@@ -71,7 +73,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="ccost">{{atkSpdCost}}</p>
 			</td>
@@ -85,7 +87,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="dcost">{{ShootDmgcost}}</p>
 			</td>
@@ -99,7 +101,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="ecost">{{meleeDmgcost}}</p>
 			</td>
@@ -113,7 +115,7 @@
 			  {{oldSkill}}
 			</td>
 			<td class="arrow">
-			  <img src="arrow.png"> 
+			  <img src="/static/img/arrow.png"> 
 			  <br>
 			  <p id="fcost">{{meleeSizeCost}}</p>
 			</td>
@@ -142,19 +144,6 @@
 		
 		<!-------------- END OF UPGRADE STUFF ----------------->
 		
-		<script src="/static/js/socket.io.js"></script>
-		<script src="/static/js/Constants.js"></script>
-		<script src="/static/js/Util.js"></script>
-		<script src="/static/js/Game.js"></script>
-		<script src="/static/js/Drawing.js"></script>
-		<script src="/static/js/Input.js"></script>
-		<script src="/static/js/Entity.js"></script>
-		<script src="/static/js/Player.js"></script>
-		<script src="/static/js/Enemy.js"></script>
-		<script src="/static/js/Melee.js"></script>
-		<script src="/static/js/Projectile.js"></script>
-		<script src="/static/js/Obstacle.js"></script>
-		<script src="/static/js/client.js"></script>
 	</body>
 </html>
 				

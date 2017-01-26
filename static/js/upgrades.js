@@ -14,8 +14,8 @@ var meleeDamageCost= Number(document.getElementById("ecost").innerHTML);
 var meleeSizeCost= Number(document.getElementById("fcost").innerHTML);
 
 var upgradeSent = {
-	toBeSent: list;
-}
+	toBeSent: list
+};
 
 
 
@@ -26,7 +26,7 @@ var attackSpeedCount = "global";
 var shootDamageCount = "global";
 var meleeDamageCount= "global";
 var meleeSizeCount = "global";
-var totalCst= "global";
+var totalCost= "global";
 var list= [healthCount, speedCount, attackSpeedCount, shootDamageCount, meleeDamageCount, meleeDamageCount, meleeSizeCount, totalCost];
 ////////////////////////////////////////////////////////////
 
@@ -142,7 +142,6 @@ meleeSize.addEventListener("click", function(e){
 	if( exp > meleeDamageCost){
 		meleeDamage += 1;
 		totalCost += meleeSizeCost;
-	}
 	}
 });
 
