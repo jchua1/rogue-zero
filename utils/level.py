@@ -25,10 +25,10 @@ MAX_ENEMY_SPEED = 100
 MIN_ENEMY_ATTACK = 5
 MAX_ENEMY_ATTACK = 25
 
-D1 = [0.5 * CANVAS_SIZE, BORDER_SIZE]
-D2 = [CANVAS_SIZE - BORDER_SIZE, 0.5 * CANVAS_SIZE]
-D3 = [0.5 * CANVAS_SIZE, CANVAS_SIZE - BORDER_SIZE]
-D4 = [BORDER_SIZE, 0.5 * CANVAS_SIZE]
+DOOR_POSITIONS = [[0.5 * CANVAS_SIZE, BORDER_SIZE],
+                  [CANVAS_SIZE - BORDER_SIZE, 0.5 * CANVAS_SIZE],
+                  [0.5 * CANVAS_SIZE, CANVAS_SIZE - BORDER_SIZE],
+                  [BORDER_SIZE, 0.5 * CANVAS_SIZE]]
 
 healthLevel= 0
 speedLevel= 0
@@ -38,8 +38,7 @@ meleeDmgLevel=0
 meleeRangeLevel=0
 
 class Room:
-  def __init__(self):
-    self.generateEnemies()
+  def __init__(self, x = 75, y = 75, health = 100):
     # self.generatePlayer(10, 10,
                         # upgrades.health(healthLevel),
                         # upgrades.speed(speedLevel),
@@ -50,13 +49,13 @@ class Room:
                         # upgrades.meleeDamage(meleeDmgLevel),
                         # upgrades.meleeRange(meleeRangeLevel),
                         # math.pi / 16, math.pi / 2, 10, 1)
-    self.generatePlayer(75, 75, 100, 100, 250, PLAYER_SIZE, 0.5,
+    self.generatePlayer(x, y, health, health, 250, PLAYER_SIZE, 0.5,
                         5, 800, 5, 1000, 0.5,
                         20, 75, math.pi / 16, math.pi / 2, 10, 1)
+    self.generateEnemies()
     self.generateObstacles()
     self.generateDoors()
 
-    
   def generateEnemies(self):
     self.enemies = []
 
@@ -74,18 +73,12 @@ class Room:
   def generateDoors(self):
     self.doors = []
     
-    door = [D1, D2, D3, D4]
-    #side = random.choice(door)
-
-    #x = side[0]
-    #y = side[1]
-
-    for side in door:
-
+    for i in range(len(DOOR_POSITIONS)):
       self.doors.append({
-        'x': side[0],
-        'y': side[1],
-        'size': DOOR_SIZE
+        'x': DOOR_POSITIONS[i][0],
+        'y': DOOR_POSITIONS[i][1],
+        'size': DOOR_SIZE,
+        'side': i
       })
     
   def generateObstacles(self):
