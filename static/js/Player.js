@@ -23,6 +23,7 @@ function Player() {
   this.invincible = 0;
   this.shape = 'circle';
   this.currentWeapon = 'gun';
+  this.experience = 0;
 }
 
 Player.inheritsFrom(Entity);

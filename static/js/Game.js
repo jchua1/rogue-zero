@@ -264,6 +264,10 @@ Game.prototype.update = function () {
       this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(melee, enemy)) {
           enemy.takeDamage(melee.damage);
+
+          if (enemy.health == 0) {
+            this.player.experience += enemy.health;
+          }
         }
       });  
 
@@ -279,6 +283,11 @@ Game.prototype.update = function () {
       this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(projectile, enemy)) {
           enemy.takeDamage(projectile.damage);
+
+          if (enemy.health == 0) {
+            this.player.experience += enemy.health;
+          }
+          
           projectile.shouldExist = false;
         }
       });
