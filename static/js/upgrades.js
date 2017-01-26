@@ -144,4 +144,3 @@ meleeSize.addEventListener("click", function(e){
 		totalCost += meleeSizeCost;
 	}
 });
-
