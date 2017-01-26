@@ -24,7 +24,7 @@ function Player() {
   this.shape = 'circle';
   this.weapons = [];
   this.currentWeapon = 0;
-  this.experience = 0;
+  this.score = 0;
   this.defaultAttributes = [];
 }
 

@@ -92,7 +92,8 @@ class Room:
       'meleeArc': meleeArc,
       'meleeSpeed': meleeSpeed,
       'meleeDelay': meleeDelay,
-      'currentWeapon': 0
+      'currentWeapon': 0,
+      'score': 0
     })
 
   def generateDoors(self):
@@ -256,4 +257,5 @@ class Player(Entity):
     self.meleeDelay = player['meleeDelay']
     self.weapons = ['gun', 'sword']
     self.currentWeapon = player['currentWeapon']
+    self.score = player['score']
 

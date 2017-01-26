@@ -19,7 +19,8 @@ Drawing.prototype.renderUI = function (player) {
   this.context.font = '24px Helvetica';
   this.context.fillStyle = Constants.UI_TEXT_COLOR;
   this.context.textBaseline = 'top';
-  this.context.fillText('Current weapon: ' + player.weapons[player.currentWeapon], 5, 5);
+  this.context.fillText('Current score: ' + player.score, 5, 5);
+  this.context.fillText('Current weapon: ' + player.weapons[player.currentWeapon], Constants.CANVAS_SIZE / 2 + 5, 5);
   this.context.restore();
 };
 
