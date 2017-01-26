@@ -11,7 +11,5 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   canvasElement.focus();
 
-	socket.emit('new_player', {
-		name: 'test'
-	});
+	socket.emit('get_room');
 });

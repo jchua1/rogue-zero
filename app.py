@@ -13,26 +13,12 @@ def run():
 def game():
   return render_template('game.html')
 
-@socketio.on('new_player')
-def newPlayer(data):
-  name = data['name']
-  print 'new player %s connected' % name
-
+@socketio.on('get_room')
+def sendRoom():
   emit('new_room', getRoom())
 
-
-@socketio.on('get_room')
-def sendRoom(data = {}):
-  seed = None
-  
-  if 'seed' in data:
-    seed = data['seed']
-
-  print 'generating room with seed %s' % seed
-  emit('new_room', getRoom(seed))
-
-def getRoom(seed = None):
-  newRoom = level.Room(seed).asDict()
+def getRoom():
+  newRoom = level.Room().asDict()
   print newRoom
   return newRoom
 

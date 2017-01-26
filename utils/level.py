@@ -38,8 +38,7 @@ meleeDmgLevel=0
 meleeRangeLevel=0
 
 class Room:
-  def __init__(self, seed):
-    random.seed(seed)
+  def __init__(self):
     self.generateEnemies()
     # self.generatePlayer(10, 10,
                         # upgrades.health(healthLevel),

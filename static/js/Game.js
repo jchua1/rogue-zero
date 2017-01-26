@@ -69,11 +69,6 @@ Game.prototype.saveRoom = function () {
   });
 };
 
-Game.prototype.nextRoom = function () {
-  this.isRunning = false;
-  this.reset();
-};
-
 Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
   
@@ -204,6 +199,7 @@ Game.prototype.update = function () {
 
       if (doorReached >= 0) {
         this.saveRoom();
+        this.stop();
       }
     }
     
@@ -366,3 +362,9 @@ Game.prototype.start = function () {
   this.isRunning = true;
   this.run();
 };
+
+Game.prototype.stop = function () {
+  this.isRunning = false;
+  this.stopAnimation();
+};
+
