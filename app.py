@@ -78,7 +78,14 @@ def sendRoom():
 # def notUpgrades(data):
   # skills = data['upgrades']
   # print skills
-  
+
+@socketio.on('player_death')
+def playerDeath():#clears user info in database
+  db.initDB()
+  db.reset(session['username'])
+  db.closeDB()
+  return render_template('death.html')
+
 @socketio.on('save_room')
 def saveRoom(data):
   db.initDB()

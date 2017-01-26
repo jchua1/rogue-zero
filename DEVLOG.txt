@@ -1,3 +1,14 @@
+2017-01-26 - nng
+	Minor aesthetic tweaks
+	Began death sequence and database clearing
+
+2017-01-25 - jchua
+	Added conditionals to make sure terrain doesn't spawn on player or doors.
+
+2017-01-25 - nng
+	Modified saving levels and differentiating loading and saving levels
+	Adjusted to save states of rooms
+
 2017-01-25 - kli
 	Added borders and doors.
 
@@ -16,6 +27,12 @@
 	Did some refactoring -- made getShape/collision methods modular.
 	Made enemies move towards player.
 	Added weapon switching (use right click).
+
+2017-01-24 - nng
+	Began generating terrain with new system
+	Completed initial room saving
+	Removed tile system
+	Began level generation and room linking
 
 2017-01-22 - dchiu
 	added css and templating for profile/upgrade
@@ -40,7 +57,11 @@
 	Added terrain dictionary to asDict() method of Level class.
 	Implemented user ID generation in registration.
 	Changed table column names to reflect those of the database schema in the design document.
-	
+
+2017-01-18 - nng
+	Began adding various room elements
+	Began creating save system for room and user info
+
 2017-01-18 - dchiu
 	decided how to format skill level and progression
 	started making some of the buttons.
@@ -52,6 +73,9 @@
 2017-01-17 - dchiu
 	decided to make charachter customization html overlay instead of all javascript.
 	added color chooser to the customization page.
+
+2017-01-13 - nng
+	Created a navbar and logout system
 
 2017-01-13 - kli
 	Finalized refactoring.
@@ -70,6 +94,9 @@
 2017-01-11 - kli
 	More work on sockets and client side rendering.
 	Movement works!
+
+2017-01-10 - nng
+	Started and finished initial login system
 
 2017-01-10 - dchiu
 	finished prelimary login page. team mates noted that login and register shouldn't be same field

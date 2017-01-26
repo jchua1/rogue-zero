@@ -28,6 +28,11 @@ def getUserID(username):
 
   return userID
 
+def reset(username):
+  userID = getUserID(username)
+  c.execute('DELETE FROM rooms WHERE user_id =?',(userID,))
+  c.execute('UPDATE users SET current_room = 0 WHERE user_id=?',(userID,))
+
 def getCurrentRoomID(userID):
   c.execute('SELECT current_room FROM users WHERE user_id=?', (userID,))
   currentRoom = c.fetchone()[0]
@@ -125,4 +130,3 @@ def getPlayer(userID):
 def updatePlayer(userID, playerInfo):
   c.execute('UPDATE users SET player_info=? WHERE user_id=?',
             (json.dumps(playerInfo), userID))
-  

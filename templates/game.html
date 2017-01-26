@@ -1,151 +1,151 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Rogue Zero</title>
-		<link rel="stylesheet" type="text/css" href="/static/css/index.css">
-		<link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
-	</head>
-	<body>
-	  <!------------------ GAME STUFF ---------------------->
+  <head>
+    <title>Rogue Zero</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+  </head>
+  <body>
+    <!------------------ GAME STUFF ---------------------->
 
-		<div class="container-md-7" id="container">
-			<canvas id="canvas" oncontextmenu="return false;">
-			</canvas>
-		</div>
+    <div class="container-md-7" id="container">
+      <canvas id="canvas" oncontextmenu="return false;" class="center-block">
+      </canvas>
+    </div>
 
-		<div id="footer">
-			<script src="/static/bootstrap/js/jquery.min.js"></script>
-			<script src="/static/bootstrap/js/bootstrap.min.js"></script>
-			<script src="/static/js/socket.io.js"></script>
-			<script src="/static/js/Constants.js"></script>
-			<script src="/static/js/Util.js"></script>
-			<script src="/static/js/Game.js"></script>
-			<script src="/static/js/Drawing.js"></script>
-			<script src="/static/js/Input.js"></script>
-			<script src="/static/js/Entity.js"></script>
-			<script src="/static/js/Player.js"></script>
-			<script src="/static/js/Enemy.js"></script>
-			<script src="/static/js/Melee.js"></script>
-			<script src="/static/js/Projectile.js"></script>
-			<script src="/static/js/Obstacle.js"></script>
-			<script src="/static/js/client.js"></script>
-		</div>
+    <div id="footer">
+      <script src="/static/bootstrap/js/jquery.min.js"></script>
+      <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/static/js/socket.io.js"></script>
+      <script src="/static/js/Constants.js"></script>
+      <script src="/static/js/Util.js"></script>
+      <script src="/static/js/Game.js"></script>
+      <script src="/static/js/Drawing.js"></script>
+      <script src="/static/js/Input.js"></script>
+      <script src="/static/js/Entity.js"></script>
+      <script src="/static/js/Player.js"></script>
+      <script src="/static/js/Enemy.js"></script>
+      <script src="/static/js/Melee.js"></script>
+      <script src="/static/js/Projectile.js"></script>
+      <script src="/static/js/Obstacle.js"></script>
+      <script src="/static/js/client.js"></script>
+    </div>
 
-		<!---------- END OF GAME STUFF -------------------------> 
+    <!---------- END OF GAME STUFF -------------------------> 
 
-		<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-		
-		<!-------------- UPGRADES STUFF -----------------------> 
-		<!-- <div> -->
-		  <!-- <div class="col-md-5"> -->
-		    
-		    <!-- <table id="skillTable"> -->
-		      
-		      <!-- <tr class="skills" id="health"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{healthOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="acost">{{healthCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="a"> -->
-			  <!-- {{healthNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
+    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+    
+    <!-------------- UPGRADES STUFF -----------------------> 
+    <!-- <div> -->
+    <!-- <div class="col-md-5"> -->
+    
+    <!-- <table id="skillTable"> -->
+    
+    <!-- <tr class="skills" id="health"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{healthOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="acost">{{healthCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="a"> -->
+    <!-- {{healthNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
 
-		      <!-- <tr class="skills" id="speed"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{speedOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="bcost">{{speedCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="b"> -->
-			  <!-- {{speedNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
-		      
-		      <!-- <tr class="skills" id="attackSpeed"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{atkspdOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="ccost">{{atkSpdCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="c"> -->
-			  <!-- {{atkspdNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
+    <!-- <tr class="skills" id="speed"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{speedOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="bcost">{{speedCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="b"> -->
+    <!-- {{speedNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
+    
+    <!-- <tr class="skills" id="attackSpeed"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{atkspdOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="ccost">{{atkSpdCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="c"> -->
+    <!-- {{atkspdNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
 
-		      <!-- <tr class="skills" id="shootDamage"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{shootdmgOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="dcost">{{shootdmgCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="d"> -->
-			  <!-- {{shootdmgNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
+    <!-- <tr class="skills" id="shootDamage"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{shootdmgOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="dcost">{{shootdmgCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="d"> -->
+    <!-- {{shootdmgNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
 
-		      <!-- <tr class="skills" id="meleeDmg"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{meleedmgOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="ecost">{{meleedmgCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="e"> -->
-			  <!-- {{meleedmgNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
+    <!-- <tr class="skills" id="meleeDmg"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{meleedmgOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="ecost">{{meleedmgCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="e"> -->
+    <!-- {{meleedmgNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
 
-		      <!-- <tr class="skills" id="meleeSize"> -->
-			<!-- <td class="oldUpgrade"> -->
-			  <!-- {{meleesizeOldSkill}} -->
-			<!-- </td> -->
-			<!-- <td class="arrow"> -->
-			  <!-- <img src="/static/img/arrow.png">  -->
-			  <!-- <br> -->
-			  <!-- <p id="fcost">{{meleeSizeCost}}</p> -->
-			<!-- </td> -->
-			<!-- <td class="newUpgrade" id="f"> -->
-			  <!-- {{meleesizeNewSkill}} -->
-			<!-- </td> -->
-		      <!-- </tr> -->
-		      
-		    <!-- </table> -->
-		    
-		  <!-- </div> -->
+    <!-- <tr class="skills" id="meleeSize"> -->
+    <!-- <td class="oldUpgrade"> -->
+    <!-- {{meleesizeOldSkill}} -->
+    <!-- </td> -->
+    <!-- <td class="arrow"> -->
+    <!-- <img src="/static/img/arrow.png">  -->
+    <!-- <br> -->
+    <!-- <p id="fcost">{{meleeSizeCost}}</p> -->
+    <!-- </td> -->
+    <!-- <td class="newUpgrade" id="f"> -->
+    <!-- {{meleesizeNewSkill}} -->
+    <!-- </td> -->
+    <!-- </tr> -->
+    
+    <!-- </table> -->
+    
+    <!-- </div> -->
 
-		  <!-- <br> -->
-		  <!-- <center> -->
-		    <!-- <h1>Character Color</h1> -->
-		    <!-- <input type="color" name="charColor" onchange="clickColor(0,-1,-1,5)" value="#ff0000" style="width:25%; height:100px;"> -->
-		    <!-- <br> -->
-		    <!-- <h2>Skill Points:</h2> -->
-		    <!-- <p id="exp">{{skillPoints}}</p> -->
-		    <!-- <br> -->
-		    <!-- <br> -->
-		    <!-- <button type="button" class="btn btn-primary" id="confirm"> Confirm </button>  -->
-		  <!-- </center> -->
-		  
-		  <!-- <script type="text/javascript" src="../static/js/upgrades.js"> </script> -->
-		<!-- </div> -->
-		
-		<!-------------- END OF UPGRADE STUFF ----------------->
-		
-	</body>
+    <!-- <br> -->
+    <!-- <center> -->
+    <!-- <h1>Character Color</h1> -->
+    <!-- <input type="color" name="charColor" onchange="clickColor(0,-1,-1,5)" value="#ff0000" style="width:25%; height:100px;"> -->
+    <!-- <br> -->
+    <!-- <h2>Skill Points:</h2> -->
+    <!-- <p id="exp">{{skillPoints}}</p> -->
+    <!-- <br> -->
+    <!-- <br> -->
+    <!-- <button type="button" class="btn btn-primary" id="confirm"> Confirm </button>  -->
+    <!-- </center> -->
+    
+    <!-- <script type="text/javascript" src="../static/js/upgrades.js"> </script> -->
+    <!-- </div> -->
+    
+    <!-------------- END OF UPGRADE STUFF ----------------->
+    
+  </body>
 </html>
-				
+
