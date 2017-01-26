@@ -24,3 +24,6 @@ Constants.GROUND_COLOR = '#d9c8bf';
 Constants.ROCK_COLOR = 'grey';
 Constants.PIT_COLOR = 'black';
 Constants.QUICKSAND_COLOR = '#ffbf80';
+
+Constants.PLAYER_QUICKSAND_MODIFIER = 0.2;
+Constants.ENEMY_QUICKSAND_MODIFIER = 0.5;

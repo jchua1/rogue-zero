@@ -82,8 +82,6 @@ Game.prototype.update = function () {
       vertical /= inputMagnitude;
     }
     
-    var walk = (Input.MISC_KEYS[16] ? 0.2 : 1);
-
     if (Input.MOUSE.length == 2) {
 	    var heading = Math.PI + Math.atan2(Input.MOUSE[1] - this.player.y,
 													               Input.MOUSE[0] - this.player.x);
@@ -95,8 +93,8 @@ Game.prototype.update = function () {
 
 	  var delta = now - this.lastFrameTime;
 
-    this.player.vx = horizontal * this.player.speed * walk * this.player.speedModifier;
-    this.player.vy = vertical * this.player.speed * walk * this.player.speedModifier;
+    this.player.vx = horizontal * this.player.speed * this.player.speedModifier;
+    this.player.vy = vertical * this.player.speed * this.player.speedModifier;
     this.player.speedModifier = 1;
     
     this.room.enemies.forEach((enemy, i, enemies) => {
@@ -178,12 +176,12 @@ Game.prototype.update = function () {
     
     this.room.quicksand.forEach((patch, i, quicksand) => {
       if (collide(this.player, patch)) {
-        this.player.speedModifier = 0.2;
+        this.player.speedModifier = Constants.PLAYER_QUICKSAND_MODIFIER;
       }
 
       this.room.enemies.forEach((enemy, j, enemies) => {
         if (collide(enemy, patch)) {
-          enemy.speedModifier = 0.2;
+          enemy.speedModifier = Constants.ENEMY_QUICKSAND_MODIFIER;
         }
       });
     });

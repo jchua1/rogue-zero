@@ -21,7 +21,7 @@ MAX_ROCK_SIZE = 100
 MIN_ENEMY_HEALTH = 5
 MAX_ENEMY_HEALTH = 50
 MIN_ENEMY_SPEED = 15
-MAX_ENEMY_SPEED = 75
+MAX_ENEMY_SPEED = 100
 MIN_ENEMY_ATTACK = 5
 MAX_ENEMY_ATTACK = 25
 
@@ -162,18 +162,16 @@ class Entity(object):
 
 class Enemy(Entity):
   def __init__(self):
-    health = random.randint(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH)
-    attack = random.randint(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK)
+    health = random.randrange(MIN_ENEMY_HEALTH, MAX_ENEMY_HEALTH)
+    attack = random.randrange(MIN_ENEMY_ATTACK, MAX_ENEMY_ATTACK)
+    speed = random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED)
     size = health
     
     super(Enemy, self).__init__(random.randrange(BORDER_SIZE + size,
                                                  CANVAS_SIZE - BORDER_SIZE - size),
                                 random.randrange(BORDER_SIZE + size,
                                                  CANVAS_SIZE - BORDER_SIZE - size),
-                                health,
-                                health,
-                                random.randrange(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED),
-                                attack)
+                                health, health, speed, size)
     self.attack = attack
 
 class Player(Entity):
