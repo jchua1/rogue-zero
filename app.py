@@ -77,8 +77,10 @@ def sendRoom():
 
 @socketio.on('player_death')
 def playerDeath():#clears user info in database
-  print 'hi'
-  #return render_template('death.html')
+  db.initDB()
+  db.reset(session['username'])
+  db.closeDB()
+  return render_template('death.html')
 
 @socketio.on('save_room')
 def saveRoom(data):

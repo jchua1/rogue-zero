@@ -28,6 +28,10 @@ def getUserID(username):
 
   return userID
 
+def reset(username):
+  userID = getUserID(username)
+  c.execute('DELETE FROM rooms WHERE user_id =?',(userID,))
+
 def getCurrentRoomID(userID):
   c.execute('SELECT current_room FROM users WHERE user_id=?', (userID,))
   currentRoom = c.fetchone()[0]
