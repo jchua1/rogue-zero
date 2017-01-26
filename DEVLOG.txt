@@ -1,3 +1,6 @@
+2017-01-25 - jchua
+	Added conditionals to make sure terrain doesn't spawn on player or doors.
+
 2017-01-25 - kli
 	Added borders and doors.
 
