@@ -70,10 +70,10 @@ def sendRoom():
 
   emit('new_room', room)
 
-@socketio.on('upgradePlayers')
-def notUpgrades(data):
-  skills = data['upgrades']
-  print skills
+# @socketio.on('upgradePlayers')
+# def notUpgrades(data):
+  # skills = data['upgrades']
+  # print skills
   
 @socketio.on('save_room')
 def saveRoom(data):

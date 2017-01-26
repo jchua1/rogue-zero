@@ -104,6 +104,10 @@ Game.prototype.saveRoom = function () {
 
 Game.prototype.update = function () {
 	var now = (new Date()).getTime() / 1000;
+
+  if (!this.player.shouldExist) {
+    this.socket.emit('player_death');
+  }
   
   if (this.lastFrameTime != 0) {
 	  var horizontal = ((Input.LEFT ? -1 : 0) + (Input.RIGHT ? 1 : 0));
