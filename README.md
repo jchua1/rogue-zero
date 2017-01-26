@@ -3,7 +3,8 @@ Softdev 1 Final Project
 
 Required Packages: flask-SocketIO
 
-When in doubt, rm data/data.db
+When in doubt:
+$ rm data/data.db
 
 # Rogue Zero
 
